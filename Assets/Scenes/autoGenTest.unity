@@ -236,12 +236,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e702c058ee75ad543be424b654bf85b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  northRooms: []
-  southRooms: []
+  northRooms:
+  - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+  southRooms:
+  - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
   eastRooms:
   - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
   westRooms:
   - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+  bigWall: {fileID: 0}
+  bigFloor: {fileID: 0}
+  rooms: []
+  waitTime: 10
+  boss: {fileID: 0}
+  maxRoomsAllowed: 10
 --- !u!4 &1181858845
 Transform:
   m_ObjectHideFlags: 0
@@ -264,14 +272,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2233205500056034692, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
-      propertyPath: door_opening
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3965578078004694668, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
-      propertyPath: door_opening
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
       propertyPath: m_Name
       value: Room4_Fix
@@ -319,10 +319,6 @@ PrefabInstance:
     - target: {fileID: 7033883249070761511, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9094476417784532595, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
-      propertyPath: door_opening
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
