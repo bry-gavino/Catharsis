@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PowerInfo : MonoBehaviour
 {
+    #region Editor Variables
     [SerializeField]
     [Tooltip("Power Name")]
     private string p_name;
@@ -35,5 +36,32 @@ public class PowerInfo : MonoBehaviour
             return p_color;
         }
     }
+
+    [SerializeField]
+    [Tooltip("Description of ability")]
+    private string p_desc;
+    public string GetDesc
+    {
+        get
+        {
+            return p_desc;
+        }
+    }
+
+    [SerializeField]
+    [Tooltip("Drawback of power ,,, to be implemented laer")]
+    //Consider this as a possible multiplier and check for
+    //tag and/or name. If matches the name, matches the drawback of power
+    //ex: could be a health drain. If mutliplier is high, drains
+    //much faster. if slows player, multiplier is gravity modifier.
+    private float p_drawpower;
+    public float GetDrawBackPower
+    {
+        get
+        {
+            return p_drawpower;
+        }
+    }
+    #endregion
 
 }
