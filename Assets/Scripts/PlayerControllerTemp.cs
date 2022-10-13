@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class PlayerControllerTemp : MonoBehaviour {
     public float maxSpeed = 5f;
+    
+    [SerializeField]
+    [Tooltip("Current power")]
+    public PowerInfo cur_power;
 
+    
     [HideInInspector] //This means that even though the variable is public, it will not show up in the Inspector.
     public Vector2 estimatedVelocity; // Used by SniperMovement.cs 
 	void Update () // If your movement is dealing with forces/rigidbodies, you should handle it in fixedUpdate. All physics calculations happen there.
@@ -22,5 +27,10 @@ public class PlayerControllerTemp : MonoBehaviour {
 
         estimatedVelocity = delta/Time.deltaTime;   // We need this for the sniper enemy type. 
         // ^ In a bigger game, you want to keep all the relevant code as modular and separated as possible. Try to find ways around lines like this in your game.
+    }
+
+    public void changePower(PowerInfo power)
+    {
+        cur_power = power;
     }
 }
