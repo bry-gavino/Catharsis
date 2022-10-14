@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     bool upKey;
     bool downKey;
     bool attackKey;
+    bool healKey;
     #endregion 
 
     #region xp variables
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour {
     public float currHealth;
     public string[] powers;
     public Slider HPSlider;
+    public ArrayList inventory = new ArrayList();
     #endregion
 
     #region powers
@@ -77,12 +79,14 @@ public class PlayerController : MonoBehaviour {
             upKey = Input.GetKeyDown(KeyCode.W);
             downKey = Input.GetKeyDown(KeyCode.S);*/
             attackKey = Input.GetKeyDown(KeyCode.F);
+            healKey = Input.GetKeyDown(KeyCode.R);
         } else if (playerID == 2) {
             /*leftKey = Input.GetKeyDown(KeyCode.J);
             rightKey = Input.GetKeyDown(KeyCode.L);
             upKey = Input.GetKeyDown(KeyCode.I);
             downKey = Input.GetKeyDown(KeyCode.K);*/
-            attackKey = Input.GetKeyDown(KeyCode.J);
+            attackKey = Input.GetKeyDown(KeyCode.H);
+            healKey = Input.GetKeyDown(KeyCode.U);
         }
         expThreshold = exp * 100;
         HPSlider.value = currHealth / maxHealth;
@@ -183,19 +187,33 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void Heal(float val) {
-        currHealth = Mathf.Min(currHealth + val, maxHealth);
-        Debug.Log("health is now " + currHealth.ToString());
-
-        HPSlider.value = currHealth / maxHealth;
-    }
-
     private void Die() {
         //FindObjectOfType<AudioManager>().Play("PlayerDeath");
         Destroy(this.gameObject);
 
         //GameObject gm = GameObject.FindWithTag("GameController");
         //gm.GetComponent<GameManager>().LoseGame();
+    }
+
+    private void Interact() {
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection, 
+            new Vector2(0.5f, 0.5f), 0f, Vector2.zero, 0f);
+        foreach (RaycastHit2D hit in hits) {
+            if (!hit.transform.CompareTag("Enemy")) {
+                inventory.Add(GetComponent<HealingVial>());
+            }
+        }
+    }
+
+    public void Heal(float val) {
+        if (inventory.Count > 0) {
+            currHealth = Mathf.Min(currHealth + val, maxHealth);
+            Debug.Log("health is now " + currHealth.ToString());
+
+            HPSlider.value = currHealth / maxHealth;
+
+            inventory.RemoveAt(inventory.Count - 1);
+        } 
     }
 
     #endregion

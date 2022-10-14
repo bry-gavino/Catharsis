@@ -16,13 +16,14 @@ public class Room : MonoBehaviour
             playerInRoom = true;
 
             // TODO: awaken all enemies
-            RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, Vector2.one, 0f, Vector2.zero);
-            foreach (RaycastHit2D hit in hits)
+            Collider[] hitColliders = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, Quaternion.identity);
+            foreach (var hit in hitColliders)
             {
                 if(hit.transform.CompareTag("Enemy"))
                 {
                     // TODO: call enemy script's awake function
-                    //hit.transform.GetComponent<ENEMY-SCRIPT-HERE>().AWAKE_FUNC_HERE();
+                    Debug.Log("Enemy awakens");
+                    hit.transform.GetComponent<EnemyScript>().becomeAwake();
                 }
             }
         }
@@ -42,7 +43,8 @@ public class Room : MonoBehaviour
                 if(hit.transform.CompareTag("Enemy"))
                 {
                     // TODO: call enemy script's sleep function
-                    //hit.transform.GetComponent<ENEMY-SCRIPT-HERE>().SLEEP_FUNC_HERE();
+                    Debug.Log("Enemy sleeps");
+                    hit.transform.GetComponent<EnemyScript>().becomeIdle();
                 }
             }
         }

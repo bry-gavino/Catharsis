@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Rooms
   - SpawnPoint
   - Destroyer
+  - Rooms
+  - Spawn Point
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -41,12 +43,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Floor
-    uniqueID: 2112980831
+  - name: Ground
+    uniqueID: 2031695343
     locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Player
-    uniqueID: 536614357
     locked: 0
