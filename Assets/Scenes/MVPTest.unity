@@ -327,7 +327,7 @@ MonoBehaviour:
   bigWall: {fileID: 0}
   bigFloor: {fileID: 0}
   rooms: []
-  waitTime: 10
+  waitTime: 2
   boss: {fileID: 0}
   maxRoomsAllowed: 10
 --- !u!4 &1063952815
@@ -379,6 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movespeed: 10
+  cur_power: {fileID: 0}
 --- !u!95 &1610753496
 Animator:
   serializedVersion: 4
