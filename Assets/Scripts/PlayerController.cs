@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     #region player info variables
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour {
     float skillPoints = 0;
     float currLevel = 1;
     float expThreshold;
+    public Slider XPSlider;
     #endregion
 
     #region movement variables
@@ -49,7 +51,15 @@ public class PlayerController : MonoBehaviour {
     public float maxHealth;
     public float currHealth;
     public string[] powers;
-    //public Slider HPSlider;
+    public Slider HPSlider;
+    #endregion
+
+    #region powers
+
+    [SerializeField]
+    [Tooltip("Current power")]
+    public PowerInfo curr_power;
+
     #endregion
 
     #region unity funcs
@@ -62,20 +72,21 @@ public class PlayerController : MonoBehaviour {
         currSpeed = moveSpeed;
         currHealth = maxHealth;
         if (playerID == 1) {
-            leftKey = Input.GetKeyDown(KeyCode.A);
+            /*leftKey = Input.GetKeyDown(KeyCode.A);
             rightKey = Input.GetKeyDown(KeyCode.D);
             upKey = Input.GetKeyDown(KeyCode.W);
-            downKey = Input.GetKeyDown(KeyCode.S);
+            downKey = Input.GetKeyDown(KeyCode.S);*/
             attackKey = Input.GetKeyDown(KeyCode.F);
         } else if (playerID == 2) {
-            leftKey = Input.GetKeyDown(KeyCode.J);
+            /*leftKey = Input.GetKeyDown(KeyCode.J);
             rightKey = Input.GetKeyDown(KeyCode.L);
             upKey = Input.GetKeyDown(KeyCode.I);
-            downKey = Input.GetKeyDown(KeyCode.K);
+            downKey = Input.GetKeyDown(KeyCode.K);*/
             attackKey = Input.GetKeyDown(KeyCode.J);
         }
         expThreshold = exp * 100;
-        //HPSlider.value = currHealth / maxHealth;
+        HPSlider.value = currHealth / maxHealth;
+        XPSlider.value = exp;
     }
 
     // called once per frame
@@ -88,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 
         Move();
 
-        if (Input.GetKeyDown(KeyCode.J) && attackTimer <= 0) {
+        if (attackKey && attackTimer <= 0) {
             Attack();
         } else {
             attackTimer -= Time.deltaTime;
@@ -131,7 +142,7 @@ public class PlayerController : MonoBehaviour {
         Debug.Log("attacking now");
         Debug.Log(currDirection);
         attackTimer = attackSpeed;
-        StartCoroutine(AttackRoutine()); // handle animation + hitbox
+        StartCoroutine(AttackRoutine()); 
     }
 
     IEnumerator AttackRoutine() {
@@ -150,7 +161,6 @@ public class PlayerController : MonoBehaviour {
             if(hit.transform.CompareTag("Enemy")) {
                 if (hit.transform.GetComponent<Enemy>() != null) {
                     hit.transform.GetComponent<Enemy>().TakeDamage(Damage);
-                    Debug.Log("damaged enemy");
                 }
             }     
         }*/
@@ -166,7 +176,7 @@ public class PlayerController : MonoBehaviour {
         currHealth -= val;
         Debug.Log("health is now " + currHealth.ToString());
 
-        //HPSlider.value = currHealth / maxHealth;
+        HPSlider.value = currHealth / maxHealth;
 
         if (currHealth <= 0) {
             Die();
@@ -177,7 +187,7 @@ public class PlayerController : MonoBehaviour {
         currHealth = Mathf.Min(currHealth + val, maxHealth);
         Debug.Log("health is now " + currHealth.ToString());
 
-        //HPSlider.value = currHealth / maxHealth;
+        HPSlider.value = currHealth / maxHealth;
     }
 
     private void Die() {
@@ -200,6 +210,15 @@ public class PlayerController : MonoBehaviour {
             currLevel += 1;
             expThreshold = currLevel * 100;
         }
+        HPSlider.value = exp;
+    }
+
+    #endregion
+
+    #region power funcs
+
+    public void changePower(PowerInfo power) {
+        curr_power = power;
     }
 
     #endregion
