@@ -46,7 +46,6 @@ public class EnemyScript : MonoBehaviour
     private void Update(){
 
         if (isAwake) {
-            Debug.Log("AWAKE!");
             Move();
         }
     }
@@ -77,4 +76,11 @@ public class EnemyScript : MonoBehaviour
         Destroy(this.gameObject);
     }
     #endregion
+
+    public void becomeAwake(){
+        isAwake = true;
+    }
+    public void becomeIdle(){
+        isAwake = false;
+    }
 }
