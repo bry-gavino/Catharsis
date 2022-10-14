@@ -6,6 +6,7 @@ public class EnemyScript : MonoBehaviour
 {
     #region Movement_variables
     public float movespeed;
+    public bool isAwake;
     #endregion
 
     #region Physics_Components
@@ -44,12 +45,10 @@ public class EnemyScript : MonoBehaviour
 
     private void Update(){
 
-        //if (LineOfSight.isChasing) {
+        if (isAwake) {
+            Debug.Log("AWAKE!");
             Move();
-        //} else {
-            //Vector2 direction = new Vector2(0, 0);
-            //EnemyRB.velocity = new Vector2(0, 0);
-        //}
+        }
     }
 
     #endregion

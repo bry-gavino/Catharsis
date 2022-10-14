@@ -23,6 +23,10 @@ public class TestPlayer : MonoBehaviour
     Animator anim;
     #endregion
 
+    [SerializeField]
+    [Tooltip("Current power")]
+    public PowerInfo cur_power;
+
     #region Unity_functions
     private void Awake()
     {
@@ -73,4 +77,9 @@ public class TestPlayer : MonoBehaviour
         }
     }
     #endregion
+
+    public void changePower(PowerInfo power)
+    {
+        cur_power = power;
+    }
 }
