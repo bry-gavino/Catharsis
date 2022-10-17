@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     bool downKey;
     bool attackKey;
     bool healKey;
+    bool dead = false;
     #endregion 
 
     #region xp variables
@@ -19,7 +20,7 @@ public class PlayerController : MonoBehaviour {
     float skillPoints = 0;
     float currLevel = 1;
     float expThreshold;
-    public Slider XPSlider;
+    // public Slider XPSlider;
     #endregion
 
     #region movement variables
@@ -45,14 +46,14 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region animation
-    //Animator anim;
+    Animator anim;
     #endregion
 
     #region health
     public float maxHealth;
     public float currHealth;
     public string[] powers;
-    public Slider HPSlider;
+    // public Slider HPSlider;
     public ArrayList inventory = new ArrayList();
     #endregion
 
@@ -70,27 +71,34 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         PlayerRB = GetComponent<Rigidbody2D>();
         attackTimer = 0;
-        //anim = GetComponent<Animator>();
-        currSpeed = moveSpeed;
+
+        // TODO: make Animator
+        anim = GetComponent<Animator>();
+
+        // currSpeed = moveSpeed;
         currHealth = maxHealth;
         if (playerID == 1) {
+
             /*leftKey = Input.GetKeyDown(KeyCode.A);
             rightKey = Input.GetKeyDown(KeyCode.D);
             upKey = Input.GetKeyDown(KeyCode.W);
             downKey = Input.GetKeyDown(KeyCode.S);*/
+
             attackKey = Input.GetKeyDown(KeyCode.F);
             healKey = Input.GetKeyDown(KeyCode.R);
         } else if (playerID == 2) {
+
             /*leftKey = Input.GetKeyDown(KeyCode.J);
             rightKey = Input.GetKeyDown(KeyCode.L);
             upKey = Input.GetKeyDown(KeyCode.I);
             downKey = Input.GetKeyDown(KeyCode.K);*/
+            
             attackKey = Input.GetKeyDown(KeyCode.H);
             healKey = Input.GetKeyDown(KeyCode.U);
         }
         expThreshold = exp * 100;
-        HPSlider.value = currHealth / maxHealth;
-        XPSlider.value = exp;
+        // HPSlider.value = currHealth / maxHealth;
+        // XPSlider.value = exp;
     }
 
     // called once per frame
@@ -114,28 +122,35 @@ public class PlayerController : MonoBehaviour {
     #region movement funcs
 
     private void Move() {
-        //anim.SetBool("Moving", true);
-        if (x_input > 0) {
-            PlayerRB.velocity = Vector2.right * currSpeed;
-            currDirection = Vector2.right;
+        if (!dead)
+        {
+            anim.SetBool("Moving", true);
 
-        } else if (x_input < 0) {
-            PlayerRB.velocity = Vector2.left * currSpeed;
-            currDirection = Vector2.left;
-            
-        } else if (y_input > 0) {
-            PlayerRB.velocity = Vector2.up * currSpeed;
-            currDirection = Vector2.up;
+            if (x_input > 0) {
+                PlayerRB.velocity = Vector2.right * moveSpeed;
+                currDirection = Vector2.right;
+            } else if (x_input < 0) {
+                PlayerRB.velocity = Vector2.left * moveSpeed;
+                currDirection = Vector2.left;
+            } else if (y_input > 0) {
+                PlayerRB.velocity = Vector2.up * moveSpeed;
+                currDirection = Vector2.up;
+            } else if (y_input < 0) {
+                PlayerRB.velocity = Vector2.down * moveSpeed;
+                currDirection = Vector2.down;
+            } else {
+                PlayerRB.velocity = Vector2.zero;
+                anim.SetBool("Moving", false);
+            }
 
-        } else if (y_input < 0) {
-            PlayerRB.velocity = Vector2.down * currSpeed;
-            currDirection = Vector2.down;
-        } else {
-            PlayerRB.velocity = Vector2.zero;
-            //anim.SetBool("Moving", false);
+            anim.SetFloat("DirX", currDirection.x);
+            anim.SetFloat("DirY", currDirection.y);
         }
-        //anim.SetFloat("DirX", currDirection.x);
-        //anim.SetFloat("DirY", currDirection.y);
+        else
+        {
+            PlayerRB.velocity = Vector2.zero;
+            anim.SetBool("Dead", true);
+        }
     }
 
     #endregion
@@ -153,7 +168,7 @@ public class PlayerController : MonoBehaviour {
         isAttacking = true;
         PlayerRB.velocity = Vector2.zero;
 
-        //anim.SetTrigger("Attacking");
+        anim.SetTrigger("Attacking");
         //FindObjectOfType<AudioManager>().Play("PlayerAttack");
 
         yield return new WaitForSeconds(hitBoxTiming);
@@ -180,7 +195,7 @@ public class PlayerController : MonoBehaviour {
         currHealth -= val;
         Debug.Log("health is now " + currHealth.ToString());
 
-        HPSlider.value = currHealth / maxHealth;
+        // HPSlider.value = currHealth / maxHealth;
 
         if (currHealth <= 0) {
             Die();
@@ -210,7 +225,7 @@ public class PlayerController : MonoBehaviour {
             currHealth = Mathf.Min(currHealth + val, maxHealth);
             Debug.Log("health is now " + currHealth.ToString());
 
-            HPSlider.value = currHealth / maxHealth;
+            // HPSlider.value = currHealth / maxHealth;
 
             inventory.RemoveAt(inventory.Count - 1);
         } 
@@ -228,7 +243,7 @@ public class PlayerController : MonoBehaviour {
             currLevel += 1;
             expThreshold = currLevel * 100;
         }
-        HPSlider.value = exp;
+        // HPSlider.value = exp;
     }
 
     #endregion
