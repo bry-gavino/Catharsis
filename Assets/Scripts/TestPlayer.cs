@@ -25,7 +25,7 @@ public class TestPlayer : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Current power")]
-    public PowerInfo cur_power;
+    public PowerInfo curr_power;
 
     #region Unity_functions
     private void Awake()
@@ -80,6 +80,6 @@ public class TestPlayer : MonoBehaviour
 
     public void changePower(PowerInfo power)
     {
-        cur_power = power;
+        curr_power = power;
     }
 }

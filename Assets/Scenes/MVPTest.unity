@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 1610753498}
   - component: {fileID: 1610753497}
   - component: {fileID: 1610753496}
-  - component: {fileID: 1610753495}
+  - component: {fileID: 1610753501}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Player
@@ -661,20 +661,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1610753495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610753494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 708b1cebd94444e6eb1996693418d104, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movespeed: 10
-  cur_power: {fileID: 1593412739688300224, guid: 5a8a310bd40254a7bbc4680fa6ee59e3, type: 3}
 --- !u!95 &1610753496
 Animator:
   serializedVersion: 4
@@ -799,6 +785,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1610753501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610753494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c802036ad120e4acfaa04e4d649b9a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 1
+  moveSpeed: 10
+  Damage: 0
+  attackSpeed: 1
+  hitBoxTiming: 0
+  endAnimationTiming: 0
+  speedUpTiming: 0
+  maxHealth: 1
+  currHealth: 1
+  powers: []
+  curr_power: {fileID: 1593412739688300224, guid: 5a8a310bd40254a7bbc4680fa6ee59e3, type: 3}
 --- !u!1001 &1653285415
 PrefabInstance:
   m_ObjectHideFlags: 0

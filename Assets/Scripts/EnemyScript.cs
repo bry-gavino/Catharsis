@@ -32,7 +32,7 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     [SerializeField]
-    private GameObject healthpot;
+    private HealingVial healthpot;
 
 
 
