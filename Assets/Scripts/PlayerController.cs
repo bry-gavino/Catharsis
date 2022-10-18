@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
     #region player info variables
     public float playerID;
-    bool leftKey;
-    bool rightKey;
-    bool upKey;
-    bool downKey;
-    bool attackKey;
-    bool healKey;
+    string leftKey;
+    string rightKey;
+    string upKey;
+    string downKey;
+    string attackKey;
+    string healKey;
     bool dead = false;
     #endregion 
 
@@ -79,22 +79,22 @@ public class PlayerController : MonoBehaviour {
         currHealth = maxHealth;
         if (playerID == 1) {
 
-            /*leftKey = Input.GetKeyDown(KeyCode.A);
-            rightKey = Input.GetKeyDown(KeyCode.D);
-            upKey = Input.GetKeyDown(KeyCode.W);
-            downKey = Input.GetKeyDown(KeyCode.S);*/
+            leftKey = "a";
+            rightKey = "d";
+            upKey = "w";
+            downKey = "s";
 
-            attackKey = Input.GetKeyDown(KeyCode.F);
-            healKey = Input.GetKeyDown(KeyCode.R);
+            attackKey = "f";
+            healKey = "g";
         } else if (playerID == 2) {
 
-            /*leftKey = Input.GetKeyDown(KeyCode.J);
-            rightKey = Input.GetKeyDown(KeyCode.L);
-            upKey = Input.GetKeyDown(KeyCode.I);
-            downKey = Input.GetKeyDown(KeyCode.K);*/
+            leftKey = "k";
+            rightKey = ";";
+            upKey = "o";
+            downKey = "l";
             
-            attackKey = Input.GetKeyDown(KeyCode.H);
-            healKey = Input.GetKeyDown(KeyCode.U);
+            attackKey = "h";
+            healKey = "j";
         }
         expThreshold = exp * 100;
         // HPSlider.value = currHealth / maxHealth;
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour {
 
         Move();
 
-        if (attackKey && attackTimer <= 0) {
+        if (Input.GetKey(attackKey) && attackTimer <= 0) {
             Attack();
         } else {
             attackTimer -= Time.deltaTime;
@@ -126,22 +126,26 @@ public class PlayerController : MonoBehaviour {
         {
             anim.SetBool("Moving", true);
 
-            if (x_input > 0) {
-                PlayerRB.velocity = Vector2.right * moveSpeed;
-                currDirection = Vector2.right;
-            } else if (x_input < 0) {
-                PlayerRB.velocity = Vector2.left * moveSpeed;
-                currDirection = Vector2.left;
-            } else if (y_input > 0) {
-                PlayerRB.velocity = Vector2.up * moveSpeed;
-                currDirection = Vector2.up;
-            } else if (y_input < 0) {
-                PlayerRB.velocity = Vector2.down * moveSpeed;
-                currDirection = Vector2.down;
+            // HANDLE MOVEMENT HERE
+            PlayerRB.velocity = Vector2.zero;
+            if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {    
+                if (Input.GetKey(rightKey)) { // EAST
+                    PlayerRB.velocity += Vector2.right;
+                    currDirection = Vector2.right;
+                } if (Input.GetKey(leftKey)) { // WEST
+                    PlayerRB.velocity += Vector2.left;
+                    currDirection = Vector2.left;
+                } if (Input.GetKey(upKey)) { // NORTH
+                    PlayerRB.velocity += Vector2.up;
+                    currDirection = Vector2.up;
+                } if (Input.GetKey(downKey)) { // SOUTH
+                    PlayerRB.velocity += Vector2.down;
+                    currDirection = Vector2.down;
+                }
             } else {
-                PlayerRB.velocity = Vector2.zero;
                 anim.SetBool("Moving", false);
             }
+            PlayerRB.velocity = PlayerRB.velocity * moveSpeed;
 
             anim.SetFloat("DirX", currDirection.x);
             anim.SetFloat("DirY", currDirection.y);
