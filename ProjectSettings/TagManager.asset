@@ -9,6 +9,7 @@ TagManager:
   - Rooms
   - Spawn Point
   - Enemy
+  - PlayerHurtBox
   layers:
   - Default
   - TransparentFX
