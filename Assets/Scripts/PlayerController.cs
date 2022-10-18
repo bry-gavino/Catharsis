@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     string rightKey;
     string upKey;
     string downKey;
+    string dashKey;
     string attackKey;
     string healKey;
     bool dead = false;
@@ -30,6 +31,15 @@ public class PlayerController : MonoBehaviour {
     float y_input;
     #endregion
 
+    #region dash variables
+    bool isDashing = false;
+    public float dashLength;
+    public float dashCooldown;
+    public float dashSpeed;
+    float dashLengthTimer;
+    float dashCooldownTimer;
+    #endregion
+
     #region attack variables
     public float Damage;
     public float attackSpeed = 1;
@@ -38,11 +48,12 @@ public class PlayerController : MonoBehaviour {
     public float endAnimationTiming;
     public float speedUpTiming;
     bool isAttacking;
-    Vector2 currDirection;
+    public Vector2 currDirection;
     #endregion
 
     #region physics
     Rigidbody2D PlayerRB;
+    GameObject HurtBox;
     #endregion
 
     #region animation
@@ -58,17 +69,16 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region powers
-
     [SerializeField]
     [Tooltip("Current power")]
     public PowerInfo curr_power;
-
     #endregion
 
     #region unity funcs
 
     // called once when object created
     private void Awake() {
+        HurtBox = GameObject.Find("PlayerHurtBox");
         PlayerRB = GetComponent<Rigidbody2D>();
         attackTimer = 0;
 
@@ -84,8 +94,9 @@ public class PlayerController : MonoBehaviour {
             upKey = "w";
             downKey = "s";
 
+            dashKey = "g";
             attackKey = "f";
-            healKey = "g";
+            healKey = "r";
         } else if (playerID == 2) {
 
             leftKey = "k";
@@ -93,8 +104,9 @@ public class PlayerController : MonoBehaviour {
             upKey = "o";
             downKey = "l";
             
-            attackKey = "h";
-            healKey = "j";
+            dashKey = "h";
+            attackKey = "j";
+            healKey = "u";
         }
         expThreshold = exp * 100;
         // HPSlider.value = currHealth / maxHealth;
@@ -109,43 +121,60 @@ public class PlayerController : MonoBehaviour {
         x_input = Input.GetAxisRaw("Horizontal");
         y_input = Input.GetAxisRaw("Vertical");
 
+        HandleInput();
         Move();
-
+    }
+    private void HandleInput() {
         if (Input.GetKey(attackKey) && attackTimer <= 0) {
             Attack();
-        } else {
-            attackTimer -= Time.deltaTime;
+        } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
+            Dash();
+        }
+        attackTimer -= Time.deltaTime;
+        dashCooldownTimer -= Time.deltaTime;
+        dashLengthTimer -= Time.deltaTime;
+        // HANDLE TIMER
+        if (dashLengthTimer <= 0) {
+            isDashing = false;
         }
     }
     #endregion 
 
-    #region movement funcs
+
+
+
+
+
+
+    #region movement dash funcs
 
     private void Move() {
+
         if (!dead)
         {
             anim.SetBool("Moving", true);
 
             // HANDLE MOVEMENT HERE
-            PlayerRB.velocity = Vector2.zero;
+            currDirection = Vector2.zero;
             if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {    
                 if (Input.GetKey(rightKey)) { // EAST
-                    PlayerRB.velocity += Vector2.right;
-                    currDirection = Vector2.right;
+                    currDirection += Vector2.right;
                 } if (Input.GetKey(leftKey)) { // WEST
-                    PlayerRB.velocity += Vector2.left;
-                    currDirection = Vector2.left;
+                    currDirection += Vector2.left;
                 } if (Input.GetKey(upKey)) { // NORTH
-                    PlayerRB.velocity += Vector2.up;
-                    currDirection = Vector2.up;
+                    currDirection += Vector2.up;
                 } if (Input.GetKey(downKey)) { // SOUTH
-                    PlayerRB.velocity += Vector2.down;
-                    currDirection = Vector2.down;
+                    currDirection += Vector2.down;
                 }
             } else {
                 anim.SetBool("Moving", false);
             }
-            PlayerRB.velocity = PlayerRB.velocity * moveSpeed;
+
+            if (isDashing) {
+                PlayerRB.velocity = currDirection * dashSpeed;
+            } else {
+                PlayerRB.velocity = currDirection * moveSpeed;
+            }
 
             anim.SetFloat("DirX", currDirection.x);
             anim.SetFloat("DirY", currDirection.y);
@@ -155,9 +184,28 @@ public class PlayerController : MonoBehaviour {
             PlayerRB.velocity = Vector2.zero;
             anim.SetBool("Dead", true);
         }
+
+        // HANDLE HITBOX PLACEMENT HERE
+        HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
     }
 
+    private void Dash() {
+        Debug.Log("DASH!");
+        dashLengthTimer = dashLength;
+        dashCooldownTimer = dashCooldown;
+        isDashing = true;
+        // StartCoroutine(DashRoutine()); 
+    }
+    // IEnumerator DashRoutine() {}
+
     #endregion
+
+
+
+
+
+
+
 
     #region attack funcs
 
@@ -176,7 +224,7 @@ public class PlayerController : MonoBehaviour {
         //FindObjectOfType<AudioManager>().Play("PlayerAttack");
 
         yield return new WaitForSeconds(hitBoxTiming);
-        Debug.Log("casting hitbox now");
+        // Debug.Log("casting hitbox now");
         /*RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection, Vector2.one, 0f, Vector2.zero);
 
         foreach (RaycastHit2D hit in hits) {
