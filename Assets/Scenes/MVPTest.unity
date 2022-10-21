@@ -541,13 +541,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   northRooms:
-  - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+  - {fileID: 8240239853149842954, guid: 9b7ceb68458ded844a1f85ee665379fc, type: 3}
   southRooms:
-  - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+  - {fileID: 7201870315588634192, guid: bcd5279c782004841a93e8c534f712cf, type: 3}
   eastRooms:
-  - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+  - {fileID: 8136722752947918656, guid: fa15ce5f8cabe5942a56a41feb04a1e7, type: 3}
   westRooms:
-  - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+  - {fileID: 3412297419895374192, guid: 16c095e9a15360742be1413c492fd157, type: 3}
   bigWall: {fileID: 8587313274729234202, guid: 065cad4d3c15a2443b62d01ac7bf15e9, type: 3}
   bigFloor: {fileID: 5386031892243296780, guid: 8329dca1fdec8ec438e5fe81460da3d3, type: 3}
   rooms: []
@@ -632,7 +632,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573565483}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.09, y: -0.08, z: -10}
+  m_LocalPosition: {x: -4, y: -0.08, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -778,7 +778,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610753494}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.09, y: -0.08, z: 0}
+  m_LocalPosition: {x: -4, y: -0.08, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -947,7 +947,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669614262}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.09, y: -0.08, z: -10}
+  m_LocalPosition: {x: -4, y: -0.08, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
