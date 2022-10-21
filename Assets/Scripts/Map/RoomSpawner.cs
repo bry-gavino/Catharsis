@@ -19,8 +19,8 @@ public class RoomSpawner : MonoBehaviour {
     [Tooltip("Debugging: Check if this point spawned.")] [SerializeField]
     private bool spawned = false;
 
-    [Tooltip("How long until next room is spawned")] [SerializeField]
-    private float spawnInterval = 1f;
+    [Tooltip("How long until next room is spawned")]
+    private float spawnInterval = 0.5f;
 
     [Tooltip("How long before this object gets destroyed.")]
     private float destroyTime;
