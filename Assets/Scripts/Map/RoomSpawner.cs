@@ -20,7 +20,7 @@ public class RoomSpawner : MonoBehaviour {
     private bool spawned = false;
 
     [Tooltip("How long until next room is spawned")] [SerializeField]
-    private float spawnInterval = 3f;
+    private float spawnInterval = 1f;
 
     [Tooltip("How long before this object gets destroyed.")]
     private float destroyTime;
@@ -31,7 +31,7 @@ public class RoomSpawner : MonoBehaviour {
         destroyTime = spawnInterval * 5;
 
         Destroy(this.gameObject, destroyTime);
-        Invoke("Spawn", 3f);
+        Invoke("Spawn", spawnInterval);
     }
 
     // Update is called once per frame
