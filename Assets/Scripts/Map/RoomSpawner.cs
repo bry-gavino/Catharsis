@@ -20,7 +20,7 @@ public class RoomSpawner : MonoBehaviour {
     private bool spawned = false;
 
     [Tooltip("How long until next room is spawned")]
-    private float spawnInterval = 0.5f;
+    private float spawnInterval = 0.2f;
 
     [Tooltip("How long before this object gets destroyed.")]
     private float destroyTime;
