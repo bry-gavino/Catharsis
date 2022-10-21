@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_4
       objectReference: {fileID: 0}
+    - target: {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7033883249070761511, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 1063952814}
   m_Layer: 0
   m_Name: Room Templates
-  m_TagString: Rooms
+  m_TagString: RoomTemplates
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -548,8 +548,8 @@ MonoBehaviour:
   - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
   westRooms:
   - {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
-  bigWall: {fileID: 0}
-  bigFloor: {fileID: 0}
+  bigWall: {fileID: 8587313274729234202, guid: 065cad4d3c15a2443b62d01ac7bf15e9, type: 3}
+  bigFloor: {fileID: 5386031892243296780, guid: 8329dca1fdec8ec438e5fe81460da3d3, type: 3}
   rooms: []
   waitTime: 10
   boss: {fileID: 0}
@@ -817,11 +817,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
       propertyPath: m_Name
-      value: Room4_Fix
+      value: StartingRoom
       objectReference: {fileID: 0}
     - target: {fileID: 4276763058596519865, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Room
       objectReference: {fileID: 0}
     - target: {fileID: 7033883249070761511, guid: 26dec6cca10717540a63406ffe166dc2, type: 3}
       propertyPath: m_RootOrder

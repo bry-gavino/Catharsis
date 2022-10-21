@@ -6,9 +6,10 @@ TagManager:
   tags:
   - SpawnPoint
   - Destroyer
-  - Rooms
   - Spawn Point
   - Enemy
+  - RoomTemplates
+  - Room
   layers:
   - Default
   - TransparentFX
