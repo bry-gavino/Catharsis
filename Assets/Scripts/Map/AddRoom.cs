@@ -7,7 +7,7 @@ public class AddRoom : MonoBehaviour {
 
     void Start() {
         // adds this room to a list of rooms, so that we can figure out which room is the last one
-        templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
+        templates = GameObject.FindGameObjectWithTag("RoomTemplates").GetComponent<RoomTemplates>();
         templates.rooms.Add(this.gameObject);
     }
 }

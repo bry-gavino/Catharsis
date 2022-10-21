@@ -26,7 +26,7 @@ public class RoomSpawner : MonoBehaviour {
     private float destroyTime;
 
     void Start() {
-        templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
+        templates = GameObject.FindGameObjectWithTag("RoomTemplates").GetComponent<RoomTemplates>();
         roomIndex = 0;
         destroyTime = spawnInterval * 5;
 
