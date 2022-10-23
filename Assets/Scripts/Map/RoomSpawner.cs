@@ -67,13 +67,17 @@ public class RoomSpawner : MonoBehaviour {
         // check if another spawn point is here
         // here we may also need to consider closing stuff
         // Instantiate(templates.bigWall, transform.position, Quaternion.identity);
-        if (other.CompareTag("Destroyer")) {
-            // this spawn point is invading an established room
-            Destroy(gameObject);
-        }
-        else if (other.CompareTag("SpawnPoint")) {
-            // there is a spawn point invading our territory
-            Destroy(other.gameObject);
+        //if (other.CompareTag("Destroyer")) {
+        //    // this spawn point is invading an established room
+        //    Destroy(gameObject);
+        //}
+        if (other.CompareTag("SpawnPoint")) {
+            // two spawn points on same position, if neither have spawned yet, close spot
+            if (other.GetComponent<RoomSpawner>().spawned == false && spawned == false) {
+                Instantiate(templates.bigWall, transform.position, Quaternion.identity);
+                // Destroy(other.gameObject);
+                Destroy(gameObject);
+            }
         }
 
         spawned = true;
