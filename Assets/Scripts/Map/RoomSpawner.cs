@@ -10,7 +10,8 @@ public class RoomSpawner : MonoBehaviour {
         East
     }
 
-    [Tooltip("The direction a door of the next room must face")] [SerializeField]
+    /* If we have an opening in the East, the next room's opening must be West */
+    [Tooltip("The direction the door of the next room must face")] [SerializeField]
     DoorDirectionNeeded door_opening;
 
     private RoomTemplates templates;
