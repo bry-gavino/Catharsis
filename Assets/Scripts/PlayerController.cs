@@ -152,8 +152,7 @@ public class PlayerController : MonoBehaviour {
 
         if (!dead)
         {
-            anim.SetBool("Moving", true);
-
+            
             // HANDLE MOVEMENT HERE
             currDirection = Vector2.zero;
             if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {    
@@ -166,6 +165,9 @@ public class PlayerController : MonoBehaviour {
                 } if (Input.GetKey(downKey)) { // SOUTH
                     currDirection += Vector2.down;
                 }
+                anim.SetBool("Moving", true);
+                anim.SetFloat("DirX", currDirection.x);
+                anim.SetFloat("DirY", currDirection.y);
             } else {
                 anim.SetBool("Moving", false);
             }
@@ -176,8 +178,6 @@ public class PlayerController : MonoBehaviour {
                 PlayerRB.velocity = currDirection * moveSpeed;
             }
 
-            anim.SetFloat("DirX", currDirection.x);
-            anim.SetFloat("DirY", currDirection.y);
         }
         else
         {
