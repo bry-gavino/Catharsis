@@ -27,9 +27,30 @@ public class DungeonGenerator : MonoBehaviour {
     [Tooltip("List of cells that will be the board.")]
     private List<Cell> board;
 
+    [Tooltip("List of all rooms generated.")]
+    public List<GameObject> activeRooms;
+
     // Start is called before the first frame update
     void Start() {
+        activeRooms = new List<GameObject>();
         MazeGenerator();
+        PopulateRooms();
+    }
+
+    /**
+     * Now that everything is generated, can do post-processing here.
+     * Make the last room (bottom right) the boss room, choose a spawn room (top left or some other spot).
+     * Randomly pick rooms to be of type treasure, trap, monster, etc.
+     */
+    void PopulateRooms() {
+        // try getting start room
+        GameObject startRoom = activeRooms[0]; // last room in list
+        GameObject startGround = startRoom.transform.Find("Ground").gameObject;
+        startGround.GetComponent<SpriteRenderer>().color = Color.blue;
+        // try getting boss room
+        GameObject bossRoom = activeRooms[^1]; // last room in list
+        GameObject bossGround = bossRoom.transform.Find("Ground").gameObject;
+        bossGround.GetComponent<SpriteRenderer>().color = Color.red;
     }
 
     void GenerateDungeon() {
@@ -43,7 +64,9 @@ public class DungeonGenerator : MonoBehaviour {
                     var newRoom = Instantiate(room, position, Quaternion.identity, transform)
                         .GetComponent<RoomBehavior>();
                     newRoom.UpdateRoom(currentCell.status);
-                    newRoom.name = " " + i + "-" + j;
+                    newRoom.name = i + "-" + j;
+                    // add to list
+                    activeRooms.Add(newRoom.gameObject);
                 }
             }
         }

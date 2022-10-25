@@ -236,10 +236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d869e442c27760848bd34abb4d46495c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 5, y: 5}
+  size: {x: 7, y: 7}
   room: {fileID: 1241317006806145728, guid: ce0483f4ce920534c8845e194faf0daf, type: 3}
   offset: {x: 16, y: 16}
   startPos: 0
+  activeRooms: []
 --- !u!4 &2001730233
 Transform:
   m_ObjectHideFlags: 0
