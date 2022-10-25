@@ -43,14 +43,25 @@ public class DungeonGenerator : MonoBehaviour {
      * Randomly pick rooms to be of type treasure, trap, monster, etc.
      */
     void PopulateRooms() {
-        // try getting start room
-        GameObject startRoom = activeRooms[0]; // last room in list
-        GameObject startGround = startRoom.transform.Find("Ground").gameObject;
-        startGround.GetComponent<SpriteRenderer>().color = Color.blue;
-        // try getting boss room
-        GameObject bossRoom = activeRooms[^1]; // last room in list
-        GameObject bossGround = bossRoom.transform.Find("Ground").gameObject;
-        bossGround.GetComponent<SpriteRenderer>().color = Color.red;
+        for (int i = 0; i < activeRooms.Count; i++) {
+            GameObject currentRoom = activeRooms[i];
+            GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
+            if (i == 0) {
+                // start room
+                currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+            else if (i == activeRooms.Count - 1) {
+                // last room -> boss room
+                currentGround.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            else {
+                // every other room...
+                // rainbow mode
+                currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f));
+            }
+        }
     }
 
     void GenerateDungeon() {
