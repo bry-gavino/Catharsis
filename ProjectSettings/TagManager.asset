@@ -12,6 +12,8 @@ TagManager:
   - Rooms
   - Walls
   - Corners
+  - LevelTransition
+  - GameManager
   layers:
   - Default
   - TransparentFX

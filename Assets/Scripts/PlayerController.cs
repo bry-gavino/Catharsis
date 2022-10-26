@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     string attackKey;
     string healKey;
     bool dead = false;
+    bool isSleeping = false;
     #endregion 
 
     #region xp variables
@@ -117,15 +118,17 @@ public class PlayerController : MonoBehaviour {
 
     // called once per frame
     private void Update() {
-        if (isAttacking) {
-            return;
-        }
-        x_input = Input.GetAxisRaw("Horizontal");
-        y_input = Input.GetAxisRaw("Vertical");
+        if (!isSleeping) {
+            if (isAttacking) {
+                return;
+            }
+            x_input = Input.GetAxisRaw("Horizontal");
+            y_input = Input.GetAxisRaw("Vertical");
 
-        HandleInput();
-        Move();
-        HandleState();
+            HandleInput();
+            Move();
+            HandleState();
+        }
     }
     private void HandleInput() {
         if (Input.GetKey(attackKey) && attackTimer <= 0) {
@@ -205,7 +208,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Dash() {
-        Debug.Log("DASH!");
         dashLengthTimer = dashLength;
         dashCooldownTimer = dashCooldown;
         isDashing = true;
@@ -321,6 +323,18 @@ public class PlayerController : MonoBehaviour {
         curr_power = power;
     }
 
+    #endregion
+
+
+
+
+
+    #region game manager
+    public void enableUserInput() {isSleeping = false;}
+    public void disableUserInput() {
+        isSleeping = true;
+        PlayerRB.velocity = Vector2.zero;
+    }
     #endregion
 
     

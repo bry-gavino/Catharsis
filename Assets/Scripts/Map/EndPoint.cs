@@ -14,9 +14,9 @@ public class EndPoint : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player"){
-            Debug.Log("COMPLETED LEVEL!");
             // TODO: trigger GameManager to pass/loading screen
-            
+            GameObject gameManager = GameObject.FindWithTag("GameManager");
+            gameManager.GetComponent<GameManager>().transitionToLevelScreen();
         }
     }
     #endregion
