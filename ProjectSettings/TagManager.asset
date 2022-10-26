@@ -3,13 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - SpawnPoint
-  - Destroyer
-  - Rooms
-  - Spawn Point
-  - Enemy
-  - PlayerHurtBox
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -44,9 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Ground
-    uniqueID: 2031695343
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
