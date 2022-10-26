@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour {
     #region physics
     Rigidbody2D PlayerRB;
     GameObject HurtBox;
+    GameObject Effects;
     #endregion
 
     #region animation
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour {
     // called once when object created
     private void Awake() {
         HurtBox = GameObject.Find("PlayerHurtBox");
+        Effects = GameObject.Find("PlayerEffects");
         PlayerRB = GetComponent<Rigidbody2D>();
         attackTimer = 0;
 
@@ -123,6 +125,7 @@ public class PlayerController : MonoBehaviour {
 
         HandleInput();
         Move();
+        HandleState();
     }
     private void HandleInput() {
         if (Input.GetKey(attackKey) && attackTimer <= 0) {
@@ -136,6 +139,13 @@ public class PlayerController : MonoBehaviour {
         // HANDLE TIMER
         if (dashLengthTimer <= 0) {
             isDashing = false;
+        }
+    }
+    private void HandleState() {
+        if (isDashing) {
+            Effects.GetComponent<PlayerEffects>().SetState(1);
+        } else {
+            Effects.GetComponent<PlayerEffects>().SetState(0);
         }
     }
     #endregion 
@@ -152,9 +162,9 @@ public class PlayerController : MonoBehaviour {
 
         if (!dead)
         {
-            anim.SetBool("Moving", true);
-
+            
             // HANDLE MOVEMENT HERE
+            Vector2 oldDirection = currDirection;
             currDirection = Vector2.zero;
             if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {    
                 if (Input.GetKey(rightKey)) { // EAST
@@ -166,18 +176,22 @@ public class PlayerController : MonoBehaviour {
                 } if (Input.GetKey(downKey)) { // SOUTH
                     currDirection += Vector2.down;
                 }
+                anim.SetBool("Moving", true);
+                anim.SetFloat("DirX", currDirection.x);
+                anim.SetFloat("DirY", currDirection.y);
             } else {
                 anim.SetBool("Moving", false);
+                currDirection = oldDirection;
             }
 
             if (isDashing) {
                 PlayerRB.velocity = currDirection * dashSpeed;
-            } else {
+            } else if (anim.GetBool("Moving")) {
                 PlayerRB.velocity = currDirection * moveSpeed;
+            } else {
+                PlayerRB.velocity = Vector2.zero;
             }
 
-            anim.SetFloat("DirX", currDirection.x);
-            anim.SetFloat("DirY", currDirection.y);
         }
         else
         {
@@ -187,6 +201,7 @@ public class PlayerController : MonoBehaviour {
 
         // HANDLE HITBOX PLACEMENT HERE
         HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
+        Effects.GetComponent<PlayerEffects>().HandleDirection(currDirection);
     }
 
     private void Dash() {
