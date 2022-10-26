@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Room
-  - RoomWall
+  - WallRemovable
   layers:
   - Default
   - TransparentFX
