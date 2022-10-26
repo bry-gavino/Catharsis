@@ -33,8 +33,6 @@ public class PlayerEffects : MonoBehaviour
         // float angle = Vector2.Angle(Vector2.zero, currDirection);
         float rad = Mathf.Atan2(currDirection.x, -currDirection.y);
         float deg = rad * Mathf.Rad2Deg;
-        Debug.Log(currDirection);
-        Debug.Log(deg);
 
         transform.eulerAngles = new Vector3 (0, 0, deg);
     }

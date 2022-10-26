@@ -43,8 +43,6 @@ public class RoomBehavior : MonoBehaviour {
         if (dir == 3) {
             Destroy(this.transform.Find("Entrances/West Wall").gameObject);
         }
-
     }
 
-    
 }

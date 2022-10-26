@@ -25,6 +25,12 @@ public class GameManager : MonoBehaviour
 
 
 
+    #region LevelVars
+    private Vector2 spawnPt = Vector2.zero;
+    #endregion
+
+
+
     #region Variable_functions
     public void advanceLevel(){level += 1;}
     public void beatBoss(){bossesEncountered += 1;}
@@ -52,6 +58,12 @@ public class GameManager : MonoBehaviour
         bossesEncountered = 0;
         level = 0;
         floorType = ""; // POST-MVP: default floorType?
+
+        // TODO: get player object and spawn at spawnPt
+        // TODO: make MapGenerator re-generate
+        // TODO: loading screen
+            // TODO: make player object SLEEP during loading
+
         changeScreenInGame();
     }
     #endregion
@@ -77,6 +89,9 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(gameObject);
+        
+        // Instantly loads first level
+        restartRun();
     }
     #endregion
 
