@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
     #region player info variables
     public float playerID;
-    bool leftKey;
-    bool rightKey;
-    bool upKey;
-    bool downKey;
-    bool attackKey;
-    bool healKey;
+    string leftKey;
+    string rightKey;
+    string upKey;
+    string downKey;
+    string dashKey;
+    string attackKey;
+    string healKey;
     bool dead = false;
     #endregion 
 
@@ -30,6 +31,15 @@ public class PlayerController : MonoBehaviour {
     float y_input;
     #endregion
 
+    #region dash variables
+    bool isDashing = false;
+    public float dashLength;
+    public float dashCooldown;
+    public float dashSpeed;
+    float dashLengthTimer;
+    float dashCooldownTimer;
+    #endregion
+
     #region attack variables
     public float Damage;
     public float attackSpeed = 1;
@@ -38,11 +48,12 @@ public class PlayerController : MonoBehaviour {
     public float endAnimationTiming;
     public float speedUpTiming;
     bool isAttacking;
-    Vector2 currDirection;
+    public Vector2 currDirection;
     #endregion
 
     #region physics
     Rigidbody2D PlayerRB;
+    GameObject HurtBox;
     #endregion
 
     #region animation
@@ -58,17 +69,16 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region powers
-
     [SerializeField]
     [Tooltip("Current power")]
     public PowerInfo curr_power;
-
     #endregion
 
     #region unity funcs
 
     // called once when object created
     private void Awake() {
+        HurtBox = GameObject.Find("PlayerHurtBox");
         PlayerRB = GetComponent<Rigidbody2D>();
         attackTimer = 0;
 
@@ -79,22 +89,24 @@ public class PlayerController : MonoBehaviour {
         currHealth = maxHealth;
         if (playerID == 1) {
 
-            /*leftKey = Input.GetKeyDown(KeyCode.A);
-            rightKey = Input.GetKeyDown(KeyCode.D);
-            upKey = Input.GetKeyDown(KeyCode.W);
-            downKey = Input.GetKeyDown(KeyCode.S);*/
+            leftKey = "a";
+            rightKey = "d";
+            upKey = "w";
+            downKey = "s";
 
-            attackKey = Input.GetKeyDown(KeyCode.F);
-            healKey = Input.GetKeyDown(KeyCode.R);
+            dashKey = "g";
+            attackKey = "f";
+            healKey = "r";
         } else if (playerID == 2) {
 
-            /*leftKey = Input.GetKeyDown(KeyCode.J);
-            rightKey = Input.GetKeyDown(KeyCode.L);
-            upKey = Input.GetKeyDown(KeyCode.I);
-            downKey = Input.GetKeyDown(KeyCode.K);*/
+            leftKey = "k";
+            rightKey = ";";
+            upKey = "o";
+            downKey = "l";
             
-            attackKey = Input.GetKeyDown(KeyCode.H);
-            healKey = Input.GetKeyDown(KeyCode.U);
+            dashKey = "h";
+            attackKey = "j";
+            healKey = "u";
         }
         expThreshold = exp * 100;
         // HPSlider.value = currHealth / maxHealth;
@@ -109,38 +121,59 @@ public class PlayerController : MonoBehaviour {
         x_input = Input.GetAxisRaw("Horizontal");
         y_input = Input.GetAxisRaw("Vertical");
 
+        HandleInput();
         Move();
-
-        if (attackKey && attackTimer <= 0) {
+    }
+    private void HandleInput() {
+        if (Input.GetKey(attackKey) && attackTimer <= 0) {
             Attack();
-        } else {
-            attackTimer -= Time.deltaTime;
+        } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
+            Dash();
+        }
+        attackTimer -= Time.deltaTime;
+        dashCooldownTimer -= Time.deltaTime;
+        dashLengthTimer -= Time.deltaTime;
+        // HANDLE TIMER
+        if (dashLengthTimer <= 0) {
+            isDashing = false;
         }
     }
     #endregion 
 
-    #region movement funcs
+
+
+
+
+
+
+    #region movement dash funcs
 
     private void Move() {
+
         if (!dead)
         {
             anim.SetBool("Moving", true);
 
-            if (x_input > 0) {
-                PlayerRB.velocity = Vector2.right * moveSpeed;
-                currDirection = Vector2.right;
-            } else if (x_input < 0) {
-                PlayerRB.velocity = Vector2.left * moveSpeed;
-                currDirection = Vector2.left;
-            } else if (y_input > 0) {
-                PlayerRB.velocity = Vector2.up * moveSpeed;
-                currDirection = Vector2.up;
-            } else if (y_input < 0) {
-                PlayerRB.velocity = Vector2.down * moveSpeed;
-                currDirection = Vector2.down;
+            // HANDLE MOVEMENT HERE
+            currDirection = Vector2.zero;
+            if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {    
+                if (Input.GetKey(rightKey)) { // EAST
+                    currDirection += Vector2.right;
+                } if (Input.GetKey(leftKey)) { // WEST
+                    currDirection += Vector2.left;
+                } if (Input.GetKey(upKey)) { // NORTH
+                    currDirection += Vector2.up;
+                } if (Input.GetKey(downKey)) { // SOUTH
+                    currDirection += Vector2.down;
+                }
             } else {
-                PlayerRB.velocity = Vector2.zero;
                 anim.SetBool("Moving", false);
+            }
+
+            if (isDashing) {
+                PlayerRB.velocity = currDirection * dashSpeed;
+            } else {
+                PlayerRB.velocity = currDirection * moveSpeed;
             }
 
             anim.SetFloat("DirX", currDirection.x);
@@ -151,9 +184,28 @@ public class PlayerController : MonoBehaviour {
             PlayerRB.velocity = Vector2.zero;
             anim.SetBool("Dead", true);
         }
+
+        // HANDLE HITBOX PLACEMENT HERE
+        HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
     }
 
+    private void Dash() {
+        Debug.Log("DASH!");
+        dashLengthTimer = dashLength;
+        dashCooldownTimer = dashCooldown;
+        isDashing = true;
+        // StartCoroutine(DashRoutine()); 
+    }
+    // IEnumerator DashRoutine() {}
+
     #endregion
+
+
+
+
+
+
+
 
     #region attack funcs
 
@@ -172,7 +224,7 @@ public class PlayerController : MonoBehaviour {
         //FindObjectOfType<AudioManager>().Play("PlayerAttack");
 
         yield return new WaitForSeconds(hitBoxTiming);
-        Debug.Log("casting hitbox now");
+        // Debug.Log("casting hitbox now");
         /*RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection, Vector2.one, 0f, Vector2.zero);
 
         foreach (RaycastHit2D hit in hits) {
