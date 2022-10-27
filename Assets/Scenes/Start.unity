@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 12890979}
   - component: {fileID: 12890980}
   - component: {fileID: 12890981}
+  - component: {fileID: 12890982}
   m_Layer: 5
   m_Name: character
   m_TagString: Untagged
@@ -228,6 +229,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &12890982
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12890978}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &268673490
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +482,7 @@ GameObject:
   - component: {fileID: 589923126}
   - component: {fileID: 589923125}
   - component: {fileID: 589923124}
+  - component: {fileID: 589923128}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -594,6 +617,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589923122}
   m_CullTransparentMesh: 1
+--- !u!50 &589923128
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589923122}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &608995073
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,6 +715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1734233359}
   - component: {fileID: 1734233358}
+  - component: {fileID: 1734233360}
   m_Layer: 5
   m_Name: title
   m_TagString: Untagged
@@ -745,6 +790,27 @@ Transform:
   m_Father: {fileID: 1874575059}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1734233360
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734233357}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1874575055
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,6 +823,7 @@ GameObject:
   - component: {fileID: 1874575058}
   - component: {fileID: 1874575057}
   - component: {fileID: 1874575056}
+  - component: {fileID: 1874575060}
   m_Layer: 5
   m_Name: StartAnimation
   m_TagString: Untagged
@@ -848,3 +915,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1874575060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874575055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ef41a292d8944ceb4572eb548cc619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
