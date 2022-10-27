@@ -25,7 +25,7 @@ public class PlayerHurtBox : MonoBehaviour
 
 
     public void HandleDirection(Vector2 currDirection) {
-        transform.localPosition = currDirection;
+        transform.localPosition = currDirection / 2;
     }
 
     void OnCollisionEnter2D(Collision2D col) {

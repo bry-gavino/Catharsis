@@ -4,12 +4,18 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - SpawnPoint
   - Destroyer
-  - Rooms
-  - Spawn Point
+  - SpawnPoint
+  - Room
   - Enemy
   - PlayerHurtBox
+  - Rooms
+  - Walls
+  - Corners
+  - LevelTransition
+  - GameManager
+  - MapGenerator
+  - EndPoint
   layers:
   - Default
   - TransparentFX
@@ -44,9 +50,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Ground
-    uniqueID: 2031695343
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Room
+    uniqueID: 2952820171
+    locked: 0
+  - name: Enemy
+    uniqueID: 1594897753
+    locked: 0
+  - name: Player
+    uniqueID: 2614551005
     locked: 0
