@@ -18,6 +18,9 @@ public class DungeonGenerator : MonoBehaviour {
     [Tooltip("Basic room to use.")] [SerializeField]
     public GameObject room;
 
+    [Tooltip("Endpoint of map.")] [SerializeField]
+    public GameObject endPoint;
+
     [Tooltip("Distance between each room.")] [SerializeField]
     public Vector2 offset;
 
@@ -33,6 +36,7 @@ public class DungeonGenerator : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         activeRooms = new List<GameObject>();
+        endPoint = this.transform.Find("EndPoint").gameObject;
         MazeGenerator();
         PopulateRooms();
     }
@@ -53,6 +57,9 @@ public class DungeonGenerator : MonoBehaviour {
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.red;
+                // puts EndPoint in last room
+                Vector3 position = currentRoom.transform.position;
+                endPoint.transform.position = position;
             }
             else {
                 // every other room...
