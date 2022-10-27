@@ -208,6 +208,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Dash() {
+        GameObject.Find("DashFX").GetComponent<AudioSource>().Play();
         dashLengthTimer = dashLength;
         dashCooldownTimer = dashCooldown;
         isDashing = true;
