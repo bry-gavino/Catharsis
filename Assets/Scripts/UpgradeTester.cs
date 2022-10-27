@@ -8,9 +8,13 @@ public class UpgradeTester : MonoBehaviour
     public float increaser = 0.01f;
     public int limit = 20;
     #endregion
+    
     #region Collision Detection
     public void OnTriggerEnter2D(Collider2D collision)
-    {   
+    {
+        //Consider having the color turn darker as the upgrade increases?
+        //Therefore this Upgrader will check for level and update Colors
+        //accordingly
         //For implememting a switching powers on Thursday
         if limit > 0:
             PowerInfo power = collision.gameObject.GetComponent<PlayerController>().curr_power;
