@@ -15,6 +15,7 @@ public class EndPoint : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player"){
             // TODO: trigger GameManager to pass/loading screen
+            GameObject.Find("EndPointFX").GetComponent<AudioSource>().Play();
             GameObject gameManager = GameObject.FindWithTag("GameManager");
             gameManager.GetComponent<GameManager>().transitionToLevelScreen();
         }
