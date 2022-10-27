@@ -56,7 +56,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3487279631119791761}
   - component: {fileID: 3487279631119791763}
-  - component: {fileID: 3487279631119791760}
   m_Layer: 0
   m_Name: OST_FirstStep
   m_TagString: Untagged
@@ -175,14 +174,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &3487279631119791760
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3487279631119791758}
-  m_Enabled: 1
 --- !u!1 &5086619369924730285
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +217,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5937400817401629772}
   - component: {fileID: 6005298450843975832}
-  - component: {fileID: 6435203921651481686}
   m_Layer: 0
   m_Name: EndPointFX
   m_TagString: Untagged
@@ -345,14 +335,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &6435203921651481686
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7847989849586713566}
-  m_Enabled: 1
 --- !u!1 &8692238396784340514
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +345,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6156513370545829608}
   - component: {fileID: 5387552338865958730}
-  - component: {fileID: 1255345246341489130}
   m_Layer: 0
   m_Name: DashFX
   m_TagString: Untagged
@@ -482,11 +463,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &1255345246341489130
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8692238396784340514}
-  m_Enabled: 1
