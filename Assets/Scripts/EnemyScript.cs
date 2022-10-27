@@ -18,7 +18,7 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     #region Attack_variables
-    public float attackDamage;
+    public float attackDamage = 2;
     #endregion
 
     #region Health_variables
@@ -32,7 +32,7 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     [SerializeField]
-    private GameObject healthpot;
+    private HealingVial healthpot;
 
 
 
@@ -45,9 +45,10 @@ public class EnemyScript : MonoBehaviour
 
     private void Update(){
 
-        if (isAwake) {
+        if (LineOfSight.isChasing) {
             Move();
         }
+
     }
 
     #endregion
@@ -62,6 +63,14 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     #region Health_functions
+
+    void OnCollisionEnter2D(Collider2D col) {
+        if(col.gameObject.tag == "Player") {
+            PlayerController.TakeDamage(attackDamage);
+            Debug.Log("Ouch");
+        }
+    }
+
     public void TakeDamage(float value){
 
         currHealth -= value;
@@ -72,6 +81,7 @@ public class EnemyScript : MonoBehaviour
             Instantiate(healthpot, transform.position, transform.rotation);
         }
     }
+
     private void Die(){
         Destroy(this.gameObject);
     }
@@ -83,4 +93,6 @@ public class EnemyScript : MonoBehaviour
     public void becomeIdle(){
         isAwake = false;
     }
+
+
 }
