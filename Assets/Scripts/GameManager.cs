@@ -78,7 +78,6 @@ public class GameManager : MonoBehaviour
     }
     // call this to start new level 
     public void transitionToLevelScreen() {
-        Debug.Log("transitionToLevelScreen!");
         sleepPlayers(); // stop players
         level += 1;
         startTransition();
@@ -86,6 +85,7 @@ public class GameManager : MonoBehaviour
         // TODO: make MapGenerator re-generate
         // TODO: loading screen
             // TODO: make player object SLEEP during loading
+        Debug.Log("level: " + level);
     }
     public void awakenPlayers() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
 
     #region Level_transition
     public void startTransition() {
-        // TODO: create LevelTransitionScreen instance
+        Debug.Log("inst: "+ lvlSceneInst);
         if (!lvlSceneInst) {
             lvlSceneInst = true;
             levelSceneInstance = Instantiate(levelTransitionScreen);
@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
             // Debug.Log("DESTROY");
             Destroy(levelSceneInstance);
             lvlSceneInst = false;
+            transitionLifeTime = -1.0f;
         } else {
             transitionLifeTime -= Time.deltaTime;
         }

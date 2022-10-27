@@ -27,23 +27,24 @@ public class LevelTransitionScreen : MonoBehaviour
         } else {
             fadeOut();
         }
+        Debug.Log("alpha: "+alpha);
     }
 
     // handle visuals
     private void fadeIn() {
         if (alpha < 1.0f) {
-            canvasGroup.alpha += speed;
+            canvasGroup.alpha += Time.deltaTime;
         } else {
             canvasGroup.alpha = 1.0f;
         }
     }
     private void fadeOut() {
         if (alpha > 0.0f) {
-            canvasGroup.alpha -= speed;
+            canvasGroup.alpha -= Time.deltaTime;
         } else {
             canvasGroup.alpha = 0.0f;
         }
     }
-    public void isFadingIn(int lvl) {fadingIn = true; level = lvl;}
+    public void isFadingIn(int lvl) {alpha = 0.0f; fadingIn = true; level = lvl; Debug.Log("fading in");}
     public void isFadingOut() {fadingIn = false;}
 }
