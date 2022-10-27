@@ -15,15 +15,37 @@ public class PowerInfo : MonoBehaviour
             return p_name;
         }
     }
+
+    //In order to add up percentages, you do 1 + p_upgrade_1 * <attribute-to-modify>
     [SerializeField]
-    [Tooltip("Damage Power puts out")]
-    private float p_dmg;
-    public float P_Dmg
+    [Tooltip("Upgrades percentage increase/decrease #1")]
+    private float p_upgrade_1;
+    public float P_Upgrade_1
     {
         get
         {
-            return p_dmg;
+            return p_upgrade_1;
         }
+    }
+    public void Set_P_Upgrade_1(float increase)
+    {
+        p_upgrade_1 += increase;
+    }
+
+    //In order to add up percentages, you do 1 + p_upgrade_2 * <attribute-to-modify>
+    [SerializeField]
+    [Tooltip("Upgrades percentage increase/decrease #2")]
+    private float p_upgrade_2;
+    public float P_Upgrade_2
+    {
+        get
+        {
+            return p_upgrade_2;
+        }
+    }
+    public void Set_P_Upgrade_2(float increase)
+    {
+        p_upgrade_2 += increase;
     }
 
     [SerializeField]
@@ -61,6 +83,10 @@ public class PowerInfo : MonoBehaviour
         {
             return p_drawpower;
         }
+    }
+    public void SetDrawBackPower(float increase)
+    {
+        p_drawpower += increase;
     }
     #endregion
 
