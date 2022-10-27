@@ -8,6 +8,7 @@ public class LevelTransitionScreen : MonoBehaviour
     private float speed = 0.005f;
     public float alpha = 1.0f;
     public CanvasGroup canvasGroup;
+    public GameObject txt;
     bool fadingIn = true;
     int level = 1;
     #endregion
@@ -17,6 +18,7 @@ public class LevelTransitionScreen : MonoBehaviour
     {
         canvasGroup = this.GetComponent<CanvasGroup>();
         canvasGroup.alpha = alpha;
+        txt = GameObject.Find("LevelText");
     }
 
     // Update is called once per frame
@@ -27,7 +29,8 @@ public class LevelTransitionScreen : MonoBehaviour
         } else {
             fadeOut();
         }
-        Debug.Log("alpha: "+alpha);
+        showLevelText();
+        // Debug.Log("alpha: "+alpha);
     }
 
     // handle visuals
@@ -46,5 +49,10 @@ public class LevelTransitionScreen : MonoBehaviour
         }
     }
     public void isFadingIn(int lvl) {alpha = 0.0f; fadingIn = true; level = lvl; Debug.Log("fading in");}
-    public void isFadingOut() {fadingIn = false;}
+    public void isFadingOut() {alpha = 1.0f; fadingIn = false; Debug.Log("fading out");}
+    private void showLevelText() {
+        if (alpha > 1.0f) {
+            txt.GetComponent<TextTransition>().isFadingIn(level);
+        }
+    }
 }
