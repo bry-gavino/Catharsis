@@ -19,9 +19,6 @@ public class TextTransition : MonoBehaviour
         txt = this.GetComponent<TextMeshProUGUI>();
         txt.alpha = alpha;
         txt.text = "LEVEL " + GameObject.FindWithTag("GameManager").GetComponent<GameManager>().getLevel().ToString();
-        Debug.Log(txt);
-        Debug.Log(txt.alpha);
-        Debug.Log(txt.text);
     }
 
     // Update is called once per frame

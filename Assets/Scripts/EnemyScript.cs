@@ -64,12 +64,12 @@ public class EnemyScript : MonoBehaviour
 
     #region Health_functions
 
-    void OnCollisionEnter2D(Collider2D col) {
-        if(col.gameObject.tag == "Player") {
-            PlayerController.TakeDamage(attackDamage);
-            Debug.Log("Ouch");
-        }
-    }
+    // void OnCollisionEnter2D(Collider2D col) {
+    //     // if(col.gameObject.tag == "Player") {
+    //     //     // PlayerController.TakeDamage(attackDamage);
+    //     //     // Debug.Log("Ouch");
+    //     // }
+    // }
 
     public void TakeDamage(float value){
 
