@@ -48,8 +48,8 @@ public class LevelTransitionScreen : MonoBehaviour
             canvasGroup.alpha = 0.0f;
         }
     }
-    public void isFadingIn(int lvl) {alpha = 0.0f; fadingIn = true; level = lvl; Debug.Log("fading in");}
-    public void isFadingOut() {alpha = 1.0f; fadingIn = false; Debug.Log("fading out");}
+    public void isFadingIn(int lvl) {alpha = 0.0f; fadingIn = true; level = lvl;}
+    public void isFadingOut() {alpha = 1.0f; fadingIn = false;}
     private void showLevelText() {
         if (alpha > 1.0f) {
             txt.GetComponent<TextTransition>().isFadingIn(level);

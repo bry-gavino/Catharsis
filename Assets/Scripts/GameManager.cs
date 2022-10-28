@@ -89,7 +89,6 @@ public class GameManager : MonoBehaviour
     }
     // call this to start new level 
     public void transitionToLevelScreen() {
-        Debug.Log("YEET");
         sleepPlayers(); // stop players
         startTransition();
         setupLevel = true; // notifies transitionLifeTime timer to set up level
