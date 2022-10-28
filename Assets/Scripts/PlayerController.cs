@@ -234,7 +234,6 @@ public class PlayerController : MonoBehaviour {
             Debug.Log(hit.transform.name);
             if (hit.transform.CompareTag("Enemy")) {
                 if (hit.transform.GetComponent<EnemyScript>() != null) {
-                    Debug.Log("enemy spotted");
                     hit.transform.GetComponent<EnemyScript>().TakeDamage(Damage);
                 }
             }     
@@ -257,7 +256,7 @@ public class PlayerController : MonoBehaviour {
 
     public void TakeDamage(float val) {
         currHealth -= val;
-        Debug.Log("health is now " + currHealth.ToString());
+        //Debug.Log("health is now " + currHealth.ToString());
 
         // HPSlider.value = currHealth / maxHealth;
 
@@ -279,7 +278,7 @@ public class PlayerController : MonoBehaviour {
             new Vector2(0.5f, 0.5f), 0f, Vector2.zero, 0f);
         foreach (RaycastHit2D hit in hits) {
             if (!hit.transform.CompareTag("Enemy")) {
-                inventory.Add(GetComponent<HealingVial>());
+                // interaction? 
             }
         }
     }
@@ -316,6 +315,15 @@ public class PlayerController : MonoBehaviour {
 
     public void changePower(PowerInfo power) {
         curr_power = power;
+        /* NEED TO UNCOMMENT AFTER MERGING 
+        if (currLevel < 20) {
+            Damage = 1 + power.P_Upgrade_1() * Damage;
+        } else {
+            Damage = 1 + power.P_Upgrade2() * Damage;
+        } */
+
+        
+        
     }
 
     #endregion
