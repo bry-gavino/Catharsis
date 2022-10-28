@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour {
             upKey = "w";
             downKey = "s";
 
-            dashKey = "g";
+            dashKey = "space";
             attackKey = "f";
             healKey = "r";
         } else if (playerID == 2) {
@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour {
             upKey = "o";
             downKey = "l";
             
-            dashKey = "h";
+            dashKey = "space";
             attackKey = "j";
             healKey = "u";
         }
@@ -153,18 +153,11 @@ public class PlayerController : MonoBehaviour {
     }
     #endregion 
 
-
-
-
-
-
-
-    #region movement dash funcs
+    #region movement + dash funcs
 
     private void Move() {
 
-        if (!dead)
-        {
+        if (!dead) {
             
             // HANDLE MOVEMENT HERE
             Vector2 oldDirection = currDirection;
@@ -217,13 +210,6 @@ public class PlayerController : MonoBehaviour {
 
     #endregion
 
-
-
-
-
-
-
-
     #region attack funcs
 
     private void Attack() {
@@ -237,25 +223,34 @@ public class PlayerController : MonoBehaviour {
         isAttacking = true;
         PlayerRB.velocity = Vector2.zero;
 
-        anim.SetTrigger("Attacking");
+        anim.SetTrigger("Attacking", true);
         //FindObjectOfType<AudioManager>().Play("PlayerAttack");
 
         yield return new WaitForSeconds(hitBoxTiming);
         // Debug.Log("casting hitbox now");
-        /*RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection, Vector2.one, 0f, Vector2.zero);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection, Vector2.one, 0f, Vector2.zero);
 
         foreach (RaycastHit2D hit in hits) {
             Debug.Log(hit.transform.name);
-            if(hit.transform.CompareTag("Enemy")) {
-                if (hit.transform.GetComponent<Enemy>() != null) {
-                    hit.transform.GetComponent<Enemy>().TakeDamage(Damage);
+            if (hit.transform.CompareTag("Enemy")) {
+                if (hit.transform.GetComponent<EnemyScript>() != null) {
+                    Debug.Log("enemy spotted");
+                    hit.transform.GetComponent<EnemyScript>().TakeDamage(Damage);
                 }
             }     
-        }*/
+        }
         yield return new WaitForSeconds(hitBoxTiming);
         isAttacking = false;
+        anim.SetTrigger("Attacking", false);
         yield return null;
     }
+
+    void OnCollisionEnter2D(Collision2D col) {
+        if (col.transform.CompareTag("Enemy")) {
+            TakeDamage(col.transform.GetComponent<EnemyScript>().attackDamage);
+        }
+    }
+
     #endregion
 
     #region health funcs

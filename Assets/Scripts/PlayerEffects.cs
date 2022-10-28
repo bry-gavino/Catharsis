@@ -38,7 +38,9 @@ public class PlayerEffects : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D col) {
-        if(col.gameObject.tag == "Enemy"){
+        Debug.Log("hi");
+        if (col.transform.CompareTag("Enemy")) {
+            Debug.Log("enemy spotted");
             // hurt enemy if attacking
         }
     }
