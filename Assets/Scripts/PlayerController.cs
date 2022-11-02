@@ -145,7 +145,9 @@ public class PlayerController : MonoBehaviour {
         }
     }
     private void HandleState() {
-        if (isDashing) {
+        if (isAttacking) {
+            Effects.GetComponent<PlayerEffects>().SetState(2);
+        } else if (isDashing) {
             Effects.GetComponent<PlayerEffects>().SetState(1);
         } else {
             Effects.GetComponent<PlayerEffects>().SetState(0);
@@ -201,6 +203,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Dash() {
+        GameObject.Find("DashFX").GetComponent<AudioSource>().Play();
         dashLengthTimer = dashLength;
         dashCooldownTimer = dashCooldown;
         isDashing = true;
