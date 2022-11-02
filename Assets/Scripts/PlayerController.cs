@@ -259,6 +259,12 @@ public class PlayerController : MonoBehaviour {
         isAttacking = false;
         yield return null;
     }
+
+    public void OnDashTriggerEnter2D(Collider2D col) {
+        if(isDashing) {
+            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing);
+        }
+    } 
     #endregion
 
     #region health funcs

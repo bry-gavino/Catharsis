@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public float transitionLifeTimeLength = 3.0f;
     bool finishingTransition = false;
     bool setupLevel = false;
+    public Vector2 mapSize = new Vector2(2, 3);
     #endregion
 
 
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Restart Run from beginning.");
         mapGeneratorInstance = Instantiate(mapGenerator);
-        mapGeneratorInstance.GetComponent<DungeonGenerator>().size = new Vector2(2, 3);
+        mapGeneratorInstance.GetComponent<DungeonGenerator>().size = mapSize;
         sleepPlayers(); // Players are initially immobile
         bossesEncountered = 0;
         level = 1;

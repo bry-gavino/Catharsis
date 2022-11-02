@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Deprecated/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Start.unity
     guid: a293b6e70ba1545c5928c80a1442ae1e
-  - enabled: 1
-    path: Assets/Scenes/MusicTest.unity
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/MusicTest.unity
     guid: 67fb01b2507624baebfb051fea607940
   m_configObjects: {}
