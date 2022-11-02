@@ -223,7 +223,7 @@ public class PlayerController : MonoBehaviour {
         isAttacking = true;
         PlayerRB.velocity = Vector2.zero;
 
-        anim.SetTrigger("Attacking", true);
+        // anim.SetTrigger("Attacking", true);
         //FindObjectOfType<AudioManager>().Play("PlayerAttack");
 
         yield return new WaitForSeconds(hitBoxTiming);
@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviour {
         }
         yield return new WaitForSeconds(hitBoxTiming);
         isAttacking = false;
-        anim.SetTrigger("Attacking", false);
+        // anim.SetTrigger("Attacking", false);
         yield return null;
     }
 
