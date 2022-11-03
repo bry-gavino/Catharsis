@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ShrineScript : MonoBehaviour {
-    /**
-
-	public static ShrineScript powerShrine;
+public class NEWShrineScript : MonoBehaviour
+{
+    public static NEWShrineScript powerShrine;
 
 	public List<Power> powerList = new List<Power>();
 
@@ -14,7 +13,7 @@ public class ShrineScript : MonoBehaviour {
 
 	public Transform grid;
 
-	private List<GameObject> powerHolderList = new List<GameObject> ();
+	private List<GameObject> powerHolderList = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -25,28 +24,29 @@ public class ShrineScript : MonoBehaviour {
 	void FillList(){
 		for(int i = 0; i < powerList.Count; i++) {
 			GameObject holder = Instantiate (powerHolderPrefab, grid, false);
-			powerHolder holderScript = holder.GetComponent<powerHolder> ();
+			PowerInfo holderScript = holder.GetComponent<PowerInfo> ();
 
-            holderScript.powerName.GetComponent<TextMeshProUGUI>().text = powerList[i].powerName;
-            holderScript.powerDesc.GetComponent<TextMeshProUGUI>().text = "$" + powerList[i].powerDesc.ToString("N2");
-			holderScript.powerID = powerList [i].powerID;
+            holderScript.GetName.GetComponent<TextMeshProUGUI>().text = powerList[i].GetName;
+            holderScript.GetDesc.GetComponent<TextMeshProUGUI>().text = powerList[i].powerDesc;
+            // Could use for power level decrement: holderScript.GetDesc.GetComponent<TextMeshProUGUI>().text = "$" + powerList[i].powerDesc.ToString("N2");
+			holderScript.powerID = powerList[i].powerID;
 
-			holderScript.GetComponent<BuyButton> ().powerID = powerList [i].powerID;
+			holderScript.GetComponent<BuyButton>().powerID = powerList [i].powerID;
 
-			powerHolderList.Add (holder);
+			powerHolderList.Add(holder);
 
-			if (powerList [i].bought) {
-				holderScript.powerImage.sprite = powerList [i].boughtSprite;
+			if (powerList[i].selected) {
+				holderScript.powerImage.sprite = powerList [i].selectedSprite;
 
 			} else {
-				holderScript.powerImage.sprite = powerList [i].unboughtSprite;
+				holderScript.powerImage.sprite = powerList [i].unselectedSprite;
 			}
 		}
 	}
 
 	public void UpdateSprite(int powerID) {
 		for (int i   = 0; i < powerHolderList.Count; i++) {
-			powerHolder holderScript = powerHolderList [i].GetComponent<powerHolder> ();
+			PowerInfo holderScript = powerHolderList [i].GetComponent<PowerInfo> ();
 			if (holderScript.powerID == powerID) {
 				for (int j = 0; j < powerList.Count; j++) {
 					if (powerList [j].powerID == powerID) {
@@ -66,5 +66,4 @@ public class ShrineScript : MonoBehaviour {
 	void Update () {
 		
 	}
-    */
 }

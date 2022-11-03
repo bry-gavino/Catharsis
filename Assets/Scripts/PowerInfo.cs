@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PowerInfo : MonoBehaviour
 {
     #region Editor Variables
     [SerializeField]
+    [Tooltip("Power ID")]
+    public int powerID;
+
+    [SerializeField]
     [Tooltip("Power Name")]
-    private string p_name;
-    public string GetName
+    private GameObject p_name;
+    public GameObject GetName
     {
         get
         {
             return p_name;
+        }
+        set
+        {
+            p_name = value;
         }
     }
 
@@ -26,10 +36,10 @@ public class PowerInfo : MonoBehaviour
         {
             return p_upgrade_1;
         }
-    }
-    public void Set_P_Upgrade_1(float increase)
-    {
-        p_upgrade_1 += increase;
+        set
+        {
+            p_upgrade_1 = value;
+        }
     }
 
     //In order to add up percentages, you do 1 + p_upgrade_2 * <attribute-to-modify>
@@ -42,10 +52,10 @@ public class PowerInfo : MonoBehaviour
         {
             return p_upgrade_2;
         }
-    }
-    public void Set_P_Upgrade_2(float increase)
-    {
-        p_upgrade_2 += increase;
+        set
+        {
+            p_upgrade_2 = value;
+        }
     }
 
     [SerializeField]
@@ -57,16 +67,24 @@ public class PowerInfo : MonoBehaviour
         {
             return p_color;
         }
+        set
+        {
+            p_color = value;
+        }
     }
 
     [SerializeField]
     [Tooltip("Description of ability")]
-    private string p_desc;
-    public string GetDesc
+    private GameObject p_desc;
+    public GameObject GetDesc
     {
         get
         {
             return p_desc;
+        }
+        set
+        {
+            p_desc = value;
         }
     }
 
@@ -83,7 +101,23 @@ public class PowerInfo : MonoBehaviour
         {
             return p_drawpower;
         }
+        set
+        {
+            p_drawpower = value;
+        }
     }
+
+    [SerializeField]
+    [Tooltip("Image of power")]
+    private Image powerImage;
+    public Image P_Image
+    {
+        get
+        {
+            return powerImage;
+        }
+    }
+
     public void SetDrawBackPower(float increase)
     {
         p_drawpower += increase;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShrineScript : MonoBehaviour
+public class OLDShrineScript : MonoBehaviour
 {
     #region Editor Variables
     public PowerInfo power;
