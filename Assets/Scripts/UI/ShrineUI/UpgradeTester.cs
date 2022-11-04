@@ -11,17 +11,17 @@ public class UpgradeTester : MonoBehaviour
 
     void Start()
     {
-       CanvasObject = GetComponent<Canvas>();
+       //CanvasObject = GetComponent<Canvas>();
     }
 
     #region Collision Detection
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player1" and Input.GetKeyUp(KeyCode.Escape)) //change key 
-        {
-            CanvasObject.enabled = !CanvasObject.enabled;
-            collision.   
-        }
+        //if (collision.tag == "Player1" && Input.GetKeyUp(KeyCode.Escape)) //change key 
+        //{
+        //    CanvasObject.enabled = !CanvasObject.enabled;
+        //    //collision accessing gameobject
+        //}
         /**
         if (limit > 0){
             PowerInfo power = collision.gameObject.GetComponent<PlayerController>().curr_power;
