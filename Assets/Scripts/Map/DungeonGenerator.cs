@@ -54,6 +54,10 @@ public class DungeonGenerator : MonoBehaviour {
                 // start room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
             }
+            else if (i == 1) {
+                // second room
+                currentGround.GetComponent<SpriteRenderer>().color = Color.green;
+            }
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.red;
@@ -63,6 +67,7 @@ public class DungeonGenerator : MonoBehaviour {
             }
             else {
                 // every other room...
+                // randomly put in enemies or treasure
                 // rainbow mode
                 currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
                     Random.Range(0f, 1f),
