@@ -19,6 +19,9 @@ public class NEWShrineScript : MonoBehaviour
 	void Start () {
 		powerShrine = this;
 		FillList ();
+        // added for disabling Shrine Script at start
+        //myDialogBalloon.gameObject.SetActive(false);
+
 	}
 
 	void FillList(){
@@ -46,15 +49,15 @@ public class NEWShrineScript : MonoBehaviour
 
 	public void UpdateSprite(int powerID) {
 		for (int i   = 0; i < powerHolderList.Count; i++) {
-			PowerInfo holderScript = powerHolderList [i].GetComponent<PowerInfo> ();
+			PowerInfo holderScript = powerHolderList[i].GetComponent<PowerInfo> ();
 			if (holderScript.powerID == powerID) {
 				for (int j = 0; j < powerList.Count; j++) {
 					if (powerList [j].powerID == powerID) {
-						if (powerList [j].bought) {
-							holderScript.powerImage.sprite = powerList [j].boughtSprite;
-							holderScript.powerDesc.GetComponent<TextMeshProUGUI>().text = "Sold Out!";
+						if (powerList [j].selected) {
+							holderScript.powerImage.sprite = powerList[j].selectedSprite;
+							holderScript.powerDesc.GetComponent<TextMeshProUGUI>().text += "Selected!\n";
 						} else {
-							holderScript.powerImage.sprite = powerList [j].unboughtSprite;
+							holderScript.powerImage.sprite = powerList [j].unselectedSprite;
 						}
 					}
 				}

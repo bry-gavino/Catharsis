@@ -9,13 +9,20 @@ public class UpgradeTester : MonoBehaviour
     public int limit = 20;
     #endregion
 
-    #region Collision Detection
-    public void OnTriggerEnter2D(Collider2D collision)
+    void Start()
     {
-        //Consider having the color turn darker as the upgrade increases?
-        //Therefore this Upgrader will check for level and update Colors
-        //accordingly
-        //For implememting a switching powers on Thursday
+       CanvasObject = GetComponent<Canvas>();
+    }
+
+    #region Collision Detection
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Player1" and Input.GetKeyUp(KeyCode.Escape)) //change key 
+        {
+            CanvasObject.enabled = !CanvasObject.enabled;
+            collision.   
+        }
+        /**
         if (limit > 0){
             PowerInfo power = collision.gameObject.GetComponent<PlayerController>().curr_power;
             power.Set_P_Upgrade_1(0.01f);
@@ -25,6 +32,7 @@ public class UpgradeTester : MonoBehaviour
         else{
             Debug.Log("You have reached max upgrades with " + collision.gameObject.GetComponent<PlayerController>().curr_power.GetName);
         }
+        */
     }
     #endregion
 }
