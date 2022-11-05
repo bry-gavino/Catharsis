@@ -28,9 +28,9 @@ public class EnemyHurtBox : MonoBehaviour
         transform.localPosition = currDirection / 2;
     }
 
-    void OnCollisionEnter2D(Collision2D col) {
+    void OnTriggerEnter2D(Collider2D col) {
         if(col.gameObject.tag == "Player"){
-            // hurt Player if attacking
+            GetComponentInParent<EnemyScript>().PlayerInHurtBox();
         }
     }
 }

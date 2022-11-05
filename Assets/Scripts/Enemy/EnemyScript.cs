@@ -12,10 +12,11 @@ public class EnemyScript : MonoBehaviour
     #region Movement_variables
     public float movespeed;
     public bool isAwake;
+    private bool isHurt = false;
     private bool isChasing = false;
     private bool isImmobile = false;
     private float coolDown = 0.0f;
-    public float dashPushBackLength = 0.25f;
+    float dashPushBackLength = 0.25f;
     private float pushBackTimer = 0.0f;
     public float recoveryTime = 0.7f;
     #endregion
@@ -30,6 +31,9 @@ public class EnemyScript : MonoBehaviour
 
     #region Attack_variables
     public float attackDamage = 2;
+    private bool isAttacking = false;
+    public float setupTimer = 0.2f;
+    float attackPushBackLength = 0.4f;
     #endregion
 
     #region Health_variables
@@ -74,6 +78,7 @@ public class EnemyScript : MonoBehaviour
             if (pushBackTimer <= 0.0f) {
                 pushBackTimer = 0.0f;
                 EnemyRB.velocity = Vector2.zero;
+                isHurt = false;
             }
         }
 
@@ -93,33 +98,40 @@ public class EnemyScript : MonoBehaviour
 
     #region Health_functions
 
-    void OnTriggerEnter2D(Collider2D col) {
-        if(hurtWhenTouched && col.gameObject.tag == "Player") {
-            col.gameObject.GetComponent<PlayerController>().TakeDamage(attackDamage);
-        }
-    } 
+
+
+    public void PlayerInHurtBox() {
+
+    }
+
+    public bool getHurtWhenTouched() {
+        return  hurtWhenTouched;
+    }
 
 
     public void GetHit(float value, Transform from, bool isDashing){
         Debug.Log("GET HIT!");
-        TakeDamage(value);
-        GetPushedBack(from, isDashing);
+        if (!isHurt) {
+            TakeDamage(value, from.position);
+            GetPushedBack(from, isDashing);
+        }
     }
-    private void TakeDamage(float value){
+    private void TakeDamage(float value, Vector2 from){
         currHealth -= value;
-        Debug.Log("Health is now " + currHealth.ToString());
+        Debug.Log("Enemy Health is now " + currHealth.ToString());
         if(currHealth <= 0){
             Die();
             Instantiate(healthpot, transform.position, transform.rotation);
         }
     }
-    private void GetPushedBack(Transform from, bool isDashing) {
-        if (isDashing) {
+    private void GetPushedBack(Transform from, bool playerIsDashing) {
+        isHurt = true;
+        if (playerIsDashing) {
             coolDown = dashPushBackLength + recoveryTime;
             pushBackTimer = dashPushBackLength;
         } else {
-            // TODO: handle other situations
-            // coolDown = pushBackLength;
+            coolDown = attackPushBackLength + recoveryTime;
+            pushBackTimer = attackPushBackLength;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position);
     }
