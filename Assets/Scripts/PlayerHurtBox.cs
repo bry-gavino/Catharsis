@@ -31,25 +31,7 @@ public class PlayerHurtBox : MonoBehaviour
         transform.localPosition = currDirection / 2;
     }
 
-    // void OnTriggerEnter2D(Collider2D col) {
-    //     if(col.gameObject.tag == "Enemy"){
-    //         // GetComponentInParent<PlayerController>().HurtEnemy(col);
-    //         collisions.Add(col.gameObject);
-    //         Debug.Log(collisions.Count);
-    //     }
-    // }
-
-    // void OnTriggerExit2D(Collider2D col) {
-    //     if(col.gameObject.tag == "Enemy"){
-    //         collisions.Remove(col.gameObject);
-    //         Debug.Log(collisions.Count);
-    //     }
-    // }
-
     public void HurtAll(float val, Transform from) {
-        // foreach (GameObject col in collisions) {
-        //     col.GetComponent<EnemyScript>().GetHit(val, from, false);
-        // }
         Collider[] hitColliders = Physics.OverlapBox(
             gameObject.transform.position, transform.localScale, Quaternion.identity);
         foreach (Collider col in hitColliders) {

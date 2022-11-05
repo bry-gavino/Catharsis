@@ -290,11 +290,6 @@ public class PlayerController : MonoBehaviour {
         }
     } 
 
-    // public void HurtEnemy(Collision2D col) {
-    //     if(isAttacking) {
-    //         col.gameObject.GetComponent<EnemyScript>().GetHit(Damage, transform, false);
-    //     }
-    // }
     #endregion
 
     #region health funcs
