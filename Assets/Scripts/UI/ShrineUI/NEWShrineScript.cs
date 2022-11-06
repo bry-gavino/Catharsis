@@ -35,7 +35,7 @@ public class NEWShrineScript : MonoBehaviour
 			holderScript.powerID = powerList[i].powerID;
 
 			holderScript.GetComponent<PowerSelect>().powerID = powerList[i].powerID;
-            holderScript.GetComponent<PowerUpgrade>().powerID = powerList[i].powerID;
+            //holderScript.GetComponent<PowerUpgrade>().powerID = powerList[i].powerID;
 
 			powerHolderList.Add(holder);
 
