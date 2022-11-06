@@ -268,7 +268,6 @@ MonoBehaviour:
   recoveryTime: 0.4
   Player: {fileID: 0}
   attackDamage: 1
-  setupTimer: 0.2
   maxHealth: 3
   xp_val: 3
   healthpot: {fileID: 0}

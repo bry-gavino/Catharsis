@@ -7,6 +7,7 @@ public class EnemyHurtBox : MonoBehaviour
 
     #region Enemy
     Transform transform;
+    bool playerInside = false;
     #endregion
 
 
@@ -30,7 +31,21 @@ public class EnemyHurtBox : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col) {
         if(col.gameObject.tag == "Player"){
+            playerInside = true;
             GetComponentInParent<EnemyScript>().PlayerInHurtBox();
         }
+    }
+
+    void OnTriggerExit2D(Collider2D col) {
+        if(col.gameObject.tag == "Player"){
+            playerInside = false;
+        }
+    }
+
+    public void HurtPlayer(float val) {
+        if (playerInside) {
+            // ADJUST HERE FOR PLAYER 2 COMPATIBILITY
+            GameObject.Find("TestPlayer").GetComponent<PlayerController>().TakeDamage(val, transform.position);
+        }    
     }
 }

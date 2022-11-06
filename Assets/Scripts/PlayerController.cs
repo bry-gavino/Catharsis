@@ -296,19 +296,18 @@ public class PlayerController : MonoBehaviour {
 
     public void TakeDamage(float val, Vector2 from) {
         fromHurt = from;
-        currHealth -= val;
-        Debug.Log("health is now " + currHealth.ToString());
 
-        // HPSlider.value = currHealth / maxHealth;
-
-        if (currHealth <= 0) {
-            Die();
-        }
         if (!isHurt) {
             isHurt = true;
             anim.SetBool("Hurt", true);
             hurtCooldownTimer = hurtCooldown;
+            currHealth -= val;
+            Debug.Log("health is now " + currHealth.ToString());
         }
+        if (currHealth <= 0) {
+            Die();
+        }
+        // HPSlider.value = currHealth / maxHealth;
         isPushed = true;
         pushBackLengthTimer = pushBackLength;
     }

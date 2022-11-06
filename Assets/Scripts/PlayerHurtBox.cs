@@ -9,7 +9,6 @@ public class PlayerHurtBox : MonoBehaviour
     Transform transform;
     #endregion
 
-    private List<GameObject> collisions;
 
 
 
@@ -17,7 +16,6 @@ public class PlayerHurtBox : MonoBehaviour
     private void Awake()
     {
         transform = GetComponent<Transform>();
-        collisions = new List<GameObject>();
     }
     private void Update()
     {
