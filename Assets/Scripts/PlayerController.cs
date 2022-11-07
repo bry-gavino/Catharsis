@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
     private AudioClip DashFX;
     [SerializeField] [Tooltip("Sound when you attack.")]
     private AudioClip AttackFX;
+    [SerializeField] [Tooltip("Sound when you attack2.")]
+    private AudioClip Attack2FX;
     [SerializeField] [Tooltip("Sound when you hurt.")]
     private AudioClip HurtFX;
 
@@ -16,7 +18,7 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region player info variables
-    public float playerID;
+    public int playerID;
     string leftKey;
     string rightKey;
     string upKey;
@@ -65,7 +67,7 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region attack variables
-    public float Damage;
+    public float Damage = 1;
     public float attackSpeed = 1;
     float attackTimer = 0.0f;
     public float hitBoxTiming;
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour {
     float attackLength = 0.33f;
     float attackCooldown = 0.7f;
     float attackCooldownTimer = 0.0f;
+    int combo = 0; // 0 -> 1 -> 2 -> 3 -> 1/0
     #endregion
 
     #region physics
@@ -173,12 +176,18 @@ public class PlayerController : MonoBehaviour {
             isPushed = false;
         } if (attackTimer <= 0) {
             isAttacking = false;
+        } if (attackCooldownTimer <= 0) {
+            combo = 0; // resets combo to 0
         }
     }
     private void HandleInput() {
         if (!isHurt && !isPushed) {
-            if (Input.GetKey(attackKey) && attackCooldownTimer <= 0) {
-                Attack();
+            if (Input.GetKey(attackKey) && attackTimer <= 0) {
+                if (combo != 3) {
+                    Attack();
+                } else if (combo == 3 && attackCooldownTimer <= 0) {
+                    Attack();
+                }
             } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
                 Dash();
             }
@@ -189,9 +198,14 @@ public class PlayerController : MonoBehaviour {
         if (isPushed) {
             Effects.GetComponent<PlayerEffects>().SetState(3);
         } else if (isAttacking) {
-            Effects.GetComponent<PlayerEffects>().SetState(2);
-        }
-        else if (isDashing) {
+            if (combo == 1) {
+                Effects.GetComponent<PlayerEffects>().SetState(2);
+            } else if (combo == 2) {
+                Effects.GetComponent<PlayerEffects>().SetState(22);
+            } else if (combo == 3) {
+                Effects.GetComponent<PlayerEffects>().SetState(23);
+            }
+        } else if (isDashing) {
             Effects.GetComponent<PlayerEffects>().SetState(1);
         }
         else {
@@ -275,21 +289,32 @@ public class PlayerController : MonoBehaviour {
 
     private void Attack() {
         musicManager.playClip(AttackFX, 1);
-        attackTimer = attackSpeed;
+        if (combo == 3) {
+            combo = 1;
+        } else {
+            combo += 1;
+        }
+        Debug.Log("combo: "+combo);
+        // attackTimer = attackSpeed;
         dashLengthTimer = attackLunge; // propels character forward (like a lunge)
         dashCooldownTimer = dashCooldown;
         attackTimer = attackLength;
         attackCooldownTimer = attackCooldown;
         isDashing = true;
         isAttacking = true;
-        anim.SetTrigger("Attacking");
     }
 
     public void OnDashTriggerEnter2D(Collider2D col) {
-        if(isDashing) {
-            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing);
+        if(isDashing && !isAttacking) {
+            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing, playerID, combo);
         }
     } 
+
+    public int[] identifyHurtBox() {
+        return new int[]{playerID, combo};
+    }
+    public float getAttackLength() {return attackLength;}
+    public float getDashLength() {return dashLength;}
 
     #endregion
 

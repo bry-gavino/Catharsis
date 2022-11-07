@@ -29,6 +29,9 @@ public class EnemyScript : MonoBehaviour
     private float pushBackTimer = 0.0f;
     public float recoveryTime = 0.7f;
     float attackPushBackLength = 0.4f;
+    private float hurtTimer = 0.0f;
+    float hurtAttackTimer;
+    float hurtDashTimer;
     Vector2 currDirection;
     #endregion
 
@@ -45,6 +48,8 @@ public class EnemyScript : MonoBehaviour
 
     #region Targeting_variables
     public GameObject Player;
+    private int PlayerIDHitBy;
+    private int PlayersCombo;
     #endregion
 
     #region Attack_variables
@@ -81,6 +86,8 @@ public class EnemyScript : MonoBehaviour
         Player = GameObject.Find("TestPlayer");
         anim = GetComponent<Animator>();
         currHealth = maxHealth;
+        hurtAttackTimer = Player.GetComponent<PlayerController>().getAttackLength();
+        hurtDashTimer = Player.GetComponent<PlayerController>().getDashLength();
     }
 
     private void Update(){
@@ -122,6 +129,14 @@ public class EnemyScript : MonoBehaviour
             if (pushBackTimer <= 0.0f) {
                 pushBackTimer = 0.0f;
                 EnemyRB.velocity = Vector2.zero;
+                isHurt = false;
+            }
+        }
+        if (hurtTimer > 0.0f) {
+            isHurt = true;
+            hurtTimer -= Time.deltaTime;
+            if (hurtTimer <= 0.0f) {
+                hurtTimer = 0.0f;
                 isHurt = false;
             }
         }
@@ -192,10 +207,13 @@ public class EnemyScript : MonoBehaviour
         return  hurtWhenTouched;
     }
 
-
-    public void GetHit(float value, Transform from, bool isDashing){
-        musicManager.playClip(HurtFX, 1);
-        if (!isHurt) {
+    public void GetHit(float value, Transform from, bool isDashing, int playerID, int combo){
+        Debug.Log("BONK ENEMY");
+        if (!isHurt || combo != PlayersCombo || playerID != PlayerIDHitBy) {
+            isHurt = true;
+            musicManager.playClip(HurtFX, 1);
+            PlayersCombo = combo;
+            PlayerIDHitBy = playerID;
             TakeDamage(value, from.position);
             GetPushedBack(from, isDashing);
         }
@@ -209,13 +227,14 @@ public class EnemyScript : MonoBehaviour
         }
     }
     private void GetPushedBack(Transform from, bool playerIsDashing) {
-        isHurt = true;
         if (playerIsDashing) {
             coolDown = dashPushBackLength + recoveryTime;
             pushBackTimer = dashPushBackLength;
+            hurtTimer = hurtDashTimer;
         } else {
             coolDown = attackPushBackLength + recoveryTime;
             pushBackTimer = attackPushBackLength;
+            hurtTimer = hurtAttackTimer;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position);
         Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
