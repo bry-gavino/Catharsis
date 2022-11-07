@@ -8,6 +8,15 @@ public class EnemyScript : MonoBehaviour
     public bool hurtWhenTouched = true;
     #endregion
 
+    #region enemy sounds
+    [SerializeField] [Tooltip("Sound when enemy attacks.")]
+    private AudioClip AttackFX;
+    [SerializeField] [Tooltip("Sound when enemy hurts.")]
+    private AudioClip HurtFX;
+
+    private MusicManager musicManager;
+    #endregion
+
 
     #region Movement_variables
     public float movespeed;
@@ -66,6 +75,7 @@ public class EnemyScript : MonoBehaviour
     #region Unity_functions
     
     private void Awake(){
+        musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
         Effects = GameObject.Find("EnemyEffects");
         EnemyRB = GetComponent<Rigidbody2D>();
         Player = GameObject.Find("TestPlayer");
@@ -160,6 +170,7 @@ public class EnemyScript : MonoBehaviour
 
     #region Attacking
     void EnactAttack() {
+        musicManager.playClip(AttackFX, 1);
         isAttacking = true;
         attackTimer = attackLength;
     }
@@ -183,7 +194,7 @@ public class EnemyScript : MonoBehaviour
 
 
     public void GetHit(float value, Transform from, bool isDashing){
-        Debug.Log("GET HIT!");
+        musicManager.playClip(HurtFX, 1);
         if (!isHurt) {
             TakeDamage(value, from.position);
             GetPushedBack(from, isDashing);

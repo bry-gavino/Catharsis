@@ -409,6 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c802036ad120e4acfaa04e4d649b9a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DashFX: {fileID: 8300000, guid: 29fa0a4aa498c40f8a3a67f4cca2f65d, type: 3}
   playerID: 1
   moveSpeed: 8
   dashLength: 0.12
