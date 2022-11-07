@@ -23,6 +23,13 @@ public class EnemyScript : MonoBehaviour
     Vector2 currDirection;
     #endregion
 
+    #region Animation
+    Animator anim;
+    private bool isMoving = false;
+    private bool isSetup = false;
+    GameObject Effects;
+    #endregion
+
     #region Physics_Components
     Rigidbody2D EnemyRB;
     #endregion
@@ -59,12 +66,15 @@ public class EnemyScript : MonoBehaviour
     #region Unity_functions
     
     private void Awake(){
+        Effects = GameObject.Find("EnemyEffects");
         EnemyRB = GetComponent<Rigidbody2D>();
         Player = GameObject.Find("TestPlayer");
+        anim = GetComponent<Animator>();
         currHealth = maxHealth;
     }
 
     private void Update(){
+        // Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
         if (attackTimer > 0.0f) {
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0.0f) {
@@ -74,11 +84,14 @@ public class EnemyScript : MonoBehaviour
                 isAttacking = true;
                 EnemyRB.velocity = currDirection * attackSpeed;
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
+                Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
             }
         }
         if (setupTimer > 0.0f) {
+            isSetup = true;
             setupTimer -= Time.deltaTime;
             if (setupTimer <= 0.0f) {
+                isSetup = false;
                 setupTimer = 0.0f;
                 // trigger attack
                 EnactAttack();
@@ -104,20 +117,42 @@ public class EnemyScript : MonoBehaviour
         }
         if (isChasing && !isImmobile && !isAttacking) {
             Move();
+            isMoving = true;
+        } else {
+            isMoving = false;
         }
-
+        
+        anim.SetFloat("DirX", currDirection.x);
+        anim.SetFloat("DirY", currDirection.y);
+        HandleState();
+    }
+    void HandleState() {
+        if (isHurt) {
+            anim.SetInteger("State", 4);
+            Effects.GetComponent<EnemyEffects>().SetState(4);
+        } else if (isAttacking) {
+            anim.SetInteger("State", 3);
+            Effects.GetComponent<EnemyEffects>().SetState(3);
+        } else if (isSetup) {
+            anim.SetInteger("State", 2);
+            Effects.GetComponent<EnemyEffects>().SetState(2);
+        } else if (isMoving) {
+            anim.SetInteger("State", 1);
+            Effects.GetComponent<EnemyEffects>().SetState(1);
+        } else {
+            anim.SetInteger("State", 0);
+            Effects.GetComponent<EnemyEffects>().SetState(0);
+        }
     }
 
     #endregion
 
     #region Movement_functions
     private void Move(){
-
         Vector2 direction = Player.transform.position - transform.position;
         EnemyRB.velocity = direction.normalized * movespeed;
         currDirection = direction.normalized;
         (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(direction.normalized);
-
     }
     #endregion
 
@@ -172,6 +207,7 @@ public class EnemyScript : MonoBehaviour
             pushBackTimer = attackPushBackLength;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position);
+        Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
     }
 
     private void Die(){

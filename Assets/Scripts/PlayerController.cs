@@ -99,7 +99,6 @@ public class PlayerController : MonoBehaviour {
         Effects = GameObject.Find("PlayerEffects");
         PlayerRB = GetComponent<Rigidbody2D>();
 
-        // TODO: make Animator
         anim = GetComponent<Animator>();
 
         // currSpeed = moveSpeed;
@@ -197,11 +196,9 @@ public class PlayerController : MonoBehaviour {
         if (!dead)
         {
             if (isPushed) {
-                Debug.Log("is pushed!");
                 PlayerRB.velocity = (fromHurt - new Vector2(transform.position.x, transform.position.y)).normalized * -pushBackStrength;
                 Effects.GetComponent<PlayerEffects>().HandleDirection(-PlayerRB.velocity);
             } else if (isHurt) {
-                Debug.Log("is hurt!");
                 PlayerRB.velocity = Vector2.zero;
             } else {
                 // HANDLE MOVEMENT HERE
@@ -272,8 +269,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Attack() {
-        Debug.Log("attacking now");
-        Debug.Log(currDirection);
         attackTimer = attackSpeed;
         dashLengthTimer = attackLunge; // propels character forward (like a lunge)
         dashCooldownTimer = dashCooldown;
