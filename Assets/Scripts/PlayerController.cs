@@ -309,6 +309,11 @@ public class PlayerController : MonoBehaviour {
             col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing, playerID, combo);
         }
     } 
+    public void OnAttackTriggerEnter2D(Collider2D col) {
+        if(isAttacking) {
+            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage, PlayerRB.transform, isDashing, playerID, combo);
+        }
+    } 
 
     public int[] identifyHurtBox() {
         return new int[]{playerID, combo};

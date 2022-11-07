@@ -13,6 +13,8 @@ public class EnemyScript : MonoBehaviour
     private AudioClip AttackFX;
     [SerializeField] [Tooltip("Sound when enemy hurts.")]
     private AudioClip HurtFX;
+    [SerializeField] [Tooltip("Object to instantiate when die.")]
+    private GameObject DieObject;
 
     private MusicManager musicManager;
     #endregion
@@ -223,7 +225,7 @@ public class EnemyScript : MonoBehaviour
         Debug.Log("Enemy Health is now " + currHealth.ToString());
         if(currHealth <= 0){
             Die();
-            Instantiate(healthpot, transform.position, transform.rotation);
+            // Instantiate(healthpot, transform.position, transform.rotation);
         }
     }
     private void GetPushedBack(Transform from, bool playerIsDashing) {
@@ -241,6 +243,7 @@ public class EnemyScript : MonoBehaviour
     }
 
     private void Die(){
+        Instantiate(DieObject, transform.position, transform.rotation);
         Destroy(this.gameObject);
     }
     #endregion

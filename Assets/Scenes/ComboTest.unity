@@ -267,6 +267,7 @@ MonoBehaviour:
   hurtWhenTouched: 0
   AttackFX: {fileID: 8300000, guid: 7cb87b258e70647bd86bab239de023ae, type: 3}
   HurtFX: {fileID: 8300000, guid: bc3592ff5732d42e2b002e8e80226086, type: 3}
+  DieObject: {fileID: 7384550110271580274, guid: 2d60d63c9bbc042b7bb22d7591aabf2a, type: 3}
   movespeed: 2
   isAwake: 0
   recoveryTime: 0.4
@@ -1133,7 +1134,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730678991
 GameObject:
@@ -1271,7 +1272,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2912233308531971101
 PrefabInstance:
@@ -1294,7 +1295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2912233309489563492, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2912233309489563492, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1424,7 +1425,7 @@ PrefabInstance:
     - target: {fileID: 5735695919168886886, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: HurtFX
       value: 
-      objectReference: {fileID: 8300000, guid: bc3592ff5732d42e2b002e8e80226086, type: 3}
+      objectReference: {fileID: 8300000, guid: 8a2b1d9a7aeb74ec0ade79270a7d03b7, type: 3}
     - target: {fileID: 5735695919168886886, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: AttackFX
       value: 
@@ -1447,7 +1448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5735695919168886887, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5735695919168886887, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: m_LocalPosition.x

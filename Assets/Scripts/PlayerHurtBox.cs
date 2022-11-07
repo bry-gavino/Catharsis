@@ -50,4 +50,10 @@ public class PlayerHurtBox : MonoBehaviour
         }
         // Debug.Log(hit);
     }
+
+    void OnTriggerEnter2D(Collider2D col) {
+        if(col.gameObject.tag == "Enemy") {
+            GetComponentInParent<PlayerController>().OnAttackTriggerEnter2D(col);
+        }
+    } 
 }
