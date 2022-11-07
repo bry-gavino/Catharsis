@@ -16,6 +16,8 @@ TagManager:
   - GameManager
   - MapGenerator
   - EndPoint
+  - EnemyHurtBox
+  - EnemyBody
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - EnemyBody
   - 
   - 
   - 
