@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EndPoint : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start(){}
+public class EndPoint : MonoBehaviour {
+    #region player sounds
+    [SerializeField] [Tooltip("Sound when you touch this.")]
+    private AudioClip EndPointFX;
 
-    // Update is called once per frame
-    void Update(){}
+    private MusicManager musicManager;
+    #endregion
+
+    void Awake() {
+        musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
+    }
 
     #region Collision Detection
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Player"){
+    public void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.tag == "Player") {
             // TODO: trigger GameManager to pass/loading screen
-            GameObject.Find("EndPointFX").GetComponent<AudioSource>().Play();
+            musicManager.playClip(EndPointFX, 2);
             GameObject gameManager = GameObject.FindWithTag("GameManager");
             gameManager.GetComponent<GameManager>().transitionToLevelScreen();
         }

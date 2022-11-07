@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
+    #region player sounds
+    [SerializeField] [Tooltip("Sound when you dash.")]
+    private AudioClip DashFX;
+
+    private MusicManager musicManager;
+    #endregion
+
     #region player info variables
     public float playerID;
     string leftKey;
@@ -15,12 +22,13 @@ public class PlayerController : MonoBehaviour {
     string healKey;
     bool dead = false;
     bool isSleeping = false;
-    #endregion 
+    #endregion
 
     #region xp variables
     float exp = 0;
     float skillPoints = 0;
     float currLevel = 1;
+
     float expThreshold;
     // public Slider XPSlider;
     #endregion
@@ -65,19 +73,19 @@ public class PlayerController : MonoBehaviour {
     #region health
     public float maxHealth;
     public float currHealth;
+
     public string[] powers;
+
     // public Slider HPSlider;
     public ArrayList inventory = new ArrayList();
     #endregion
 
     #region powers
-    [SerializeField]
-    [Tooltip("Current power")]
+    [SerializeField] [Tooltip("Current power")]
     public PowerInfo curr_power;
     #endregion
 
     #region unity funcs
-
     // called once when object created
     private void Awake() {
         HurtBox = GameObject.Find("PlayerHurtBox");
@@ -87,11 +95,11 @@ public class PlayerController : MonoBehaviour {
 
         // TODO: make Animator
         anim = GetComponent<Animator>();
+        musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
 
         // currSpeed = moveSpeed;
         currHealth = maxHealth;
         if (playerID == 1) {
-
             leftKey = "a";
             rightKey = "d";
             upKey = "w";
@@ -100,17 +108,18 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
-        } else if (playerID == 2) {
-
+        }
+        else if (playerID == 2) {
             leftKey = "k";
             rightKey = ";";
             upKey = "o";
             downKey = "l";
-            
+
             dashKey = "h";
             attackKey = "j";
             healKey = "u";
         }
+
         expThreshold = exp * 100;
         // HPSlider.value = currHealth / maxHealth;
         // XPSlider.value = exp;
@@ -122,6 +131,7 @@ public class PlayerController : MonoBehaviour {
             if (isAttacking) {
                 return;
             }
+
             x_input = Input.GetAxisRaw("Horizontal");
             y_input = Input.GetAxisRaw("Vertical");
 
@@ -130,12 +140,16 @@ public class PlayerController : MonoBehaviour {
             HandleState();
         }
     }
+
     private void HandleInput() {
         if (Input.GetKey(attackKey) && attackTimer <= 0) {
             Attack();
-        } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
+        }
+
+        if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
             Dash();
         }
+
         attackTimer -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
         dashLengthTimer -= Time.deltaTime;
@@ -144,62 +158,68 @@ public class PlayerController : MonoBehaviour {
             isDashing = false;
         }
     }
+
     private void HandleState() {
         if (isAttacking) {
             Effects.GetComponent<PlayerEffects>().SetState(2);
-        } else if (isDashing) {
+        }
+        else if (isDashing) {
             Effects.GetComponent<PlayerEffects>().SetState(1);
-        } else {
+        }
+        else {
             Effects.GetComponent<PlayerEffects>().SetState(0);
         }
     }
-    #endregion 
-
-
-
-
-
+    #endregion
 
 
     #region movement dash funcs
-
     private void Move() {
-
-        if (!dead)
-        {
-            
+        if (!dead) {
             // HANDLE MOVEMENT HERE
             Vector2 oldDirection = currDirection;
             currDirection = Vector2.zero;
-            if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {    
-                if (Input.GetKey(rightKey)) { // EAST
+            if (Input.GetKey(leftKey) || Input.GetKey(rightKey) || Input.GetKey(upKey) || Input.GetKey(downKey)) {
+                if (Input.GetKey(rightKey)) {
+                    // EAST
                     currDirection += Vector2.right;
-                } if (Input.GetKey(leftKey)) { // WEST
+                }
+
+                if (Input.GetKey(leftKey)) {
+                    // WEST
                     currDirection += Vector2.left;
-                } if (Input.GetKey(upKey)) { // NORTH
+                }
+
+                if (Input.GetKey(upKey)) {
+                    // NORTH
                     currDirection += Vector2.up;
-                } if (Input.GetKey(downKey)) { // SOUTH
+                }
+
+                if (Input.GetKey(downKey)) {
+                    // SOUTH
                     currDirection += Vector2.down;
                 }
+
                 anim.SetBool("Moving", true);
                 anim.SetFloat("DirX", currDirection.x);
                 anim.SetFloat("DirY", currDirection.y);
-            } else {
+            }
+            else {
                 anim.SetBool("Moving", false);
                 currDirection = oldDirection;
             }
 
             if (isDashing) {
                 PlayerRB.velocity = currDirection * dashSpeed;
-            } else if (anim.GetBool("Moving")) {
+            }
+            else if (anim.GetBool("Moving")) {
                 PlayerRB.velocity = currDirection * moveSpeed;
-            } else {
+            }
+            else {
                 PlayerRB.velocity = Vector2.zero;
             }
-
         }
-        else
-        {
+        else {
             PlayerRB.velocity = Vector2.zero;
             anim.SetBool("Dead", true);
         }
@@ -210,30 +230,23 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Dash() {
-        GameObject.Find("DashFX").GetComponent<AudioSource>().Play();
+        musicManager.playClip(DashFX, 1);
         dashLengthTimer = dashLength;
         dashCooldownTimer = dashCooldown;
         isDashing = true;
         // StartCoroutine(DashRoutine()); 
     }
-    // IEnumerator DashRoutine() {}
 
+    // IEnumerator DashRoutine() {}
     #endregion
 
 
-
-
-
-
-
-
     #region attack funcs
-
     private void Attack() {
         Debug.Log("attacking now");
         Debug.Log(currDirection);
         attackTimer = attackSpeed;
-        StartCoroutine(AttackRoutine()); 
+        StartCoroutine(AttackRoutine());
     }
 
     IEnumerator AttackRoutine() {
@@ -262,7 +275,6 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region health funcs
-
     public void TakeDamage(float val) {
         currHealth -= val;
         Debug.Log("health is now " + currHealth.ToString());
@@ -283,7 +295,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Interact() {
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection, 
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(PlayerRB.position + currDirection,
             new Vector2(0.5f, 0.5f), 0f, Vector2.zero, 0f);
         foreach (RaycastHit2D hit in hits) {
             if (!hit.transform.CompareTag("Enemy")) {
@@ -300,13 +312,11 @@ public class PlayerController : MonoBehaviour {
             // HPSlider.value = currHealth / maxHealth;
 
             inventory.RemoveAt(inventory.Count - 1);
-        } 
+        }
     }
-
     #endregion
 
     #region xp funcs
-
     void add_xp(int add) {
         exp += add;
         if ((expThreshold - exp) <= 0) {
@@ -317,28 +327,23 @@ public class PlayerController : MonoBehaviour {
         }
         // HPSlider.value = exp;
     }
-
     #endregion
 
     #region power funcs
-
     public void changePower(PowerInfo power) {
         curr_power = power;
     }
-
     #endregion
 
 
-
-
-
     #region game manager
-    public void enableUserInput() {isSleeping = false;}
+    public void enableUserInput() {
+        isSleeping = false;
+    }
+
     public void disableUserInput() {
         isSleeping = true;
         PlayerRB.velocity = Vector2.zero;
     }
     #endregion
-
-    
 }
