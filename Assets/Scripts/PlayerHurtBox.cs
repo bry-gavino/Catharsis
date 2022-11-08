@@ -38,17 +38,12 @@ public class PlayerHurtBox : MonoBehaviour
     }
 
     public void HurtAll(float val, Transform from) {
-        RaycastHit2D[] hitColliders = Physics2D.BoxCastAll(RB.position, transform.localScale, 0f, Vector2.zero);
-        // if ((hitColliders.Length) == 0) {Debug.Log(hitColliders);}
-        // NOTE: some errors here -- doesn't detect EnemyBody all the time...use "new" keyword?
-        // Debug.Log("HURT ALL");
+        RaycastHit2D[] hitColliders = Physics2D.BoxCastAll(RB.position, new Vector2(2.5f, 2.5f), 0f, Vector2.zero);
         foreach (RaycastHit2D col in hitColliders) {
-            // Debug.Log("HURT ALL");
             if (col.transform.CompareTag("EnemyBody")) {
                 col.transform.GetComponentInParent<EnemyScript>().GetHit(val, from, false, PlayerIDHitBy, PlayersCombo);
             }
         }
-        // Debug.Log(hit);
     }
 
     void OnTriggerEnter2D(Collider2D col) {

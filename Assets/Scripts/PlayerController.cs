@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour {
     private AudioClip HurtFX;
 
     private MusicManager musicManager;
+    private Slider HPSlider;
+    private Slider XPSlider;
     #endregion
 
     #region player info variables
@@ -36,7 +38,6 @@ public class PlayerController : MonoBehaviour {
     float currLevel = 1;
 
     float expThreshold;
-    // public Slider XPSlider;
     #endregion
 
     #region movement variables
@@ -98,7 +99,6 @@ public class PlayerController : MonoBehaviour {
 
     public string[] powers;
 
-    // public Slider HPSlider;
     public ArrayList inventory = new ArrayList();
     #endregion
 
@@ -128,6 +128,9 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
+
+            HPSlider = GameObject.Find("HealthP1").GetComponent<Slider>();
+            XPSlider = GameObject.Find("ExpP1").GetComponent<Slider>();
         }
         else if (playerID == 2) {
             leftKey = "k";
@@ -138,11 +141,14 @@ public class PlayerController : MonoBehaviour {
             dashKey = "h";
             attackKey = "j";
             healKey = "u";
+
+            // HPSlider = {GameObject.Find("HealthP2").GetComponent<Slider>()}
+            // XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
         }
 
-        expThreshold = exp * 100;
-        // HPSlider.value = currHealth / maxHealth;
-        // XPSlider.value = exp;
+        expThreshold = 10;
+        HPSlider.value = currHealth / maxHealth;
+        XPSlider.value = exp / expThreshold;
     }
 
     // called once per frame
@@ -330,6 +336,7 @@ public class PlayerController : MonoBehaviour {
 
         if (!isHurt) {
             musicManager.playClip(HurtFX, 1);
+            GameObject.Find("UI").GetComponent<UIManager>().makeHurtUI();
             isHurt = true;
             anim.SetBool("Hurt", true);
             hurtCooldownTimer = hurtCooldown;
@@ -339,7 +346,7 @@ public class PlayerController : MonoBehaviour {
         if (currHealth <= 0) {
             Die();
         }
-        // HPSlider.value = currHealth / maxHealth;
+        HPSlider.value = currHealth / maxHealth;
         isPushed = true;
         pushBackLengthTimer = pushBackLength;
     }
@@ -367,7 +374,7 @@ public class PlayerController : MonoBehaviour {
             currHealth = Mathf.Min(currHealth + val, maxHealth);
             Debug.Log("health is now " + currHealth.ToString());
 
-            // HPSlider.value = currHealth / maxHealth;
+            HPSlider.value = currHealth / maxHealth;
 
             inventory.RemoveAt(inventory.Count - 1);
         }
@@ -375,15 +382,19 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region xp funcs
-    void add_xp(int add) {
+    public void add_xp(int add) {
         exp += add;
+        // level up
         if ((expThreshold - exp) <= 0) {
             exp = exp - expThreshold;
-            skillPoints += currLevel * 50;
+            skillPoints += 1;
             currLevel += 1;
-            expThreshold = currLevel * 100;
+            expThreshold = expThreshold * 1.1f;
         }
-        // HPSlider.value = exp;
+        XPSlider.value = exp / expThreshold;
+    }
+    void level_up() {
+
     }
     #endregion
 
