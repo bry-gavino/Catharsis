@@ -9,14 +9,18 @@ public class PlayerController : MonoBehaviour {
     private AudioClip DashFX;
     [SerializeField] [Tooltip("Sound when you attack.")]
     private AudioClip AttackFX;
+    [SerializeField] [Tooltip("Sound when you attack2.")]
+    private AudioClip Attack2FX;
     [SerializeField] [Tooltip("Sound when you hurt.")]
     private AudioClip HurtFX;
 
     private MusicManager musicManager;
+    private Slider HPSlider;
+    private Slider XPSlider;
     #endregion
 
     #region player info variables
-    public float playerID;
+    public int playerID;
     string leftKey;
     string rightKey;
     string upKey;
@@ -34,7 +38,6 @@ public class PlayerController : MonoBehaviour {
     float currLevel = 1;
 
     float expThreshold;
-    // public Slider XPSlider;
     #endregion
 
     #region movement variables
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region attack variables
-    public float Damage;
+    public float Damage = 1;
     public float attackSpeed = 1;
     float attackTimer = 0.0f;
     public float hitBoxTiming;
@@ -77,6 +80,7 @@ public class PlayerController : MonoBehaviour {
     float attackLength = 0.33f;
     float attackCooldown = 0.7f;
     float attackCooldownTimer = 0.0f;
+    int combo = 0; // 0 -> 1 -> 2 -> 3 -> 1/0
     #endregion
 
     #region physics
@@ -95,7 +99,6 @@ public class PlayerController : MonoBehaviour {
 
     public string[] powers;
 
-    // public Slider HPSlider;
     public ArrayList inventory = new ArrayList();
     #endregion
 
@@ -125,6 +128,9 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
+
+            HPSlider = GameObject.Find("HealthP1").GetComponent<Slider>();
+            XPSlider = GameObject.Find("ExpP1").GetComponent<Slider>();
         }
         else if (playerID == 2) {
             leftKey = "k";
@@ -135,11 +141,14 @@ public class PlayerController : MonoBehaviour {
             dashKey = "h";
             attackKey = "j";
             healKey = "u";
+
+            // HPSlider = {GameObject.Find("HealthP2").GetComponent<Slider>()}
+            // XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
         }
 
-        expThreshold = exp * 100;
-        // HPSlider.value = currHealth / maxHealth;
-        // XPSlider.value = exp;
+        expThreshold = 10;
+        HPSlider.value = currHealth / maxHealth;
+        XPSlider.value = exp / expThreshold;
     }
 
     // called once per frame
@@ -173,12 +182,18 @@ public class PlayerController : MonoBehaviour {
             isPushed = false;
         } if (attackTimer <= 0) {
             isAttacking = false;
+        } if (attackCooldownTimer <= 0) {
+            combo = 0; // resets combo to 0
         }
     }
     private void HandleInput() {
         if (!isHurt && !isPushed) {
-            if (Input.GetKey(attackKey) && attackCooldownTimer <= 0) {
-                Attack();
+            if (Input.GetKey(attackKey) && attackTimer <= 0) {
+                if (combo != 3) {
+                    Attack();
+                } else if (combo == 3 && attackCooldownTimer <= 0) {
+                    Attack();
+                }
             } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
                 Dash();
             }
@@ -189,9 +204,14 @@ public class PlayerController : MonoBehaviour {
         if (isPushed) {
             Effects.GetComponent<PlayerEffects>().SetState(3);
         } else if (isAttacking) {
-            Effects.GetComponent<PlayerEffects>().SetState(2);
-        }
-        else if (isDashing) {
+            if (combo == 1) {
+                Effects.GetComponent<PlayerEffects>().SetState(2);
+            } else if (combo == 2) {
+                Effects.GetComponent<PlayerEffects>().SetState(22);
+            } else if (combo == 3) {
+                Effects.GetComponent<PlayerEffects>().SetState(23);
+            }
+        } else if (isDashing) {
             Effects.GetComponent<PlayerEffects>().SetState(1);
         }
         else {
@@ -275,21 +295,37 @@ public class PlayerController : MonoBehaviour {
 
     private void Attack() {
         musicManager.playClip(AttackFX, 1);
-        attackTimer = attackSpeed;
+        if (combo == 3) {
+            combo = 1;
+        } else {
+            combo += 1;
+        }
+        Debug.Log("combo: "+combo);
+        // attackTimer = attackSpeed;
         dashLengthTimer = attackLunge; // propels character forward (like a lunge)
         dashCooldownTimer = dashCooldown;
         attackTimer = attackLength;
         attackCooldownTimer = attackCooldown;
         isDashing = true;
         isAttacking = true;
-        anim.SetTrigger("Attacking");
     }
 
     public void OnDashTriggerEnter2D(Collider2D col) {
-        if(isDashing) {
-            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing);
+        if(isDashing && !isAttacking) {
+            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing, playerID, combo);
         }
     } 
+    public void OnAttackTriggerEnter2D(Collider2D col) {
+        if(isAttacking) {
+            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage, PlayerRB.transform, isDashing, playerID, combo);
+        }
+    } 
+
+    public int[] identifyHurtBox() {
+        return new int[]{playerID, combo};
+    }
+    public float getAttackLength() {return attackLength;}
+    public float getDashLength() {return dashLength;}
 
     #endregion
 
@@ -300,6 +336,7 @@ public class PlayerController : MonoBehaviour {
 
         if (!isHurt) {
             musicManager.playClip(HurtFX, 1);
+            GameObject.Find("UI").GetComponent<UIManager>().makeHurtUI();
             isHurt = true;
             anim.SetBool("Hurt", true);
             hurtCooldownTimer = hurtCooldown;
@@ -309,7 +346,7 @@ public class PlayerController : MonoBehaviour {
         if (currHealth <= 0) {
             Die();
         }
-        // HPSlider.value = currHealth / maxHealth;
+        HPSlider.value = currHealth / maxHealth;
         isPushed = true;
         pushBackLengthTimer = pushBackLength;
     }
@@ -337,7 +374,7 @@ public class PlayerController : MonoBehaviour {
             currHealth = Mathf.Min(currHealth + val, maxHealth);
             Debug.Log("health is now " + currHealth.ToString());
 
-            // HPSlider.value = currHealth / maxHealth;
+            HPSlider.value = currHealth / maxHealth;
 
             inventory.RemoveAt(inventory.Count - 1);
         }
@@ -345,15 +382,19 @@ public class PlayerController : MonoBehaviour {
     #endregion
 
     #region xp funcs
-    void add_xp(int add) {
+    public void add_xp(int add) {
         exp += add;
+        // level up
         if ((expThreshold - exp) <= 0) {
             exp = exp - expThreshold;
-            skillPoints += currLevel * 50;
+            skillPoints += 1;
             currLevel += 1;
-            expThreshold = currLevel * 100;
+            expThreshold = expThreshold * 1.1f;
         }
-        // HPSlider.value = exp;
+        XPSlider.value = exp / expThreshold;
+    }
+    void level_up() {
+
     }
     #endregion
 

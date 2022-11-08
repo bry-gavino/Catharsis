@@ -6,8 +6,8 @@ public class EnemyHurtBox : MonoBehaviour
 {
 
     #region Enemy
-    Transform transform;
-    bool playerInside = false;
+    private Transform transform;
+    private bool playerInside = false;
     #endregion
 
 
