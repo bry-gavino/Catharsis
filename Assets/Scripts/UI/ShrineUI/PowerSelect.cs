@@ -8,6 +8,7 @@ public class PowerSelect : MonoBehaviour {
 
 	public void SelectPower() {
         Debug.Log("Power Selected!");
+        NEWShrineScript.powerShrine.UpdateSprite(powerID);
         /**
 		
 		for (int i = 0; i < ShrineScript.powerShrine.powerList.Count; i++) {

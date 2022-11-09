@@ -647,13 +647,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerList:
-  - powerName: Wistfulness
-    powerDesc: You are sad! Boo!
-    powerID: 3
-    unselectedSprite: {fileID: 21300000, guid: edca7da0609b541f8b4c9ad67b9cf85e, type: 3}
+  - powerName: Emotionless
+    powerDesc: You are emotionless lol
+    powerID: 1
+    unselectedSprite: {fileID: 21300000, guid: 375a80ad2b49949c89cf1da9b81794ec, type: 3}
     selectedSprite: {fileID: 21300000, guid: 5dce29955f6eb4cfbbc4167f2d5b5024, type: 3}
     maxLevel: 20
-    selected: 0
+    selected: 1
   - powerName: Fury
     powerDesc: You are angry! Argh!
     powerID: 2
@@ -661,10 +661,10 @@ MonoBehaviour:
     selectedSprite: {fileID: 21300000, guid: 5dce29955f6eb4cfbbc4167f2d5b5024, type: 3}
     maxLevel: 20
     selected: 0
-  - powerName: Emotionless
-    powerDesc: You are emotionless lol
-    powerID: 1
-    unselectedSprite: {fileID: 21300000, guid: 375a80ad2b49949c89cf1da9b81794ec, type: 3}
+  - powerName: Wistfulness
+    powerDesc: You are sad! Boo!
+    powerID: 3
+    unselectedSprite: {fileID: 21300000, guid: edca7da0609b541f8b4c9ad67b9cf85e, type: 3}
     selectedSprite: {fileID: 21300000, guid: 5dce29955f6eb4cfbbc4167f2d5b5024, type: 3}
     maxLevel: 20
     selected: 0
@@ -1102,7 +1102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1110,7 +1110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1150,11 +1150,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 148.89
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -17.5
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1171,6 +1171,10 @@ PrefabInstance:
     - target: {fileID: 5747016241138856331, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_Name
       value: Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747016241138856331, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}

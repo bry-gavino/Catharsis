@@ -15,9 +15,12 @@ public class NEWShrineScript : MonoBehaviour
 
 	private List<GameObject> powerHolderList = new List<GameObject>();
 
+    public int curPowerID;
+
 	// Use this for initialization
 	void Start () {
 		powerShrine = this;
+        curPowerID = 1; // wistfullness selected
 		FillList ();
         // added for disabling Shrine Script at start
         //myDialogBalloon.gameObject.SetActive(false);
@@ -51,14 +54,23 @@ public class NEWShrineScript : MonoBehaviour
 	}
 
 	public void UpdateSprite(int powerID) {
+        curPowerID = powerID;
 		for (int i   = 0; i < powerHolderList.Count; i++) {
 			PowerInfo holderScript = powerHolderList[i].GetComponent<PowerInfo>();
+            powerList[i].selected = false;
+            holderScript.P_Image.sprite = powerList[i].unselectedSprite;
 			if (holderScript.powerID == powerID) {
 				for (int j = 0; j < powerList.Count; j++) {
-					if (powerList [j].powerID == powerID) {
-						if (powerList [j].selected) {
+					if (powerList[j].powerID == powerID) {
+                        Debug.Log("Power ID: " + powerID + "and is it selected? " + powerList[j].selected);
+                        powerList[j].selected = true;
+						if (powerList[j].selected) {
 							holderScript.P_Image.sprite = powerList[j].selectedSprite;
-							holderScript.GetDesc.GetComponent<TextMeshProUGUI>().text += "Selected!\n";
+                            PowerInfo tempP = getPowerID();
+                            Debug.Log("Player gets: " + tempP.GetName + "\nStats:\nPower: " + (1 + tempP.P_Upgrade_1) 
+                                + "\nSecondary upgrade: " + (1 + tempP.P_Upgrade_2) + "\nDrawback multiplier: " + (1 + tempP.GetDrawBackPower)
+                                + "\nDescription: " + tempP.GetDesc);
+							//holderScript.GetDesc.GetComponent<TextMeshProUGUI>().text += "Selected!\n";
 						} else {
 							holderScript.P_Image.sprite = powerList [j].unselectedSprite;
 						}
@@ -67,6 +79,11 @@ public class NEWShrineScript : MonoBehaviour
 			}
 		}
 	}
+
+    public PowerInfo getPowerID()
+    {
+        return powerHolderList[curPowerID - 1].GetComponent<PowerInfo>();
+    }
 	
 	// Update is called once per frame
 	void Update () {

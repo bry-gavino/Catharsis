@@ -116,6 +116,10 @@ public class PowerInfo : MonoBehaviour
         {
             return powerImage;
         }
+        set
+        {
+            powerImage = value;
+        }
     }
 
     public void SetDrawBackPower(float increase)
