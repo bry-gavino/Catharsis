@@ -26,6 +26,7 @@ public class Room : MonoBehaviour {
         myType = RoomType.Uninitialized;
     }
 
+    /*
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.transform.CompareTag("Player")) {
             Debug.Log("Player entered room");
@@ -43,7 +44,9 @@ public class Room : MonoBehaviour {
             }
         }
     }
+    */
 
+    /*
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.transform.CompareTag("Player")) {
             Debug.Log("Player exited room");
@@ -60,4 +63,5 @@ public class Room : MonoBehaviour {
             }
         }
     }
+    */
 }
