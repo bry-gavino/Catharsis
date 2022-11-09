@@ -32,6 +32,9 @@ public class DungeonGenerator : MonoBehaviour {
 
     [Tooltip("List of all rooms generated.")]
     public List<GameObject> activeRooms;
+    
+    [SerializeField] [Tooltip("Enemy Prefabs")]
+    private List<GameObject> enemies;
 
     // Start is called before the first frame update
     void Start() {
@@ -39,6 +42,22 @@ public class DungeonGenerator : MonoBehaviour {
         endPoint = this.transform.Find("EndPoint").gameObject;
         MazeGenerator();
         PopulateRooms();
+    }
+    
+    public void SetupRoom(GameObject room) {
+        Room.RoomType type = room.GetComponent<Room>().myType;
+        if (Room.RoomType.Enemy == type) {
+            /* Spawns in the center of room */
+            CreateEnemy(room.transform.position);
+        }
+        // other room type conditions here
+    }
+    
+    public void CreateEnemy(Vector3 position) {
+        int enemyIndex = Random.Range(0, enemies.Count);
+        Vector3 enemyPosition = new Vector3(position.x, position.y, position.z);
+        GameObject enemyPrefab = enemies[enemyIndex];
+        Instantiate(enemyPrefab, enemyPosition, Quaternion.identity);
     }
 
     /**
@@ -50,7 +69,7 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
-            Room.RoomType type;
+            Room.RoomType type = Room.RoomType.Uninitialized;
             // currentRoom.GetComponent<Room>()
             if (i == 0) {
                 // start room
@@ -81,6 +100,7 @@ public class DungeonGenerator : MonoBehaviour {
             }
 
             currentRoom.GetComponent<Room>().myType = type;
+            SetupRoom(currentRoom);
         }
     }
 
