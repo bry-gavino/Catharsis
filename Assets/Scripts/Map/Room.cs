@@ -1,11 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Room : MonoBehaviour {
     #region Variables
     private bool playerInRoom = false;
+
+    public enum RoomType {
+        Start,
+        End,
+        Enemy,
+        Shrine,
+
+        // unused
+        Treasure,
+        Trap,
+        Uninitialized
+    }
+
+    public RoomType myType;
     #endregion
+
+    public void Awake() {
+        myType = RoomType.Uninitialized;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.transform.CompareTag("Player")) {

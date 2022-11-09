@@ -50,13 +50,17 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
+            Room.RoomType type;
+            // currentRoom.GetComponent<Room>()
             if (i == 0) {
                 // start room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
+                type = Room.RoomType.Start;
             }
             else if (i == 1) {
                 // second room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.green;
+                type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room
@@ -64,6 +68,7 @@ public class DungeonGenerator : MonoBehaviour {
                 // puts EndPoint in last room
                 Vector3 position = currentRoom.transform.position;
                 endPoint.transform.position = position;
+                type = Room.RoomType.End;
             }
             else {
                 // every other room...
@@ -72,7 +77,10 @@ public class DungeonGenerator : MonoBehaviour {
                 currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
                     Random.Range(0f, 1f),
                     Random.Range(0f, 1f));
+                type = Room.RoomType.Enemy;
             }
+
+            currentRoom.GetComponent<Room>().myType = type;
         }
     }
 
