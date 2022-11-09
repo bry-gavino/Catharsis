@@ -51,6 +51,8 @@ MonoBehaviour:
   offset: {x: 16, y: 16}
   startPos: 0
   activeRooms: []
+  enemyTypes:
+  - {fileID: 6808713095878908607, guid: de21d9ee5976143f084b33af360fdc07, type: 3}
 --- !u!1001 &2840785865245984354
 PrefabInstance:
   m_ObjectHideFlags: 0

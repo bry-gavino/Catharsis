@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DungeonGenerator : MonoBehaviour {
     [Tooltip("Holds the information of a cell in the maze.")]
@@ -32,15 +34,48 @@ public class DungeonGenerator : MonoBehaviour {
 
     [Tooltip("List of all rooms generated.")]
     public List<GameObject> activeRooms;
+    
+    [SerializeField] [Tooltip("Enemy Prefabs.")]
+    private List<GameObject> enemyTypes;
+
+    [Tooltip("Delete all of these on scene transition.")]
+    private List<GameObject> spawnedEnemies;
 
     // Start is called before the first frame update
     void Start() {
         activeRooms = new List<GameObject>();
+        spawnedEnemies = new List<GameObject>();
         endPoint = this.transform.Find("EndPoint").gameObject;
         MazeGenerator();
         PopulateRooms();
     }
 
+    private void OnDestroy() {
+        foreach (var enemy in spawnedEnemies)
+        {
+            Destroy(enemy);
+        }
+    }
+
+    /**
+     * Instantiates an enemy of random type at this position.
+     */
+    public void CreateEnemy(Vector3 position) {
+        int enemyIndex = Random.Range(0, enemyTypes.Count);
+        Vector3 enemyPosition = new Vector3(position.x, position.y, position.z);
+        GameObject enemyPrefab = enemyTypes[enemyIndex];
+        spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
+    }
+    
+    public void SetupRoom(GameObject room) {
+        Room.RoomType type = room.GetComponent<Room>().myType;
+        if (Room.RoomType.Enemy == type) {
+            /* Spawns in the center of room */
+            CreateEnemy(room.transform.position);
+        }
+        // other room type conditions here
+    }
+    
     /**
      * Now that everything is generated, can do post-processing here.
      * Make the last room (bottom right) the boss room, choose a spawn room (top left or some other spot).
@@ -50,13 +85,16 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
+            Room.RoomType type = Room.RoomType.Uninitialized;
             if (i == 0) {
                 // start room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
+                type = Room.RoomType.Start;
             }
             else if (i == 1) {
                 // second room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.green;
+                type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room
@@ -64,6 +102,7 @@ public class DungeonGenerator : MonoBehaviour {
                 // puts EndPoint in last room
                 Vector3 position = currentRoom.transform.position;
                 endPoint.transform.position = position;
+                type = Room.RoomType.End;
             }
             else {
                 // every other room...
@@ -72,7 +111,11 @@ public class DungeonGenerator : MonoBehaviour {
                 currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
                     Random.Range(0f, 1f),
                     Random.Range(0f, 1f));
+                type = Room.RoomType.Enemy;
             }
+
+            currentRoom.GetComponent<Room>().myType = type;
+            SetupRoom(currentRoom);
         }
     }
 
