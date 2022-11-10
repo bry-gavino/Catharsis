@@ -120,7 +120,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -142,14 +142,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hurtWhenTouched: 0
+  enemyType: NoEvil
   AttackFX: {fileID: 8300000, guid: 7cb87b258e70647bd86bab239de023ae, type: 3}
   HurtFX: {fileID: 8300000, guid: bc3592ff5732d42e2b002e8e80226086, type: 3}
+  SetupFX: {fileID: 8300000, guid: 3dc368ef81ae3419cbd24f7b5efdcf91, type: 3}
   DieObject: {fileID: 7384550110271580274, guid: 2d60d63c9bbc042b7bb22d7591aabf2a, type: 3}
   movespeed: 2
   isAwake: 0
   recoveryTime: 0.4
   Player: {fileID: 0}
   attackDamage: 1
+  setupLength: 0.7
+  attackLength: 0.3
+  attackSpeed: 10
   maxHealth: 10
   xp_val: 3
   healthpot: {fileID: 0}
