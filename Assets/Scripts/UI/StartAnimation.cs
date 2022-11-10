@@ -5,11 +5,15 @@ using UnityEngine.UI;
 
 public class StartAnimation : MonoBehaviour
 {
+    [SerializeField] [Tooltip("Button")]
+    private AudioClip ButtonFX;
+    
     public static GameObject character;
     public static GameObject title;
     public static GameObject PlayButton;
     public static GameObject HowToPlayScreen;
     public static GameObject CreditsScreen;
+    private MusicManager musicManager;
 
     #region StartPos
     private static Vector3 StartAnimationSP = new Vector3(960.0f, 540.0f, 0.0f);
@@ -51,6 +55,7 @@ public class StartAnimation : MonoBehaviour
         character.transform.position = characterEP;
         title.transform.position = titleEP;
         // PlayButton.transform.position = PlayButtonEP;
+        musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
     }
 
     // Update is called once per frame
@@ -77,6 +82,7 @@ public class StartAnimation : MonoBehaviour
     }
 
     public void showHowToPlay() {
+        musicManager.playClip(ButtonFX, 1);
         HowToPlayScreen.transform.localPosition = new Vector2(0.0f, 0.0f);
         HowToPlayOn = true;
     }
@@ -86,6 +92,7 @@ public class StartAnimation : MonoBehaviour
     }
 
     public void showCredits() {
+        musicManager.playClip(ButtonFX, 1);
         CreditsScreen.transform.localPosition = new Vector2(0.0f, 0.0f);
         CreditsOn = true;
     }

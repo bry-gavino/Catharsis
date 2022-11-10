@@ -724,15 +724,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: tracks.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
+      propertyPath: tracks.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: b30553c8bd337436d8eee365e6f3ebf8, type: 3}
+    - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: tracks.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: bf93b76155e48430f8c2b2c120b3d987, type: 3}
+    - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
+      propertyPath: tracks.Array.data[2]
       value: 
       objectReference: {fileID: 8300000, guid: ce7b0b653596248ac88b736f4136f516, type: 3}
     - target: {fileID: 2912233308531971104, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: m_Volume
-      value: 0.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2912233309489563492, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: m_RootOrder
