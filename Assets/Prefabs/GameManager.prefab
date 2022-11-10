@@ -57,6 +57,7 @@ MonoBehaviour:
   isListeningUser: 0
   finTransitionTime: 1.5
   transitionLifeTimeLength: 6
+  mapSize: {x: 2, y: 3}
 --- !u!114 &2912233308531971103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +72,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tracks:
   - {fileID: 8300000, guid: ce7b0b653596248ac88b736f4136f516, type: 3}
+  - {fileID: 8300000, guid: b30553c8bd337436d8eee365e6f3ebf8, type: 3}
+  - {fileID: 8300000, guid: bf93b76155e48430f8c2b2c120b3d987, type: 3}
 --- !u!82 &2912233308531971104
 AudioSource:
   m_ObjectHideFlags: 0

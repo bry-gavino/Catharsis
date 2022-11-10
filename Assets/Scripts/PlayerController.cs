@@ -30,12 +30,13 @@ public class PlayerController : MonoBehaviour {
     string healKey;
     bool dead = false;
     bool isSleeping = false;
+    public int enemiesDefeated = 0;
     #endregion
 
     #region xp variables
     float exp = 0;
     float skillPoints = 0;
-    float currLevel = 1;
+    public float currLevel = 1;
 
     float expThreshold;
     #endregion
@@ -352,6 +353,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Die() {
+        GameObject.Find("UI").GetComponent<UIManager>().loseGame();
         //FindObjectOfType<AudioManager>().Play("PlayerDeath");
         Destroy(this.gameObject);
 
@@ -413,6 +415,10 @@ public class PlayerController : MonoBehaviour {
     public void disableUserInput() {
         isSleeping = true;
         PlayerRB.velocity = Vector2.zero;
+    }
+
+    public void addEnemyDefeated(){
+        enemiesDefeated += 1;
     }
     #endregion
 }

@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // TODO:
-    // - tag GameManager instance with GameController
-
+    
     public static GameManager Instance = null;
     public static GameObject levelSceneInstance;
     public static GameObject mapGeneratorInstance;
-    //public static GameObject soundManagerInstance;
 
     [Tooltip("Level Transition Screen")] [SerializeField]
     public GameObject levelTransitionScreen;
@@ -86,7 +83,6 @@ public class GameManager : MonoBehaviour
 
         changeScreenInGame();
         finishTransition();
-        //soundManagerInstance.GetComponent<SoundManager>().playMusic(); // starts OST
     }
     // call this to start new level 
     public void transitionToLevelScreen() {
@@ -133,6 +129,7 @@ public class GameManager : MonoBehaviour
 
     #region Level_transition
     public void startTransition() {
+        
         if (!lvlSceneInst) {
             lvlSceneInst = true;
             levelSceneInstance = Instantiate(levelTransitionScreen);

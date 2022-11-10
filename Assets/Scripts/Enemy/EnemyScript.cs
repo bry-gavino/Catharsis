@@ -245,6 +245,7 @@ public class EnemyScript : MonoBehaviour
     private void Die(){
         if (PlayerIDHitBy == 1) {
             GameObject.Find("TestPlayer").GetComponent<PlayerController>().add_xp(xp_val); // FIX FOR PLAYER 1
+            GameObject.Find("TestPlayer").GetComponent<PlayerController>().addEnemyDefeated(); // FIX FOR PLAYER 1
         } else if (PlayerIDHitBy == 2) {} // FIX FOR PLAYER 2
         Instantiate(DieObject, transform.position, transform.rotation);
         Destroy(this.gameObject);
