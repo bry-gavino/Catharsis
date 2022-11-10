@@ -6,6 +6,7 @@ public class EnemyScript : MonoBehaviour
 {
     #region Enemy_Type
     public bool hurtWhenTouched = true;
+    public string enemyType = "NoEvil";
     #endregion
 
     #region enemy sounds
@@ -13,6 +14,8 @@ public class EnemyScript : MonoBehaviour
     private AudioClip AttackFX;
     [SerializeField] [Tooltip("Sound when enemy hurts.")]
     private AudioClip HurtFX;
+    [SerializeField] [Tooltip("Sound when enemy setup.")]
+    private AudioClip SetupFX;
     [SerializeField] [Tooltip("Object to instantiate when die.")]
     private GameObject DieObject;
 
@@ -57,11 +60,11 @@ public class EnemyScript : MonoBehaviour
     #region Attack_variables
     public float attackDamage = 2;
     private bool isAttacking = false;
-    float setupLength = 0.7f;
+    public float setupLength = 0.7f;
     private float setupTimer = 0.0f;
     private float attackTimer = 0.0f;
-    float attackLength = 0.3f;
-    float attackSpeed = 10;
+    public float attackLength = 0.3f;
+    public float attackSpeed = 10;
     #endregion
 
     #region Health_variables
@@ -77,6 +80,9 @@ public class EnemyScript : MonoBehaviour
     [SerializeField]
     private HealingVial healthpot;
 
+    #region handle enemy type
+    #endregion
+
 
 
     #region Unity_functions
@@ -85,11 +91,14 @@ public class EnemyScript : MonoBehaviour
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
         Effects = (GetComponentInChildren(typeof(EnemyEffects)) as EnemyEffects);
         EnemyRB = GetComponent<Rigidbody2D>();
-        Player = GameObject.Find("TestPlayer");
+        Player = GameObject.Find("TestPlayer"); // ADJUST FOR 2 PLAYER
         anim = GetComponent<Animator>();
         currHealth = maxHealth;
         hurtAttackTimer = Player.GetComponent<PlayerController>().getAttackLength();
         hurtDashTimer = Player.GetComponent<PlayerController>().getDashLength();
+
+        if (enemyType == "Ignorance") {
+        }
     }
 
     private void Update(){
@@ -101,7 +110,12 @@ public class EnemyScript : MonoBehaviour
                 isAttacking = false;
             } else {
                 isAttacking = true;
-                EnemyRB.velocity = currDirection * attackSpeed;
+                if (enemyType == "Ignorance") {
+                    Vector2 direction = Player.transform.position - transform.position;
+                    EnemyRB.velocity = direction.normalized * attackSpeed;
+                } else {
+                    EnemyRB.velocity = currDirection * attackSpeed;
+                }
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
                 Effects.HandleDirection(EnemyRB.velocity, true);
             }
@@ -125,7 +139,6 @@ public class EnemyScript : MonoBehaviour
                 isImmobile = true;
             }
         }
-        // Debug.Log(isImmobile);
         if (pushBackTimer > 0.0f) {
             pushBackTimer -= Time.deltaTime;
             if (pushBackTimer <= 0.0f) {
@@ -179,7 +192,12 @@ public class EnemyScript : MonoBehaviour
         Vector2 direction = Player.transform.position - transform.position;
         EnemyRB.velocity = direction.normalized * movespeed;
         currDirection = direction.normalized;
-        (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(direction.normalized);
+        if (enemyType == "Ignorance") {
+            (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(Vector2.zero);
+        } else {
+            (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(currDirection);
+        }
+        
     }
     #endregion
 
@@ -187,7 +205,7 @@ public class EnemyScript : MonoBehaviour
 
     #region Attacking
     void EnactAttack() {
-        musicManager.playClip(AttackFX, 1);
+        musicManager.playClip(AttackFX, 1); // fix for enemyType
         isAttacking = true;
         attackTimer = attackLength;
     }
@@ -200,6 +218,7 @@ public class EnemyScript : MonoBehaviour
 
 
     public void PlayerInHurtBox() {
+        musicManager.playClip(SetupFX, 1);
         setupTimer = setupLength;
         coolDown = setupLength;
         EnemyRB.velocity = Vector2.zero;
@@ -238,7 +257,7 @@ public class EnemyScript : MonoBehaviour
             pushBackTimer = attackPushBackLength;
             hurtTimer = hurtAttackTimer;
         }
-        EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position);
+        EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position).normalized;
         Effects.HandleDirection(EnemyRB.velocity, true);
     }
 

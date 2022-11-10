@@ -410,8 +410,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DashFX: {fileID: 8300000, guid: 29fa0a4aa498c40f8a3a67f4cca2f65d, type: 3}
+  AttackFX: {fileID: 0}
+  Attack2FX: {fileID: 0}
+  HurtFX: {fileID: 0}
   playerID: 1
+  enemiesDefeated: 0
+  currLevel: 1
   moveSpeed: 8
+  hurtCooldown: 0.3
+  pushBackLength: 0.15
   dashLength: 0.12
   dashCooldown: 0.5
   dashSpeed: 33
@@ -421,8 +428,8 @@ MonoBehaviour:
   endAnimationTiming: 0
   speedUpTiming: 0
   currDirection: {x: 0, y: 0}
-  maxHealth: 1
-  currHealth: 1
+  maxHealth: 10
+  currHealth: 10
   powers: []
   curr_power: {fileID: 1593412739688300224, guid: 5a8a310bd40254a7bbc4680fa6ee59e3, type: 3}
 --- !u!1 &5735695920328167352
@@ -523,6 +530,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02280491d0617480ca6767fbb836207c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!58 &5735695920328167358
 CircleCollider2D:
   m_ObjectHideFlags: 0
