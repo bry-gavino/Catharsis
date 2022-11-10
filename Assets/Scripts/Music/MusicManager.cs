@@ -50,4 +50,13 @@ public class MusicManager : MonoBehaviour {
             }
         }
     }
+
+    public void StopMusicLoop() {
+        playing = false;
+        _audioSource.Stop();
+    }
+    public void ReplayMusicLoop() {
+        playing = true;
+        _audioSource.Play();
+    }
 }

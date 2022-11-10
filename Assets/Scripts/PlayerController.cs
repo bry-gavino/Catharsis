@@ -352,6 +352,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Die() {
+        GameObject.Find("UI").GetComponent<UIManager>().loseGame();
         //FindObjectOfType<AudioManager>().Play("PlayerDeath");
         Destroy(this.gameObject);
 

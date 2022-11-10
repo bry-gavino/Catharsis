@@ -41,7 +41,7 @@ public class EnemyScript : MonoBehaviour
     Animator anim;
     private bool isMoving = false;
     private bool isSetup = false;
-    GameObject Effects;
+    EnemyEffects Effects;
     #endregion
 
     #region Physics_Components
@@ -83,7 +83,7 @@ public class EnemyScript : MonoBehaviour
     
     private void Awake(){
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
-        Effects = GameObject.Find("EnemyEffects");
+        Effects = (GetComponentInChildren(typeof(EnemyEffects)) as EnemyEffects);
         EnemyRB = GetComponent<Rigidbody2D>();
         Player = GameObject.Find("TestPlayer");
         anim = GetComponent<Animator>();
@@ -103,7 +103,7 @@ public class EnemyScript : MonoBehaviour
                 isAttacking = true;
                 EnemyRB.velocity = currDirection * attackSpeed;
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
-                Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
+                Effects.HandleDirection(EnemyRB.velocity, true);
             }
         }
         if (setupTimer > 0.0f) {
@@ -156,19 +156,19 @@ public class EnemyScript : MonoBehaviour
     void HandleState() {
         if (isHurt) {
             anim.SetInteger("State", 4);
-            Effects.GetComponent<EnemyEffects>().SetState(4);
+            Effects.SetState(4);
         } else if (isAttacking) {
             anim.SetInteger("State", 3);
-            Effects.GetComponent<EnemyEffects>().SetState(3);
+            Effects.SetState(3);
         } else if (isSetup) {
             anim.SetInteger("State", 2);
-            Effects.GetComponent<EnemyEffects>().SetState(2);
+            Effects.SetState(2);
         } else if (isMoving) {
             anim.SetInteger("State", 1);
-            Effects.GetComponent<EnemyEffects>().SetState(1);
+            Effects.SetState(1);
         } else {
             anim.SetInteger("State", 0);
-            Effects.GetComponent<EnemyEffects>().SetState(0);
+            Effects.SetState(0);
         }
     }
 
@@ -239,7 +239,7 @@ public class EnemyScript : MonoBehaviour
             hurtTimer = hurtAttackTimer;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position);
-        Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
+        Effects.HandleDirection(EnemyRB.velocity, true);
     }
 
     private void Die(){
