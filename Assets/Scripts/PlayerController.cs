@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] [Tooltip("Sound when you hurt.")]
     private AudioClip HurtFX;
 
+    [SerializeField] [Tooltip("HurtBox Prefab")]
+    private GameObject HurtBoxPrefab;
+
     private MusicManager musicManager;
     private Slider HPSlider;
     private Slider XPSlider;
@@ -111,7 +114,7 @@ public class PlayerController : MonoBehaviour {
     #region unity funcs
     // called once when object created
     private void Awake() {
-        HurtBox = GameObject.Find("PlayerHurtBox");
+        // HurtBox = GameObject.Find("PlayerHurtBox");
         Effects = GameObject.Find("PlayerEffects");
         PlayerRB = GetComponent<Rigidbody2D>();
 
@@ -272,7 +275,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         // HANDLE HITBOX PLACEMENT HERE
-        HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
+        // HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
     }
 
     private void Dash() {
@@ -290,7 +293,11 @@ public class PlayerController : MonoBehaviour {
 
     private void Attacking() {
         if (isAttacking) {
-            HurtBox.GetComponent<PlayerHurtBox>().HurtAll(Damage, transform);   
+            
+            HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
+            // HurtBox.GetComponent<PlayerHurtBox>().HurtAll(Damage, transform);   
+        } else if (HurtBox) {
+            Destroy(HurtBox);
         }
     }
 
@@ -309,6 +316,7 @@ public class PlayerController : MonoBehaviour {
         attackCooldownTimer = attackCooldown;
         isDashing = true;
         isAttacking = true;
+        HurtBox = Instantiate(HurtBoxPrefab, transform.localPosition, Quaternion.identity, transform);
     }
 
     public void OnDashTriggerEnter2D(Collider2D col) {
