@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ChangeScene : MonoBehaviour
 {
     public void MoveToScene(int sceneID) {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(sceneID);
         if (sceneID == 1) {
             GameObject.Find("GameManager").GetComponent<GameManager>().restartRun();

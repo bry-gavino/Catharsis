@@ -13,6 +13,7 @@ public class StartAnimation : MonoBehaviour
     public static GameObject PlayButton;
     public static GameObject HowToPlayScreen;
     public static GameObject CreditsScreen;
+    public static GameObject PauseMenu;
     private MusicManager musicManager;
 
     #region StartPos
@@ -41,6 +42,7 @@ public class StartAnimation : MonoBehaviour
     #region Screens
     bool HowToPlayOn = false;
     bool CreditsOn = false;
+    bool PauseOn = false;
     #endregion
 
     // Start is called before the first frame update
@@ -55,12 +57,16 @@ public class StartAnimation : MonoBehaviour
         character.transform.position = characterEP;
         title.transform.position = titleEP;
         // PlayButton.transform.position = PlayButtonEP;
-        musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
+        if (GameObject.Find("PauseMenu") != null) {
+            PauseMenu = GameObject.Find("PauseMenu");
+        }
         // if (!characterDone) {
         //     updateCharacter();
         // }
@@ -99,5 +105,19 @@ public class StartAnimation : MonoBehaviour
     public void hideCredits() {
         CreditsScreen.transform.localPosition = new Vector2(0.0f, -1000.0f);
         CreditsOn = false;
+    }
+
+    public void showPauseMenu() {
+        Time.timeScale = 0f;
+        musicManager.playClip(ButtonFX, 1);
+        PauseMenu.transform.localPosition = new Vector2(0.0f, 0.0f);
+        PauseOn = true;
+    }
+
+    public void hidePauseMenu() {
+        Time.timeScale = 1f;
+        PauseMenu.transform.localPosition = new Vector2(0.0f, -1000.0f);
+        PauseOn = false;
+
     }
 }
