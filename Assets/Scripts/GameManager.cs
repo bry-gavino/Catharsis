@@ -171,7 +171,8 @@ public class GameManager : MonoBehaviour
         
         // Instantly loads first level
         restartRun();
-        shrine_Menu.SetActive(false);
+        // TODO!!!
+        // shrine_Menu.SetActive(false);
     }
 
     private void Update() 

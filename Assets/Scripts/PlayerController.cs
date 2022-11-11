@@ -168,6 +168,7 @@ public class PlayerController : MonoBehaviour {
         expThreshold = 10;
         HPSlider.value = currHealth / maxHealth;
         XPSlider.value = exp / expThreshold;
+        LevelTxt.text = currLevel.ToString();
     }
 
     // called once per frame
@@ -429,7 +430,7 @@ public class PlayerController : MonoBehaviour {
             currLevel += 1;
             expThreshold = expThreshold * 1.1f;
         }
-        LevelTxt.text = currLevel.ToString ();
+        LevelTxt.text = currLevel.ToString();
     }
     #endregion
 
