@@ -855,11 +855,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 94fea35ff9e2a4c78bbae024d48081d0, type: 3}
     - target: {fileID: 5735695919168886886, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: maxHealth
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5735695919168886886, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: currHealth
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5735695919168886886, guid: 655e77246fcc04b0d96a3d6b693ad3c7, type: 3}
       propertyPath: hurtCooldown

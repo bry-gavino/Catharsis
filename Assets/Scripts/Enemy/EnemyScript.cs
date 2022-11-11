@@ -188,16 +188,18 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     #region Movement_functions
-    private void Move(){
-        Vector2 direction = Player.transform.position - transform.position;
-        EnemyRB.velocity = direction.normalized * movespeed;
-        currDirection = direction.normalized;
-        if (enemyType == "Ignorance") {
-            (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(Vector2.zero);
-        } else {
-            (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(currDirection);
+    private void Move() {
+        if (Player != null) {
+            Vector2 direction = Player.transform.position - transform.position;
+            EnemyRB.velocity = direction.normalized * movespeed;
+            currDirection = direction.normalized;
+            if (enemyType == "Ignorance") {
+                (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(Vector2.zero);
+            }
+            else {
+                (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(currDirection);
+            }
         }
-        
     }
     #endregion
 

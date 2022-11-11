@@ -34,7 +34,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     [Tooltip("List of all rooms generated.")]
     public List<GameObject> activeRooms;
-    
+
     [SerializeField] [Tooltip("Enemy Prefabs.")]
     private List<GameObject> enemyTypes;
 
@@ -51,8 +51,9 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        foreach (var enemy in spawnedEnemies)
-        {
+        while (spawnedEnemies.Count > 0) {
+            GameObject enemy = spawnedEnemies[0];
+            spawnedEnemies.RemoveAt(0);
             Destroy(enemy);
         }
     }
@@ -66,7 +67,7 @@ public class DungeonGenerator : MonoBehaviour {
         GameObject enemyPrefab = enemyTypes[enemyIndex];
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
     }
-    
+
     public void SetupRoom(GameObject room) {
         Room.RoomType type = room.GetComponent<Room>().myType;
         if (Room.RoomType.Enemy == type) {
@@ -75,7 +76,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
         // other room type conditions here
     }
-    
+
     /**
      * Now that everything is generated, can do post-processing here.
      * Make the last room (bottom right) the boss room, choose a spawn room (top left or some other spot).
@@ -86,19 +87,20 @@ public class DungeonGenerator : MonoBehaviour {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
             Room.RoomType type = Room.RoomType.Uninitialized;
+            float color_dampening_constant = 0.95f;
             if (i == 0) {
                 // start room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
+                currentGround.GetComponent<SpriteRenderer>().color = Color.blue  * color_dampening_constant;
                 type = Room.RoomType.Start;
             }
             else if (i == 1) {
                 // second room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.green;
+                currentGround.GetComponent<SpriteRenderer>().color = Color.green  * color_dampening_constant;
                 type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.red;
+                currentGround.GetComponent<SpriteRenderer>().color = Color.red * color_dampening_constant;
                 // puts EndPoint in last room
                 Vector3 position = currentRoom.transform.position;
                 endPoint.transform.position = position;
@@ -108,9 +110,10 @@ public class DungeonGenerator : MonoBehaviour {
                 // every other room...
                 // randomly put in enemies or treasure
                 // rainbow mode
-                // currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
-                //     Random.Range(0f, 1f),
-                //     Random.Range(0f, 1f));
+                var color = new Color(Random.Range(0f, 1f),
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f));
+                currentGround.GetComponent<SpriteRenderer>().color = color * color_dampening_constant;
                 type = Room.RoomType.Enemy;
             }
 
