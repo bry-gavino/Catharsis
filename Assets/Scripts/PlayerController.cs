@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
     string dashKey;
     string attackKey;
     string healKey;
+    string shrineKey; //anthony addition
     bool dead = false;
     bool isSleeping = false;
     public int enemiesDefeated = 0;
@@ -104,7 +105,7 @@ public class PlayerController : MonoBehaviour {
     #region health
     public float maxHealth;
     public float currHealth;
-
+    // public Slider HPSlider;
     public string[] powers;
 
     public ArrayList inventory = new ArrayList();
@@ -113,6 +114,12 @@ public class PlayerController : MonoBehaviour {
     #region powers
     [SerializeField] [Tooltip("Current power")]
     public PowerInfo curr_power;
+
+    [SerializeField]
+    [Tooltip("Shrine to access")]
+    public GameObject shrine_obj;
+
+    private GameObject cur_player;
     #endregion
 
     #region unity funcs
@@ -125,6 +132,9 @@ public class PlayerController : MonoBehaviour {
         anim = GetComponent<Animator>();
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
 
+        //Anthony Addition - cur player gameobject for shrine
+        cur_player = this.gameObject;
+
         // currSpeed = moveSpeed;
         currHealth = maxHealth;
         if (playerID == 1) {
@@ -136,6 +146,7 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
+            shrineKey = "z"; //Anthony Addition
 
             HPSlider = GameObject.Find("HealthP1").GetComponent<Slider>();
             XPSlider = GameObject.Find("ExpP1").GetComponent<Slider>();
@@ -154,7 +165,6 @@ public class PlayerController : MonoBehaviour {
             // HPSlider = {GameObject.Find("HealthP2").GetComponent<Slider>()}
             // XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
         }
-
         expThreshold = 10;
         HPSlider.value = currHealth / maxHealth;
         XPSlider.value = exp / expThreshold;
@@ -173,8 +183,10 @@ public class PlayerController : MonoBehaviour {
             Attacking();
             Move();
             HandleState();
+
         }
     }
+
     private void HandleTimer() {
         attackTimer -= Time.deltaTime;
         attackCooldownTimer -= Time.deltaTime;
@@ -196,6 +208,7 @@ public class PlayerController : MonoBehaviour {
             combo = 0; // resets combo to 0
         }
     }
+
     private void HandleInput() {
         if (!isHurt && !isPushed) {
             if (Input.GetKey(attackKey) && attackTimer <= 0) {
@@ -207,6 +220,11 @@ public class PlayerController : MonoBehaviour {
             } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
                 Dash();
             }
+        }
+        if (Input.GetKey(shrineKey))
+        {
+            Debug.Log("Key press detected!");
+            shrineActivate();
         }
     }
 
@@ -412,7 +430,7 @@ public class PlayerController : MonoBehaviour {
             currLevel += 1;
             expThreshold = expThreshold * 1.1f;
         }
-        LevelTxt.text = currLevel.ToString ();
+        LevelTxt.text = currLevel.ToString();
     }
     #endregion
 
@@ -432,6 +450,44 @@ public class PlayerController : MonoBehaviour {
         isSleeping = true;
         PlayerRB.velocity = Vector2.zero;
     }
+
+    #region shrineScript
+    public void shrineActivate()
+    {
+        GameObject[] lis = GameObject.FindGameObjectsWithTag("ShrineShop");
+            disableUserInput();
+            lis[0].GetComponent<NEWShrineScript>().enterShrine(cur_player);
+        
+    }
+    /**
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.tag == "Shrine" )
+        {
+            //&& Input.GetKey(shrineKey) for later putting
+            StartCoroutine(CheckInputRoutine());
+            //disableUserInput();
+            //other.gameObject.GetComponent<NEWShrineScript>().enterShrine(cur_player);
+        }
+    }
+    public void OnCollisionExit2D(Collision2D other)
+    {
+        StopCoroutine(CheckInputRoutine());
+    }
+
+    IEnumerator CheckInputRoutine(){
+    if (Input.GetKey(shrineKey))
+        // Or also
+        //if(currentChest && Input.GetKeyDown(KeyCode.E)) 
+        {
+            Debug.Log("Input detected!");
+        }
+        yield return null;
+    }
+    */
+    #endregion
+
+    
 
     public void addEnemyDefeated(){
         enemiesDefeated += 1;

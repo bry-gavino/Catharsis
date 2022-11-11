@@ -1453,6 +1453,46 @@ MonoBehaviour:
     m_Y: 0
     m_Width: 102
     m_Height: 1023
+  - m_X: 66
+    m_Y: 110
+    m_Width: 7
+    m_Height: 98
+  - m_X: 112
+    m_Y: 208
+    m_Width: 4
+    m_Height: 91
+  - m_X: 63
+    m_Y: 286
+    m_Width: 53
+    m_Height: 13
+  - m_X: 63
+    m_Y: 209
+    m_Width: 3
+    m_Height: 90
+  - m_X: 600
+    m_Y: 102
+    m_Width: 423
+    m_Height: 921
+  - m_X: 600
+    m_Y: 99
+    m_Width: 20
+    m_Height: 924
+  - m_X: 373
+    m_Y: 100
+    m_Width: 51
+    m_Height: 2
+  - m_X: 373
+    m_Y: 180
+    m_Width: 650
+    m_Height: 843
+  - m_X: 449
+    m_Y: 179
+    m_Width: 574
+    m_Height: 844
+  - m_X: 449
+    m_Y: 102
+    m_Width: 37
+    m_Height: 921
   m_fontInfo:
     Name: Oswald
     PointSize: 71

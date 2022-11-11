@@ -86,12 +86,15 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
+            currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false); //disable shrine in beginning
             Room.RoomType type = Room.RoomType.Uninitialized;
             float color_dampening_constant = 0.95f;
             if (i == 0) {
                 // start room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue  * color_dampening_constant;
                 type = Room.RoomType.Start;
+                //Adding shrine merge - first level gets shrine for now
+                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
             }
             else if (i == 1) {
                 // second room

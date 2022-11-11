@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     [Tooltip("Map Generator")] [SerializeField]
     public GameObject mapGenerator;
 
+    [Tooltip("Shrine")] [SerializeField]
+    public GameObject shrine_Menu;
+
 
 
     #region Variables
@@ -168,6 +171,8 @@ public class GameManager : MonoBehaviour
         
         // Instantly loads first level
         restartRun();
+        // TODO!!!
+        // shrine_Menu.SetActive(false);
     }
 
     private void Update() 
