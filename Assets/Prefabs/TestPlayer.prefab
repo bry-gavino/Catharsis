@@ -412,6 +412,7 @@ MonoBehaviour:
   AttackFX: {fileID: 0}
   Attack2FX: {fileID: 0}
   HurtFX: {fileID: 0}
+  LvlUpFX: {fileID: 8300000, guid: 721af139b7d214fed830f171a5f75cc6, type: 3}
   HurtBoxPrefab: {fileID: 2608297156212933575, guid: 16f16007d42674f66815e5559a6578b7, type: 3}
   playerID: 1
   enemiesDefeated: 0

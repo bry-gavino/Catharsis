@@ -108,9 +108,9 @@ public class DungeonGenerator : MonoBehaviour {
                 // every other room...
                 // randomly put in enemies or treasure
                 // rainbow mode
-                currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
-                    Random.Range(0f, 1f),
-                    Random.Range(0f, 1f));
+                // currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
+                //     Random.Range(0f, 1f),
+                //     Random.Range(0f, 1f));
                 type = Room.RoomType.Enemy;
             }
 
