@@ -84,7 +84,16 @@ public class NEWShrineScript : MonoBehaviour
     {
         return powerHolderList[curPowerID - 1].GetComponent<PowerInfo>();
     }
-	
+
+    public void exitShrine()
+    {
+        powerShrine.gameObject.SetActive(false);
+    }
+
+    public void enterShrine()
+    {
+        powerShrine.gameObject.SetActive(true);
+    }
 	// Update is called once per frame
 	void Update () {
 		
