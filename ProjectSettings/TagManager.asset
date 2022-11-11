@@ -16,6 +16,8 @@ TagManager:
   - GameManager
   - MapGenerator
   - EndPoint
+  - Shrine
+  - ShrineShop
   layers:
   - Default
   - TransparentFX
@@ -56,9 +58,15 @@ TagManager:
   - name: Room
     uniqueID: 2952820171
     locked: 0
+  - name: Shrine
+    uniqueID: 3771655349
+    locked: 0
   - name: Enemy
     uniqueID: 1594897753
     locked: 0
   - name: Player
     uniqueID: 2614551005
+    locked: 0
+  - name: ShrineMenu
+    uniqueID: 17756983
     locked: 0

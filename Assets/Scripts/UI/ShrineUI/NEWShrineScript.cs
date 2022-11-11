@@ -17,6 +17,8 @@ public class NEWShrineScript : MonoBehaviour
 
     public int curPowerID;
 
+    private GameObject player; // cur player object
+
 	// Use this for initialization
 	void Start () {
 		powerShrine = this;
@@ -88,11 +90,16 @@ public class NEWShrineScript : MonoBehaviour
     public void exitShrine()
     {
         powerShrine.gameObject.SetActive(false);
+        player.GetComponent<PlayerController>().enableUserInput();
+        Debug.Log("Closing Shrine");
     }
 
-    public void enterShrine()
+    public void enterShrine(GameObject player)
     {
+        Debug.Log("Opening Shrine");
         powerShrine.gameObject.SetActive(true);
+        this.player = player;
+
     }
 	// Update is called once per frame
 	void Update () {

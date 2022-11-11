@@ -33,6 +33,10 @@ public class DungeonGenerator : MonoBehaviour {
     [Tooltip("List of all rooms generated.")]
     public List<GameObject> activeRooms;
 
+    //Anthony edit - to make a basic room but with a shrine
+    [Tooltip("Starting Room/Shrine Room")] [SerializeField]
+    public GameObject StarterRoom;
+
     // Start is called before the first frame update
     void Start() {
         activeRooms = new List<GameObject>();
@@ -50,9 +54,11 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
+            currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
             if (i == 0) {
                 // start room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
+                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(true);
             }
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room

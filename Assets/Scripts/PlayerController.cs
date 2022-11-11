@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     string dashKey;
     string attackKey;
     string healKey;
+    string shrineKey; //anthony addition
     bool dead = false;
     bool isSleeping = false;
     #endregion 
@@ -65,7 +66,6 @@ public class PlayerController : MonoBehaviour {
     #region health
     public float maxHealth;
     public float currHealth;
-    public string[] powers;
     // public Slider HPSlider;
     public ArrayList inventory = new ArrayList();
     #endregion
@@ -74,6 +74,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     [Tooltip("Current power")]
     public PowerInfo curr_power;
+
+    [SerializeField]
+    [Tooltip("Shrine to access")]
+    public GameObject shrine_obj;
+
+    private GameObject cur_player;
     #endregion
 
     #region unity funcs
@@ -88,6 +94,9 @@ public class PlayerController : MonoBehaviour {
         // TODO: make Animator
         anim = GetComponent<Animator>();
 
+        //Anthony Addition - cur player gameobject for shrine
+        cur_player = this.gameObject;
+
         // currSpeed = moveSpeed;
         currHealth = maxHealth;
         if (playerID == 1) {
@@ -100,6 +109,7 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
+            shrineKey = "z"; //Anthony Addition
         } else if (playerID == 2) {
 
             leftKey = "k";
@@ -114,6 +124,8 @@ public class PlayerController : MonoBehaviour {
         expThreshold = exp * 100;
         // HPSlider.value = currHealth / maxHealth;
         // XPSlider.value = exp;
+
+        //Anthony Addition - Starting Power
     }
 
     // called once per frame
@@ -128,6 +140,7 @@ public class PlayerController : MonoBehaviour {
             HandleInput();
             Move();
             HandleState();
+
         }
     }
     private void HandleInput() {
@@ -135,6 +148,11 @@ public class PlayerController : MonoBehaviour {
             Attack();
         } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
             Dash();
+        }
+        if (Input.GetKey(shrineKey))
+        {
+            Debug.Log("Key press detected!");
+            shrineActivate();
         }
         attackTimer -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
@@ -338,6 +356,42 @@ public class PlayerController : MonoBehaviour {
         isSleeping = true;
         PlayerRB.velocity = Vector2.zero;
     }
+    #endregion
+
+    #region shrineScript
+    public void shrineActivate()
+    {
+        GameObject[] lis = GameObject.FindGameObjectsWithTag("ShrineShop");
+            disableUserInput();
+            lis[0].GetComponent<NEWShrineScript>().enterShrine(cur_player);
+        
+    }
+    /**
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.tag == "Shrine" )
+        {
+            //&& Input.GetKey(shrineKey) for later putting
+            StartCoroutine(CheckInputRoutine());
+            //disableUserInput();
+            //other.gameObject.GetComponent<NEWShrineScript>().enterShrine(cur_player);
+        }
+    }
+    public void OnCollisionExit2D(Collision2D other)
+    {
+        StopCoroutine(CheckInputRoutine());
+    }
+
+    IEnumerator CheckInputRoutine(){
+    if (Input.GetKey(shrineKey))
+        // Or also
+        //if(currentChest && Input.GetKeyDown(KeyCode.E)) 
+        {
+            Debug.Log("Input detected!");
+        }
+        yield return null;
+    }
+    */
     #endregion
 
     
