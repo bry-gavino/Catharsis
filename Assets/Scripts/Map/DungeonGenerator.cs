@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DungeonGenerator : MonoBehaviour {
     [Tooltip("Holds the information of a cell in the maze.")]
@@ -33,16 +35,46 @@ public class DungeonGenerator : MonoBehaviour {
     [Tooltip("List of all rooms generated.")]
     public List<GameObject> activeRooms;
 
-    //Anthony edit - to make a basic room but with a shrine
-    [Tooltip("Starting Room/Shrine Room")] [SerializeField]
-    public GameObject StarterRoom;
+    [SerializeField] [Tooltip("Enemy Prefabs.")]
+    private List<GameObject> enemyTypes;
+
+    [Tooltip("Delete all of these on scene transition.")]
+    private List<GameObject> spawnedEnemies;
 
     // Start is called before the first frame update
     void Start() {
         activeRooms = new List<GameObject>();
+        spawnedEnemies = new List<GameObject>();
         endPoint = this.transform.Find("EndPoint").gameObject;
         MazeGenerator();
         PopulateRooms();
+    }
+
+    private void OnDestroy() {
+        while (spawnedEnemies.Count > 0) {
+            GameObject enemy = spawnedEnemies[0];
+            spawnedEnemies.RemoveAt(0);
+            Destroy(enemy);
+        }
+    }
+
+    /**
+     * Instantiates an enemy of random type at this position.
+     */
+    public void CreateEnemy(Vector3 position) {
+        int enemyIndex = Random.Range(0, enemyTypes.Count);
+        Vector3 enemyPosition = new Vector3(position.x, position.y, position.z);
+        GameObject enemyPrefab = enemyTypes[enemyIndex];
+        spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
+    }
+
+    public void SetupRoom(GameObject room) {
+        Room.RoomType type = room.GetComponent<Room>().myType;
+        if (Room.RoomType.Enemy == type) {
+            /* Spawns in the center of room */
+            CreateEnemy(room.transform.position);
+        }
+        // other room type conditions here
     }
 
     /**
@@ -54,26 +86,42 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
-            currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
+            currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false); //disable shrine in beginning
+            Room.RoomType type = Room.RoomType.Uninitialized;
+            float color_dampening_constant = 0.95f;
             if (i == 0) {
                 // start room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.blue;
-                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(true);
+                currentGround.GetComponent<SpriteRenderer>().color = Color.blue  * color_dampening_constant;
+                type = Room.RoomType.Start;
+                //Adding shrine merge - first level gets shrine for now
+                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
+            }
+            else if (i == 1) {
+                // second room
+                currentGround.GetComponent<SpriteRenderer>().color = Color.green  * color_dampening_constant;
+                type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
                 // last room -> boss room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.red;
+                currentGround.GetComponent<SpriteRenderer>().color = Color.red * color_dampening_constant;
                 // puts EndPoint in last room
                 Vector3 position = currentRoom.transform.position;
                 endPoint.transform.position = position;
+                type = Room.RoomType.End;
             }
             else {
                 // every other room...
+                // randomly put in enemies or treasure
                 // rainbow mode
-                currentGround.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f),
+                var color = new Color(Random.Range(0f, 1f),
                     Random.Range(0f, 1f),
                     Random.Range(0f, 1f));
+                currentGround.GetComponent<SpriteRenderer>().color = color * color_dampening_constant;
+                type = Room.RoomType.Enemy;
             }
+
+            currentRoom.GetComponent<Room>().myType = type;
+            SetupRoom(currentRoom);
         }
     }
 

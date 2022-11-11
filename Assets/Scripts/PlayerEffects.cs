@@ -12,6 +12,8 @@ public class PlayerEffects : MonoBehaviour
     // Using int values to set state:
     //  0 --> nothing
     //  1 --> dash
+    //  2 --> attack
+    //  3 --> hurt
 
 
 

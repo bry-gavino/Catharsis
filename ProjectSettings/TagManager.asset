@@ -16,8 +16,13 @@ TagManager:
   - GameManager
   - MapGenerator
   - EndPoint
+<<<<<<< HEAD
   - Shrine
   - ShrineShop
+=======
+  - EnemyHurtBox
+  - EnemyBody
+>>>>>>> db11495ebe13d827ea7621e592d4a476896f76a7
   layers:
   - Default
   - TransparentFX
@@ -29,7 +34,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - EnemyBody
   - 
   - 
   - 
@@ -67,6 +72,11 @@ TagManager:
   - name: Player
     uniqueID: 2614551005
     locked: 0
+<<<<<<< HEAD
   - name: ShrineMenu
     uniqueID: 17756983
+=======
+  - name: UI
+    uniqueID: 301874699
+>>>>>>> db11495ebe13d827ea7621e592d4a476896f76a7
     locked: 0

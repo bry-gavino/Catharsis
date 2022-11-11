@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // TODO:
-    // - tag GameManager instance with GameController
-
+    
     public static GameManager Instance = null;
     public static GameObject levelSceneInstance;
     public static GameObject mapGeneratorInstance;
-    public static GameObject soundManagerInstance;
 
     [Tooltip("Level Transition Screen")] [SerializeField]
     public GameObject levelTransitionScreen;
@@ -41,6 +38,7 @@ public class GameManager : MonoBehaviour
     public float transitionLifeTimeLength = 3.0f;
     bool finishingTransition = false;
     bool setupLevel = false;
+    public Vector2 mapSize = new Vector2(2, 3);
     #endregion
 
 
@@ -78,7 +76,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Restart Run from beginning.");
         mapGeneratorInstance = Instantiate(mapGenerator);
-        mapGeneratorInstance.GetComponent<DungeonGenerator>().size = new Vector2(2, 3);
+        mapGeneratorInstance.GetComponent<DungeonGenerator>().size = mapSize;
         sleepPlayers(); // Players are initially immobile
         bossesEncountered = 0;
         level = 1;
@@ -88,11 +86,9 @@ public class GameManager : MonoBehaviour
 
         changeScreenInGame();
         finishTransition();
-        soundManagerInstance.GetComponent<SoundManager>().playMusic(); // starts OST
     }
     // call this to start new level 
     public void transitionToLevelScreen() {
-        Debug.Log("YEET");
         sleepPlayers(); // stop players
         startTransition();
         setupLevel = true; // notifies transitionLifeTime timer to set up level
@@ -136,6 +132,7 @@ public class GameManager : MonoBehaviour
 
     #region Level_transition
     public void startTransition() {
+        
         if (!lvlSceneInst) {
             lvlSceneInst = true;
             levelSceneInstance = Instantiate(levelTransitionScreen);
@@ -168,7 +165,7 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(gameObject);
-        soundManagerInstance = GameObject.Find("SoundManager");
+        //soundManagerInstance = GameObject.Find("SoundManager");
 
         lvlSceneInst = false;
         

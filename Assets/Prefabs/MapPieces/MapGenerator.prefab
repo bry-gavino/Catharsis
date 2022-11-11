@@ -51,6 +51,9 @@ MonoBehaviour:
   offset: {x: 16, y: 16}
   startPos: 0
   activeRooms: []
+  enemyTypes:
+  - {fileID: 6808713095878908607, guid: de21d9ee5976143f084b33af360fdc07, type: 3}
+  - {fileID: 6808713095878908607, guid: b5e9c57ee568149ccb82203ec050b6b3, type: 3}
 --- !u!1001 &2840785865245984354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61,6 +64,18 @@ PrefabInstance:
     - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -101,6 +116,10 @@ PrefabInstance:
     - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458905244413348893, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2458905244413348894, guid: 78acf36c8a76c4b6d9d9f2b7b7e5540a, type: 3}
       propertyPath: m_Name
