@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour {
     #region player sounds
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour {
     private AudioClip Attack2FX;
     [SerializeField] [Tooltip("Sound when you hurt.")]
     private AudioClip HurtFX;
+    [SerializeField] [Tooltip("Sound when you level up.")]
+    private AudioClip LvlUpFX;
 
     [SerializeField] [Tooltip("HurtBox Prefab")]
     private GameObject HurtBoxPrefab;
@@ -20,6 +23,7 @@ public class PlayerController : MonoBehaviour {
     private MusicManager musicManager;
     private Slider HPSlider;
     private Slider XPSlider;
+    private TextMeshProUGUI LevelTxt;
     #endregion
 
     #region player info variables
@@ -39,7 +43,7 @@ public class PlayerController : MonoBehaviour {
     #region xp variables
     float exp = 0;
     float skillPoints = 0;
-    public float currLevel = 1;
+    public int currLevel = 1;
 
     float expThreshold;
     #endregion
@@ -135,6 +139,7 @@ public class PlayerController : MonoBehaviour {
 
             HPSlider = GameObject.Find("HealthP1").GetComponent<Slider>();
             XPSlider = GameObject.Find("ExpP1").GetComponent<Slider>();
+            LevelTxt = GameObject.Find("LevelP1").GetComponent<TextMeshProUGUI>();
         }
         else if (playerID == 2) {
             leftKey = "k";
@@ -153,6 +158,7 @@ public class PlayerController : MonoBehaviour {
         expThreshold = 10;
         HPSlider.value = currHealth / maxHealth;
         XPSlider.value = exp / expThreshold;
+        LevelTxt.text = currLevel.ToString();
     }
 
     // called once per frame
@@ -395,16 +401,18 @@ public class PlayerController : MonoBehaviour {
     public void add_xp(int add) {
         exp += add;
         // level up
+        level_up();
+        XPSlider.value = exp / expThreshold;
+    }
+    void level_up() {
         if ((expThreshold - exp) <= 0) {
+            musicManager.playClip(LvlUpFX, 1);
             exp = exp - expThreshold;
             skillPoints += 1;
             currLevel += 1;
             expThreshold = expThreshold * 1.1f;
         }
-        XPSlider.value = exp / expThreshold;
-    }
-    void level_up() {
-
+        LevelTxt.text = currLevel.ToString ();
     }
     #endregion
 
