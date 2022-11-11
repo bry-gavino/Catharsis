@@ -87,7 +87,7 @@ public class DungeonGenerator : MonoBehaviour {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
             Room.RoomType type = Room.RoomType.Uninitialized;
-            float color_dampening_constant = 0.8f;
+            float color_dampening_constant = 0.95f;
             if (i == 0) {
                 // start room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue  * color_dampening_constant;
