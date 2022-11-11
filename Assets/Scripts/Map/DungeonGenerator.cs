@@ -34,7 +34,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     [Tooltip("List of all rooms generated.")]
     public List<GameObject> activeRooms;
-    
+
     [SerializeField] [Tooltip("Enemy Prefabs.")]
     private List<GameObject> enemyTypes;
 
@@ -51,8 +51,9 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        foreach (var enemy in spawnedEnemies)
-        {
+        while (spawnedEnemies.Count > 0) {
+            GameObject enemy = spawnedEnemies[0];
+            spawnedEnemies.RemoveAt(0);
             Destroy(enemy);
         }
     }
@@ -66,7 +67,7 @@ public class DungeonGenerator : MonoBehaviour {
         GameObject enemyPrefab = enemyTypes[enemyIndex];
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
     }
-    
+
     public void SetupRoom(GameObject room) {
         Room.RoomType type = room.GetComponent<Room>().myType;
         if (Room.RoomType.Enemy == type) {
@@ -75,7 +76,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
         // other room type conditions here
     }
-    
+
     /**
      * Now that everything is generated, can do post-processing here.
      * Make the last room (bottom right) the boss room, choose a spawn room (top left or some other spot).
