@@ -45,7 +45,7 @@ public class EnemyHurtBox : MonoBehaviour
     public void HurtPlayer(float val) {
         if (playerInside) {
             // ADJUST HERE FOR PLAYER 2 COMPATIBILITY
-            GameObject.Find("TestPlayer").GetComponent<PlayerController>().TakeDamage(val, transform.position);
+            GameObject.Find("Player1").GetComponent<PlayerController>().TakeDamage(val, transform.position);
         }    
     }
 }

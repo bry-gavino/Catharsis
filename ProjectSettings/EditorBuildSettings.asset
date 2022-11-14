@@ -12,15 +12,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Start.unity
     guid: a293b6e70ba1545c5928c80a1442ae1e
   - enabled: 0
-    path: Assets/Scenes/Deprecated/MusicTest.unity
-    guid: 67fb01b2507624baebfb051fea607940
-  - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/LoseScreen.unity
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/LoseScreen.unity
     guid: 6f62120c91c79487a9642c0e765f049f
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: c95300dc0d6dc48a7a40967013167ad3
   m_configObjects: {}

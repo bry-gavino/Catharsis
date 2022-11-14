@@ -14,7 +14,7 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
         txtComponent = (GetComponentInChildren(typeof(TextMeshProUGUI)) as TextMeshProUGUI);
-        pController = GameObject.Find("TestPlayer").GetComponent<PlayerController>();
+        pController = GameObject.Find("Player1").GetComponent<PlayerController>(); // FIX FOR 2 PLAYERS
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         txtComponent.text = "PLAYER 1" 
                             + "\nPLAYER LEVEL: " + pController.currLevel

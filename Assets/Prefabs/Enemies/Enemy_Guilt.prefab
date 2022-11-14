@@ -155,7 +155,7 @@ MonoBehaviour:
   setupLength: 0.933
   attackLength: 2.5
   attackSpeed: 0
-  maxHealth: 2
+  maxHealth: 4
   xp_val: 4
   healthpot: {fileID: 0}
 --- !u!95 &6808713095878908593

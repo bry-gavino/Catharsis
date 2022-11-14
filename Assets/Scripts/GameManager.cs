@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
     }
     public void sleepPlayers() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+        PlayerController pController;
         foreach (GameObject p in Players) {
             p.GetComponent<PlayerController>().disableUserInput();
         }
