@@ -96,9 +96,6 @@ public class EnemyScript : MonoBehaviour
         currHealth = maxHealth;
         hurtAttackTimer = Player.GetComponent<PlayerController>().getAttackLength();
         hurtDashTimer = Player.GetComponent<PlayerController>().getDashLength();
-
-        if (enemyType == "Ignorance") {
-        }
     }
 
     private void Update(){
@@ -113,14 +110,23 @@ public class EnemyScript : MonoBehaviour
                 if (enemyType == "Ignorance") {
                     Vector2 direction = Player.transform.position - transform.position;
                     EnemyRB.velocity = direction.normalized * attackSpeed;
+                } else if (enemyType == "Guilt") {
+                    EnemyRB.velocity = Vector2.zero;
                 } else {
                     EnemyRB.velocity = currDirection * attackSpeed;
                 }
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
-                Effects.HandleDirection(EnemyRB.velocity, true);
+                if (enemyType == "Guilt") {
+                    Effects.HandleDirection(new Vector2(0, -1), true);
+                } else {
+                    Effects.HandleDirection(EnemyRB.velocity, true);
+                }
             }
         }
         if (setupTimer > 0.0f) {
+            if (enemyType == "Guilt") {
+                EnemyRB.velocity = Vector2.zero;
+            }
             isSetup = true;
             setupTimer -= Time.deltaTime;
             if (setupTimer <= 0.0f) {
@@ -193,7 +199,7 @@ public class EnemyScript : MonoBehaviour
             Vector2 direction = Player.transform.position - transform.position;
             EnemyRB.velocity = direction.normalized * movespeed;
             currDirection = direction.normalized;
-            if (enemyType == "Ignorance") {
+            if (enemyType == "Ignorance" || enemyType == "Guilt") {
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(Vector2.zero);
             }
             else {
@@ -260,7 +266,11 @@ public class EnemyScript : MonoBehaviour
             hurtTimer = hurtAttackTimer;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position).normalized;
-        Effects.HandleDirection(EnemyRB.velocity, true);
+        if (enemyType == "Guilt") {
+            Effects.HandleDirection(new Vector2(0, -1), true);
+        } else {
+            Effects.HandleDirection(EnemyRB.velocity, true);
+        }
     }
 
     private void Die(){
