@@ -241,8 +241,7 @@ public class PlayerController : MonoBehaviour {
             }
         } else if (isDashing) {
             Effects.GetComponent<PlayerEffects>().SetState(1);
-        }
-        else {
+        } else {
             Effects.GetComponent<PlayerEffects>().SetState(0);
         }
     }
@@ -318,8 +317,7 @@ public class PlayerController : MonoBehaviour {
     private void Attacking() {
         if (isAttacking) {
             
-            HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection);
-            // HurtBox.GetComponent<PlayerHurtBox>().HurtAll(Damage, transform);   
+            HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection); 
         } else if (HurtBox) {
             Destroy(HurtBox);
         }
@@ -335,7 +333,7 @@ public class PlayerController : MonoBehaviour {
         Debug.Log("combo: "+combo);
         // attackTimer = attackSpeed;
         dashLengthTimer = attackLunge; // propels character forward (like a lunge)
-        dashCooldownTimer = dashCooldown;
+        dashCooldownTimer = attackLength;
         attackTimer = attackLength;
         attackCooldownTimer = attackCooldown;
         isDashing = true;
@@ -345,12 +343,14 @@ public class PlayerController : MonoBehaviour {
 
     public void OnDashTriggerEnter2D(Collider2D col) {
         if(isDashing && !isAttacking) {
-            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/4, PlayerRB.transform, isDashing, playerID, combo);
+            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage/2, PlayerRB.transform, isDashing, playerID, combo);
         }
     } 
     public void OnAttackTriggerEnter2D(Collider2D col) {
         if(isAttacking) {
-            col.gameObject.GetComponent<EnemyScript>().GetHit(Damage, PlayerRB.transform, isDashing, playerID, combo);
+            float damageCombo = Damage + Damage*((combo-1)/3.0f);
+            Debug.Log("damageCombo: "+damageCombo);
+            col.gameObject.GetComponent<EnemyScript>().GetHit(damageCombo, PlayerRB.transform, isDashing, playerID, combo);
         }
     } 
 
@@ -428,7 +428,18 @@ public class PlayerController : MonoBehaviour {
             exp = exp - expThreshold;
             skillPoints += 1;
             currLevel += 1;
-            expThreshold = expThreshold * 1.1f;
+            expThreshold = expThreshold * 1.5f;
+
+            Damage += (0.01f + ((100 - currLevel) * 0.001f));
+            // Debug.Log("New Damage: "+Damage);
+            maxHealth += (0.01f + ((100 - currLevel) * 0.001f));
+            // Debug.Log("New maxHealth: "+maxHealth);
+            currHealth += ((1/10) * maxHealth);
+            if (currHealth > maxHealth) {
+                currHealth = maxHealth;
+            }
+            // Debug.Log("New currHealth: "+currHealth);
+            HPSlider.value = currHealth / maxHealth;
         }
         LevelTxt.text = currLevel.ToString();
     }
@@ -448,7 +459,9 @@ public class PlayerController : MonoBehaviour {
 
     public void disableUserInput() {
         isSleeping = true;
-        PlayerRB.velocity = Vector2.zero;
+        if (PlayerRB != null) {
+            PlayerRB.velocity = Vector2.zero;
+        }
     }
 
     #region shrineScript

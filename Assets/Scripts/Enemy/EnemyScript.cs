@@ -91,14 +91,11 @@ public class EnemyScript : MonoBehaviour
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
         Effects = (GetComponentInChildren(typeof(EnemyEffects)) as EnemyEffects);
         EnemyRB = GetComponent<Rigidbody2D>();
-        Player = GameObject.Find("TestPlayer"); // ADJUST FOR 2 PLAYER
+        Player = GameObject.Find("Player1"); // ADJUST FOR 2 PLAYER
         anim = GetComponent<Animator>();
         currHealth = maxHealth;
         hurtAttackTimer = Player.GetComponent<PlayerController>().getAttackLength();
         hurtDashTimer = Player.GetComponent<PlayerController>().getDashLength();
-
-        if (enemyType == "Ignorance") {
-        }
     }
 
     private void Update(){
@@ -113,14 +110,23 @@ public class EnemyScript : MonoBehaviour
                 if (enemyType == "Ignorance") {
                     Vector2 direction = Player.transform.position - transform.position;
                     EnemyRB.velocity = direction.normalized * attackSpeed;
+                } else if (enemyType == "Guilt") {
+                    EnemyRB.velocity = Vector2.zero;
                 } else {
                     EnemyRB.velocity = currDirection * attackSpeed;
                 }
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
-                Effects.HandleDirection(EnemyRB.velocity, true);
+                if (enemyType == "Guilt") {
+                    Effects.HandleDirection(new Vector2(0, -1), true);
+                } else {
+                    Effects.HandleDirection(EnemyRB.velocity, true);
+                }
             }
         }
         if (setupTimer > 0.0f) {
+            if (enemyType == "Guilt") {
+                EnemyRB.velocity = Vector2.zero;
+            }
             isSetup = true;
             setupTimer -= Time.deltaTime;
             if (setupTimer <= 0.0f) {
@@ -193,7 +199,7 @@ public class EnemyScript : MonoBehaviour
             Vector2 direction = Player.transform.position - transform.position;
             EnemyRB.velocity = direction.normalized * movespeed;
             currDirection = direction.normalized;
-            if (enemyType == "Ignorance") {
+            if (enemyType == "Ignorance" || enemyType == "Guilt") {
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HandleDirection(Vector2.zero);
             }
             else {
@@ -260,13 +266,17 @@ public class EnemyScript : MonoBehaviour
             hurtTimer = hurtAttackTimer;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position).normalized;
-        Effects.HandleDirection(EnemyRB.velocity, true);
+        if (enemyType == "Guilt") {
+            Effects.HandleDirection(new Vector2(0, -1), true);
+        } else {
+            Effects.HandleDirection(EnemyRB.velocity, true);
+        }
     }
 
     private void Die(){
         if (PlayerIDHitBy == 1) {
-            GameObject.Find("TestPlayer").GetComponent<PlayerController>().add_xp(xp_val); // FIX FOR PLAYER 1
-            GameObject.Find("TestPlayer").GetComponent<PlayerController>().addEnemyDefeated(); // FIX FOR PLAYER 1
+            GameObject.Find("Player1").GetComponent<PlayerController>().add_xp(xp_val); // FIX FOR PLAYER 1
+            GameObject.Find("Player1").GetComponent<PlayerController>().addEnemyDefeated(); // FIX FOR PLAYER 1
         } else if (PlayerIDHitBy == 2) {} // FIX FOR PLAYER 2
         Instantiate(DieObject, transform.position, transform.rotation);
         Destroy(this.gameObject);
