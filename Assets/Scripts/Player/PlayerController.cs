@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] [Tooltip("HurtBox Prefab")]
     private GameObject HurtBoxPrefab;
+    [SerializeField] [Tooltip("LevelUp Prefab")]
+    private GameObject LevelUpPrefab;
 
     private MusicManager musicManager;
     private Slider HPSlider;
@@ -424,6 +426,7 @@ public class PlayerController : MonoBehaviour {
     }
     void level_up() {
         if ((expThreshold - exp) <= 0) {
+            Instantiate(LevelUpPrefab, transform.position, transform.rotation, transform);
             musicManager.playClip(LvlUpFX, 1);
             exp = exp - expThreshold;
             skillPoints += 1;
@@ -440,8 +443,8 @@ public class PlayerController : MonoBehaviour {
             }
             // Debug.Log("New currHealth: "+currHealth);
             HPSlider.value = currHealth / maxHealth;
+            LevelTxt.text = currLevel.ToString();
         }
-        LevelTxt.text = currLevel.ToString();
     }
     #endregion
 

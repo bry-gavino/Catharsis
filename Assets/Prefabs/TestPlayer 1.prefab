@@ -300,6 +300,7 @@ MonoBehaviour:
   HurtFX: {fileID: 8300000, guid: 8a2b1d9a7aeb74ec0ade79270a7d03b7, type: 3}
   LvlUpFX: {fileID: 8300000, guid: 721af139b7d214fed830f171a5f75cc6, type: 3}
   HurtBoxPrefab: {fileID: 2608297156212933575, guid: 16f16007d42674f66815e5559a6578b7, type: 3}
+  LevelUpPrefab: {fileID: 2802877041851279180, guid: 398914e59345c4d93863b210a1dbe1c2, type: 3}
   playerID: 1
   enemiesDefeated: 0
   currLevel: 1
