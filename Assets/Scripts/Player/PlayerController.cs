@@ -16,9 +16,17 @@ public class PlayerController : MonoBehaviour {
     private AudioClip HurtFX;
     [SerializeField] [Tooltip("Sound when you level up.")]
     private AudioClip LvlUpFX;
+    [SerializeField] [Tooltip("Sound when you charge1 up.")]
+    private AudioClip Charge1FX;
+    [SerializeField] [Tooltip("Sound when you charge2 up.")]
+    private AudioClip Charge2FX;
+    [SerializeField] [Tooltip("Sound when you release.")]
+    private AudioClip ReleaseFX;
 
     [SerializeField] [Tooltip("HurtBox Prefab")]
     private GameObject HurtBoxPrefab;
+    [SerializeField] [Tooltip("ChargeBox Prefab")]
+    private GameObject ChargeBoxPrefab;
     [SerializeField] [Tooltip("LevelUp Prefab")]
     private GameObject LevelUpPrefab;
 
@@ -53,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 
     #region movement variables
     public float moveSpeed = 8;
-    float currSpeed;
+    private float baseMoveSpeed;
     float x_input;
     float y_input;
     Vector2 fromHurt;
@@ -92,11 +100,21 @@ public class PlayerController : MonoBehaviour {
     float attackCooldown = 0.7f;
     float attackCooldownTimer = 0.0f;
     int combo = 0; // 0 -> 1 -> 2 -> 3 -> 1/0
+    float lenHoldingAttack = 0.0f;
+    bool chargingAttack = false;
+    bool releasingChargeAttack = false;
+    float chargeAttackLength = 0.53f;
+    float chargeAttackCooldown = 1.0f;
+    int chargeOrder = 1;
+    float chargeOrderLength = 0.3f;
+    float chargeOrderTimer = 0.0f;
+    float chargeSoundTimer = 0.0f;
     #endregion
 
     #region physics
     Rigidbody2D PlayerRB;
     GameObject HurtBox;
+    GameObject ChargeBox;
     GameObject Effects;
     #endregion
 
@@ -130,6 +148,7 @@ public class PlayerController : MonoBehaviour {
         // HurtBox = GameObject.Find("PlayerHurtBox");
         Effects = GameObject.Find("PlayerEffects");
         PlayerRB = GetComponent<Rigidbody2D>();
+        baseMoveSpeed = moveSpeed;
 
         anim = GetComponent<Animator>();
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
@@ -137,7 +156,6 @@ public class PlayerController : MonoBehaviour {
         //Anthony Addition - cur player gameobject for shrine
         cur_player = this.gameObject;
 
-        // currSpeed = moveSpeed;
         currHealth = maxHealth;
         if (playerID == 1) {
             leftKey = "a";
@@ -196,6 +214,8 @@ public class PlayerController : MonoBehaviour {
         dashLengthTimer -= Time.deltaTime;
         hurtCooldownTimer -= Time.deltaTime;
         pushBackLengthTimer -= Time.deltaTime;
+        chargeOrderTimer -= Time.deltaTime;
+        chargeSoundTimer -= Time.deltaTime;
         // HANDLE TIMER
         if (dashLengthTimer <= 0) {
             isDashing = false;
@@ -206,8 +226,22 @@ public class PlayerController : MonoBehaviour {
             isPushed = false;
         } if (attackTimer <= 0) {
             isAttacking = false;
+            releasingChargeAttack = false;
         } if (attackCooldownTimer <= 0) {
             combo = 0; // resets combo to 0
+        } if (chargeOrderTimer <= 0) {
+            chargeOrder = 2;
+        } if (chargingAttack && chargeSoundTimer <= 0) {
+            musicManager.playClip(Charge2FX, 1);
+            chargeSoundTimer = 0.55f;
+        }
+        if (Input.GetKey(attackKey)) {
+            lenHoldingAttack += Time.deltaTime;
+        } else {
+            lenHoldingAttack = 0.0f;
+            if (chargingAttack) {
+                ReleaseChargeAttack();
+            }
         }
     }
 
@@ -219,7 +253,7 @@ public class PlayerController : MonoBehaviour {
                 } else if (combo == 3 && attackCooldownTimer <= 0) {
                     Attack();
                 }
-            } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0)) {
+            } if (Input.GetKey(dashKey) && (dashCooldownTimer <= 0) && !chargingAttack) {
                 Dash();
             }
         }
@@ -233,6 +267,14 @@ public class PlayerController : MonoBehaviour {
     private void HandleState() {
         if (isPushed) {
             Effects.GetComponent<PlayerEffects>().SetState(3);
+        } else if (releasingChargeAttack) {
+            Effects.GetComponent<PlayerEffects>().SetState(12);
+        } else if (chargingAttack) {
+            if (chargeOrder == 1) {
+                Effects.GetComponent<PlayerEffects>().SetState(10);
+            } else {
+                Effects.GetComponent<PlayerEffects>().SetState(11);
+            }
         } else if (isAttacking) {
             if (combo == 1) {
                 Effects.GetComponent<PlayerEffects>().SetState(2);
@@ -284,12 +326,16 @@ public class PlayerController : MonoBehaviour {
 
                 if (isDashing) {
                     PlayerRB.velocity = currDirection * dashSpeed;
-                } else if (isAttacking) {
+                } else if (isAttacking && !releasingChargeAttack) {
                     PlayerRB.velocity = oldDirection * (moveSpeed/2);
                 } else if (anim.GetBool("Moving")) {
                     PlayerRB.velocity = currDirection * moveSpeed;
                 } else {
                     PlayerRB.velocity = Vector2.zero;
+                }
+                if (chargingAttack) {
+                    PlayerRB.velocity = PlayerRB.velocity/3;
+                    Debug.Log(PlayerRB.velocity);
                 }
                 Effects.GetComponent<PlayerEffects>().HandleDirection(currDirection);
             }
@@ -317,7 +363,7 @@ public class PlayerController : MonoBehaviour {
     #region attack funcs
 
     private void Attacking() {
-        if (isAttacking) {
+        if (isAttacking && !releasingChargeAttack) {
             
             HurtBox.GetComponent<PlayerHurtBox>().HandleDirection(currDirection); 
         } else if (HurtBox) {
@@ -326,21 +372,42 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Attack() {
-        musicManager.playClip(AttackFX, 1);
-        if (combo == 3) {
-            combo = 1;
+        if (lenHoldingAttack >= attackLength) { // CHARGED ATTACK
+            if (!chargingAttack) {
+                chargeOrderTimer = chargeOrderLength;
+                chargeOrder = 1;
+                musicManager.playClip(Charge1FX, 1);
+            }
+            chargingAttack = true;
+            Debug.Log("CHARGING");
         } else {
-            combo += 1;
+            musicManager.playClip(AttackFX, 1);
+            if (combo == 3) {
+                combo = 1;
+            } else {
+                combo += 1;
+            }
+            Debug.Log("combo: "+combo);
+            dashLengthTimer = attackLunge; // propels character forward (like a lunge)
+            dashCooldownTimer = attackLength;
+            attackTimer = attackLength;
+            attackCooldownTimer = attackCooldown;
+            isDashing = true;
+            isAttacking = true;
+            HurtBox = Instantiate(HurtBoxPrefab, transform.localPosition, Quaternion.identity, transform);
         }
-        Debug.Log("combo: "+combo);
-        // attackTimer = attackSpeed;
-        dashLengthTimer = attackLunge; // propels character forward (like a lunge)
-        dashCooldownTimer = attackLength;
-        attackTimer = attackLength;
-        attackCooldownTimer = attackCooldown;
-        isDashing = true;
+    }
+    private void ReleaseChargeAttack() {
+        musicManager.playClip(ReleaseFX, 1);
+        chargingAttack = false;
+        releasingChargeAttack = true;
+        Debug.Log("RELEASE");
+        attackTimer = chargeAttackLength;
+        attackCooldownTimer = chargeAttackCooldown;
         isAttacking = true;
-        HurtBox = Instantiate(HurtBoxPrefab, transform.localPosition, Quaternion.identity, transform);
+        chargeOrder = 1;
+        // FIX 
+        ChargeBox = Instantiate(ChargeBoxPrefab, transform.localPosition, Quaternion.identity, transform);
     }
 
     public void OnDashTriggerEnter2D(Collider2D col) {
@@ -352,6 +419,9 @@ public class PlayerController : MonoBehaviour {
         if(isAttacking) {
             float damageCombo = Damage + Damage*((combo-1)/3.0f);
             Debug.Log("damageCombo: "+damageCombo);
+            if (releasingChargeAttack) {
+                damageCombo = Damage*2;
+            }
             col.gameObject.GetComponent<EnemyScript>().GetHit(damageCombo, PlayerRB.transform, isDashing, playerID, combo);
         }
     } 
@@ -433,11 +503,11 @@ public class PlayerController : MonoBehaviour {
             currLevel += 1;
             expThreshold = expThreshold * 1.5f;
 
-            Damage += (0.01f + ((100 - currLevel) * 0.001f));
+            Damage = Damage + (0.01f + ((100 - currLevel) * 0.001f));
             // Debug.Log("New Damage: "+Damage);
-            maxHealth += (0.01f + ((100 - currLevel) * 0.001f));
+            maxHealth = maxHealth + (0.01f + ((100 - currLevel) * 0.001f));
             // Debug.Log("New maxHealth: "+maxHealth);
-            currHealth += ((1/10) * maxHealth);
+            currHealth = currHealth + ((1/3) * maxHealth);
             if (currHealth > maxHealth) {
                 currHealth = maxHealth;
             }

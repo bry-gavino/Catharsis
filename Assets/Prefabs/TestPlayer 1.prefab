@@ -299,7 +299,11 @@ MonoBehaviour:
   Attack2FX: {fileID: 0}
   HurtFX: {fileID: 8300000, guid: 8a2b1d9a7aeb74ec0ade79270a7d03b7, type: 3}
   LvlUpFX: {fileID: 8300000, guid: 721af139b7d214fed830f171a5f75cc6, type: 3}
+  Charge1FX: {fileID: 8300000, guid: 4f0300c4389f54a8caccadbe25758b52, type: 3}
+  Charge2FX: {fileID: 8300000, guid: f6e2acf4906184f639188f5a210c9b21, type: 3}
+  ReleaseFX: {fileID: 8300000, guid: 1e026d7dd4c4e457ab0f9ca10e180cd4, type: 3}
   HurtBoxPrefab: {fileID: 2608297156212933575, guid: 16f16007d42674f66815e5559a6578b7, type: 3}
+  ChargeBoxPrefab: {fileID: 0}
   LevelUpPrefab: {fileID: 2802877041851279180, guid: 398914e59345c4d93863b210a1dbe1c2, type: 3}
   playerID: 1
   enemiesDefeated: 0

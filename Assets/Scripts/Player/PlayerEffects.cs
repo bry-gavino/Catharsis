@@ -14,6 +14,10 @@ public class PlayerEffects : MonoBehaviour
     //  1 --> dash
     //  2 --> attack
     //  3 --> hurt
+    //  10 --> charge
+    //  11 --> charge2 
+    //  12 --> longAttack
+    int state = 0;
 
 
 
@@ -32,20 +36,20 @@ public class PlayerEffects : MonoBehaviour
 
 
     public void HandleDirection(Vector2 currDirection) {
-        // float angle = Vector2.Angle(Vector2.zero, currDirection);
         float rad = Mathf.Atan2(currDirection.x, -currDirection.y);
         float deg = rad * Mathf.Rad2Deg;
 
         transform.eulerAngles = new Vector3 (0, 0, deg);
     }
 
-    void OnCollisionEnter2D(Collision2D col) {
-        if(col.gameObject.tag == "Enemy"){
-            // hurt enemy if attacking
-        }
-    }
+    // void OnCollisionEnter2D(Collision2D col) {
+    //     if(col.gameObject.tag == "Enemy"){
+    //         // hurt enemy if attacking
+    //     }
+    // }
 
     public void SetState(int s) {
         anim.SetInteger("state", s);
+        state = s;
     }
 }
