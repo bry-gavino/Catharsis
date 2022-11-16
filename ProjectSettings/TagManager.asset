@@ -3,7 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - PlayerHurtBox
+  - EnemyBody
+  - EnemyHurtBox
+  - Rooms
+  - Room
+  - Destroyer
+  - SpawnPoint
+  - GameManager
+  - MapGenerator
+  - EndPoint
+  - ShrineShop
+  - Walls
+  - Corners
+  - Shrine
   layers:
   - Default
   - TransparentFX
@@ -40,4 +55,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI layer
+    uniqueID: 3444744013
     locked: 0

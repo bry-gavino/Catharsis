@@ -540,9 +540,11 @@ public class PlayerController : MonoBehaviour {
     #region shrineScript
     public void shrineActivate()
     {
-        GameObject[] lis = GameObject.FindGameObjectsWithTag("ShrineShop");
-            disableUserInput();
-            lis[0].GetComponent<NEWShrineScript>().enterShrine(cur_player);
+        GameObject lis = GameObject.Find("ShrineShop");
+        //disableUserInput();
+        Debug.Log(cur_player);
+        Debug.Log(lis);
+        lis.GetComponent<NEWShrineScript>().enterShrine(cur_player);
         
     }
     /**

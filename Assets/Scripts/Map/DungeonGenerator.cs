@@ -94,7 +94,7 @@ public class DungeonGenerator : MonoBehaviour {
                 currentGround.GetComponent<SpriteRenderer>().color = Color.blue  * color_dampening_constant;
                 type = Room.RoomType.Start;
                 //Adding shrine merge - first level gets shrine for now
-                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
+                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(true);
             }
             else if (i == 1) {
                 // second room

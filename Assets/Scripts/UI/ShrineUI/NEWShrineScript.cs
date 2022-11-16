@@ -24,6 +24,7 @@ public class NEWShrineScript : MonoBehaviour
 		powerShrine = this;
         curPowerID = 1; // wistfullness selected
 		FillList ();
+        this.gameObject.SetActive(true);
         // added for disabling Shrine Script at start
         //myDialogBalloon.gameObject.SetActive(false);
 
@@ -89,16 +90,16 @@ public class NEWShrineScript : MonoBehaviour
 
     public void exitShrine()
     {
-        powerShrine.gameObject.SetActive(false);
-        player.GetComponent<PlayerController>().enableUserInput();
+        GameObject.Find("Player").GetComponent<PlayerController>().enableUserInput();
         Debug.Log("Closing Shrine");
     }
 
     public void enterShrine(GameObject player)
     {
         Debug.Log("Opening Shrine");
-        powerShrine.gameObject.SetActive(true);
         this.player = player;
+        exitShrine();
+        //powerShrine.gameObject.SetActive(true);
 
     }
 	// Update is called once per frame
