@@ -37,6 +37,8 @@ public class EnemyScript : MonoBehaviour
     private float hurtTimer = 0.0f;
     float hurtAttackTimer;
     float hurtDashTimer;
+    public float graceLength = 0.0f;
+    private float graceTimer = 0.0f;
     Vector2 currDirection;
     #endregion
 
@@ -100,6 +102,15 @@ public class EnemyScript : MonoBehaviour
 
     private void Update(){
         // Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
+        if (graceTimer > 0.0f) {
+            graceTimer -= Time.deltaTime;
+            if (graceTimer <= 0.0f) {
+                graceTimer = 0.0f;
+                if ((GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).playerInside) {
+                    PlayerInHurtBox();
+                }
+            }
+        }
         if (attackTimer > 0.0f) {
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0.0f) {
@@ -125,6 +136,7 @@ public class EnemyScript : MonoBehaviour
         }
         if (setupTimer > 0.0f) {
             if (enemyType == "Guilt") {
+                // if (coolDown)
                 EnemyRB.velocity = Vector2.zero;
             }
             isSetup = true;
@@ -216,6 +228,7 @@ public class EnemyScript : MonoBehaviour
         musicManager.playClip(AttackFX, 1); // fix for enemyType
         isAttacking = true;
         attackTimer = attackLength;
+        graceTimer = graceLength;
     }
     #endregion
 
@@ -226,10 +239,12 @@ public class EnemyScript : MonoBehaviour
 
 
     public void PlayerInHurtBox() {
-        musicManager.playClip(SetupFX, 1);
-        setupTimer = setupLength;
-        coolDown = setupLength;
-        EnemyRB.velocity = Vector2.zero;
+        if (graceTimer <= 0.0f) {
+            musicManager.playClip(SetupFX, 1);
+            setupTimer = setupLength;
+            coolDown = setupLength;
+            EnemyRB.velocity = Vector2.zero;
+        }
     }
 
     public bool getHurtWhenTouched() {

@@ -150,10 +150,11 @@ MonoBehaviour:
   movespeed: 2
   isAwake: 0
   recoveryTime: 5
+  graceLength: 3
   Player: {fileID: 0}
   attackDamage: 1
   setupLength: 0.933
-  attackLength: 2.5
+  attackLength: 1.5
   attackSpeed: 0
   maxHealth: 4
   xp_val: 4
