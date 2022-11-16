@@ -18,6 +18,8 @@ public class EnemyScript : MonoBehaviour
     private AudioClip SetupFX;
     [SerializeField] [Tooltip("Object to instantiate when die.")]
     private GameObject DieObject;
+    [SerializeField] [Tooltip("Object to instantiate when hit.")]
+    private GameObject HitObject;
 
     private MusicManager musicManager;
     #endregion
@@ -55,6 +57,7 @@ public class EnemyScript : MonoBehaviour
 
     #region Targeting_variables
     public GameObject Player;
+    GameObject HitObj;
     private int PlayerIDHitBy;
     private int PlayersCombo;
     #endregion
@@ -187,7 +190,7 @@ public class EnemyScript : MonoBehaviour
     void HandleState() {
         if (isHurt) {
             anim.SetInteger("State", 4);
-            Effects.SetState(4);
+            // Effects.SetState(4);
         } else if (isAttacking) {
             anim.SetInteger("State", 3);
             Effects.SetState(3);
@@ -254,6 +257,8 @@ public class EnemyScript : MonoBehaviour
     public void GetHit(float value, Transform from, bool isDashing, int playerID, int combo){
         Debug.Log("BONK ENEMY");
         if (!isHurt || combo != PlayersCombo || playerID != PlayerIDHitBy) {
+            HitObj = Instantiate(HitObject, transform.position, transform.rotation, transform);
+            HitObj.GetComponent<HitEffects>().HandleDirection(EnemyRB.velocity);
             isHurt = true;
             musicManager.playClip(HurtFX, 1);
             PlayersCombo = combo;
@@ -281,10 +286,12 @@ public class EnemyScript : MonoBehaviour
             hurtTimer = hurtAttackTimer;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position).normalized;
-        if (enemyType == "Guilt") {
-            Effects.HandleDirection(new Vector2(0, -1), true);
-        } else {
-            Effects.HandleDirection(EnemyRB.velocity, true);
+        if (HitObj != null) {
+            if (enemyType == "Guilt") {
+                HitObj.GetComponent<HitEffects>().HandleDirection(new Vector2(0, -1));
+            } else {
+                HitObj.GetComponent<HitEffects>().HandleDirection(EnemyRB.velocity);
+            }
         }
     }
 
