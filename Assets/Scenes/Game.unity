@@ -507,6 +507,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1508476354205005663, guid: 60be9a222df6041808a21f3ccb58eaa4, type: 3}
+      propertyPath: ChargeBoxPrefab
+      value: 
+      objectReference: {fileID: 5417466828404954600, guid: 814a6e67020524132893a362e6071b98, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60be9a222df6041808a21f3ccb58eaa4, type: 3}
 --- !u!4 &771038951 stripped
@@ -763,7 +767,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: tracks.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: tracks.Array.data[0]
@@ -775,6 +779,10 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: bf93b76155e48430f8c2b2c120b3d987, type: 3}
     - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: tracks.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4432a5fc4c7d44eb8a10180db3180213, type: 3}
+    - target: {fileID: 2912233308531971103, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
+      propertyPath: tracks.Array.data[3]
       value: 
       objectReference: {fileID: 8300000, guid: ce7b0b653596248ac88b736f4136f516, type: 3}
     - target: {fileID: 2912233308531971104, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
