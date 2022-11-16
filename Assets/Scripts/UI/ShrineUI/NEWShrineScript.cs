@@ -92,6 +92,7 @@ public class NEWShrineScript : MonoBehaviour
     {
         //GameObject.Find("Player").GetComponent<PlayerController>().enableUserInput();
         this.gameObject.SetActive(false);
+        player.GetComponent<PlayerController>().enableUserInput();
         Debug.Log("Closing Shrine");
     }
 
@@ -99,6 +100,7 @@ public class NEWShrineScript : MonoBehaviour
     {
         Debug.Log("Opening Shrine");
         this.player = player;
+        player.GetComponent<PlayerController>().disableUserInput();
         this.gameObject.SetActive(true);
 
     }

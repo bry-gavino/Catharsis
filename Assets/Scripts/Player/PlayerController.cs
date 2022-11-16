@@ -543,7 +543,6 @@ public class PlayerController : MonoBehaviour {
     public void shrineActivate()
     {
         shrine_obj.GetComponent<NEWShrineScript>().enterShrine(cur_player);
-        
     }
     /**
     public void OnCollisionEnter2D(Collision2D other)
