@@ -90,7 +90,8 @@ public class NEWShrineScript : MonoBehaviour
 
     public void exitShrine()
     {
-        GameObject.Find("Player").GetComponent<PlayerController>().enableUserInput();
+        //GameObject.Find("Player").GetComponent<PlayerController>().enableUserInput();
+        this.gameObject.SetActive(false);
         Debug.Log("Closing Shrine");
     }
 
@@ -98,8 +99,7 @@ public class NEWShrineScript : MonoBehaviour
     {
         Debug.Log("Opening Shrine");
         this.player = player;
-        exitShrine();
-        //powerShrine.gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
 
     }
 	// Update is called once per frame

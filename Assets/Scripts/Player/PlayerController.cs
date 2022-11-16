@@ -155,6 +155,8 @@ public class PlayerController : MonoBehaviour {
 
         //Anthony Addition - cur player gameobject for shrine
         cur_player = this.gameObject;
+        shrine_obj = GameObject.Find("ShrineShop");
+        shrine_obj.SetActive(false);
 
         currHealth = maxHealth;
         if (playerID == 1) {
@@ -540,11 +542,7 @@ public class PlayerController : MonoBehaviour {
     #region shrineScript
     public void shrineActivate()
     {
-        GameObject lis = GameObject.Find("ShrineShop");
-        //disableUserInput();
-        Debug.Log(cur_player);
-        Debug.Log(lis);
-        lis.GetComponent<NEWShrineScript>().enterShrine(cur_player);
+        shrine_obj.GetComponent<NEWShrineScript>().enterShrine(cur_player);
         
     }
     /**
