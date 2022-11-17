@@ -20,6 +20,9 @@ public class DungeonGenerator : MonoBehaviour {
     [Tooltip("Basic room to use.")] [SerializeField]
     public GameObject room;
 
+    [Tooltip("Boss room to use.")] [SerializeField]
+    public GameObject bossRoom;
+
     [Tooltip("Endpoint of map.")] [SerializeField]
     public GameObject endPoint;
 
@@ -38,16 +41,33 @@ public class DungeonGenerator : MonoBehaviour {
     [SerializeField] [Tooltip("Enemy Prefabs.")]
     private List<GameObject> enemyTypes;
 
+    [SerializeField] [Tooltip("Boss Prefabs.")]
+    private List<GameObject> bossTypes;
+
     [Tooltip("Delete all of these on scene transition.")]
     private List<GameObject> spawnedEnemies;
+
+    [Tooltip("If flagged, will create a boss room.")]
+    public bool createBoss = false;
 
     // Start is called before the first frame update
     void Start() {
         activeRooms = new List<GameObject>();
         spawnedEnemies = new List<GameObject>();
         endPoint = this.transform.Find("EndPoint").gameObject;
-        MazeGenerator();
-        PopulateRooms();
+        if (createBoss == false) {
+            /* Create a big maze */
+            MazeGenerator();
+            PopulateRooms();
+        }
+        else {
+            /* Otherwise, create the single boss room */
+            Vector3 position = new Vector3(0, 0, 0);
+            var the_boss_room = Instantiate(bossRoom, position, Quaternion.identity, transform);
+            activeRooms.Add(the_boss_room);
+            the_boss_room.GetComponent<Room>().myType = Room.RoomType.Boss;
+            SetupRoom(the_boss_room);
+        }
     }
 
     private void OnDestroy() {
@@ -68,11 +88,22 @@ public class DungeonGenerator : MonoBehaviour {
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
     }
 
+    public void CreateBoss(Vector3 position) {
+        int enemyIndex = 0; // Random.Range(0, bossTypes.Count);
+        Vector3 enemyPosition = new Vector3(position.x, position.y, position.z);
+        GameObject enemyPrefab = bossTypes[enemyIndex];
+        spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
+    }
+
     public void SetupRoom(GameObject room) {
         Room.RoomType type = room.GetComponent<Room>().myType;
         if (Room.RoomType.Enemy == type) {
             /* Spawns in the center of room */
             CreateEnemy(room.transform.position);
+        }
+        else if (Room.RoomType.Boss == type) {
+            /* Spawns in the center of room */
+            CreateBoss(room.transform.position);
         }
         // other room type conditions here
     }
@@ -91,14 +122,14 @@ public class DungeonGenerator : MonoBehaviour {
             float color_dampening_constant = 0.95f;
             if (i == 0) {
                 // start room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.blue  * color_dampening_constant;
+                currentGround.GetComponent<SpriteRenderer>().color = Color.blue * color_dampening_constant;
                 type = Room.RoomType.Start;
                 //Adding shrine merge - first level gets shrine for now
                 currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
             }
             else if (i == 1) {
                 // second room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.green  * color_dampening_constant;
+                currentGround.GetComponent<SpriteRenderer>().color = Color.green * color_dampening_constant;
                 type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
