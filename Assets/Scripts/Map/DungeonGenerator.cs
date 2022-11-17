@@ -88,6 +88,18 @@ public class DungeonGenerator : MonoBehaviour {
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
     }
 
+    public void DisableBossGate() {
+        Debug.Log("Disable boss gate in DungeonGenerator.");
+        var bossRoom = activeRooms[0];
+        foreach (Transform child_transform in bossRoom.transform) {
+            if (child_transform.CompareTag("BossGate")) {
+                Debug.Log("Found the gate.");
+                child_transform.gameObject.SetActive(false);
+                break;
+            }
+        }
+    }
+
     public void CreateBoss(Vector3 position) {
         int enemyIndex = 0; // Random.Range(0, bossTypes.Count);
         Vector3 enemyPosition = new Vector3(position.x, position.y, position.z);
@@ -117,7 +129,8 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
-            currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false); //disable shrine in beginning
+            GameObject physicalShrine = currentRoom.transform.Find("Physical_Shrine").gameObject;
+            physicalShrine.SetActive(false); //disable shrine in beginning
             Room.RoomType type = Room.RoomType.Uninitialized;
             float color_dampening_constant = 0.95f;
             if (i == 0) {
@@ -125,9 +138,10 @@ public class DungeonGenerator : MonoBehaviour {
                 if (createBoss) {
                     Debug.Log("Moving boss room endpoint.");
                     Vector3 position = currentRoom.transform.position;
-                    Vector3 newPosition = new Vector3(position.x, position.y + 30, position.z);
+                    Vector3 newPosition = new Vector3(position.x, position.y + 52, position.z);
                     endPoint.transform.position = newPosition;
                     type = Room.RoomType.Boss;
+                    physicalShrine.SetActive(true); //disable shrine in beginning
                 }
                 else {
                     currentGround.GetComponent<SpriteRenderer>().color = Color.blue * color_dampening_constant;

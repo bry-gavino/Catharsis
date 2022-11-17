@@ -3,7 +3,23 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Rooms
+  - Room
+  - Destroyer
+  - SpawnPoint
+  - PlayerHurtBox
+  - GameManager
+  - MapGenerator
+  - LevelTransition
+  - Enemy
+  - EndPoint
+  - Shrine
+  - EnemyBody
+  - EnemyHurtBox
+  - Walls
+  - Corners
+  - BossGate
   layers:
   - Default
   - TransparentFX
