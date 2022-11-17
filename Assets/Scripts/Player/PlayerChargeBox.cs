@@ -14,7 +14,8 @@ public class PlayerChargeBox : MonoBehaviour
     float chargeAttackLength = 0.53f;
     CircleCollider2D CC;
     float scale = 0.15f;
-    Vector3 scaleChange;
+    float vec = 0.0f;
+    float scaleMax = 6.0f;
     #endregion
 
 
@@ -29,7 +30,6 @@ public class PlayerChargeBox : MonoBehaviour
         int[] ids = GetComponentInParent<PlayerController>().identifyHurtBox();
         PlayerIDHitBy = ids[0];
         PlayersCombo = ids[1];
-        scaleChange = new Vector3(scale, scale, scale);
     }
     private void Update()
     {
@@ -37,8 +37,9 @@ public class PlayerChargeBox : MonoBehaviour
             Destroy(this.gameObject);
         }
         chargeAttackLength -= Time.deltaTime;
-        // CC.radius += 0.1f;
-        this.transform.localScale += scaleChange;
+        vec = Mathf.Min((this.transform.localScale).x + scale, scaleMax);
+        this.transform.localScale = new Vector3(vec, vec, vec);
+
     }
     #endregion
 

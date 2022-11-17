@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 1508476354205005660}
   - component: {fileID: 1508476354205005663}
   m_Layer: 0
-  m_Name: TestPlayer 1
+  m_Name: Player2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,7 +215,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: f62d5f42992f44c66971968168b8d5ff, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.51372576, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -303,9 +303,9 @@ MonoBehaviour:
   Charge2FX: {fileID: 8300000, guid: f6e2acf4906184f639188f5a210c9b21, type: 3}
   ReleaseFX: {fileID: 8300000, guid: 1e026d7dd4c4e457ab0f9ca10e180cd4, type: 3}
   HurtBoxPrefab: {fileID: 2608297156212933575, guid: 16f16007d42674f66815e5559a6578b7, type: 3}
-  ChargeBoxPrefab: {fileID: 0}
+  ChargeBoxPrefab: {fileID: 5417466828404954600, guid: 814a6e67020524132893a362e6071b98, type: 3}
   LevelUpPrefab: {fileID: 2802877041851279180, guid: 398914e59345c4d93863b210a1dbe1c2, type: 3}
-  playerID: 1
+  playerID: 2
   enemiesDefeated: 0
   currLevel: 1
   moveSpeed: 8

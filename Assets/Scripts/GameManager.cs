@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     #region Variables
     public string floorType = ""; // POST-MVP: curr floor emotion
     public int level = 1;
-    // OPTIONS for screenType: "Menu", "InGame", "Cutscene"
     public string screenType = "InGame"; // POST-MVP: implement "Menu" & "Cutscene"
     public int numPlayers = 1; // POST-MVP: 2 player ability
     // POST-MVP: save profiles
