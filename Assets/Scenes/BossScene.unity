@@ -850,6 +850,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7325141146324972410, guid: e2bc56daa18e9da4a80a97d31b419beb, type: 3}
     - target: {fileID: 2912233309489563493, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
+      propertyPath: levelsNeededForBoss
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2912233309489563493, guid: 59b4f36dff1c54aa183a00c21f823c70, type: 3}
       propertyPath: levelTransitionScreen
       value: 
       objectReference: {fileID: 8841086579571387058, guid: 501acf0f06c7d4bc081f71c95add85f2, type: 3}

@@ -58,16 +58,16 @@ public class DungeonGenerator : MonoBehaviour {
         if (createBoss == false) {
             /* Create a big maze */
             MazeGenerator();
-            PopulateRooms();
         }
         else {
             /* Otherwise, create the single boss room */
-            Vector3 position = new Vector3(0, 0, 0);
+            Debug.Log("Creating boss room.");
+            Vector3 position = Vector3.zero;
             var the_boss_room = Instantiate(bossRoom, position, Quaternion.identity, transform);
             activeRooms.Add(the_boss_room);
-            the_boss_room.GetComponent<Room>().myType = Room.RoomType.Boss;
-            SetupRoom(the_boss_room);
+            // the_boss_room.GetComponent<Room>().myType = Room.RoomType.Boss;
         }
+        PopulateRooms();
     }
 
     private void OnDestroy() {
@@ -121,11 +121,20 @@ public class DungeonGenerator : MonoBehaviour {
             Room.RoomType type = Room.RoomType.Uninitialized;
             float color_dampening_constant = 0.95f;
             if (i == 0) {
-                // start room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.blue * color_dampening_constant;
-                type = Room.RoomType.Start;
-                //Adding shrine merge - first level gets shrine for now
-                currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
+                // boss room or start room?
+                if (createBoss) {
+                    Debug.Log("Moving boss room endpoint.");
+                    Vector3 position = currentRoom.transform.position;
+                    Vector3 newPosition = new Vector3(position.x, position.y + 30, position.z);
+                    endPoint.transform.position = newPosition;
+                    type = Room.RoomType.Boss;
+                }
+                else {
+                    currentGround.GetComponent<SpriteRenderer>().color = Color.blue * color_dampening_constant;
+                    type = Room.RoomType.Start;
+                    //Adding shrine merge - first level gets shrine for now
+                    currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
+                }
             }
             else if (i == 1) {
                 // second room
@@ -133,7 +142,7 @@ public class DungeonGenerator : MonoBehaviour {
                 type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
-                // last room -> boss room
+                // last room
                 currentGround.GetComponent<SpriteRenderer>().color = Color.red * color_dampening_constant;
                 // puts EndPoint in last room
                 Vector3 position = currentRoom.transform.position;
