@@ -461,6 +461,13 @@ public class PlayerController : MonoBehaviour {
         if ((playerID == 1 && GameObject.Find("Player2") == null)
             || (playerID == 2 && GameObject.Find("Player1") == null)) {
             GameObject.Find("UI").GetComponent<UIManager>().loseGame();
+        } else {
+            GameObject.Find("NumPlayers").GetComponent<NumPlayers>().savePlayerStats(
+                playerID, currLevel, GameObject.Find("GameManager").GetComponent<GameManager>().level, enemiesDefeated
+                );
+        }
+        if (playerID == 1) {
+            GameObject.Find("CM vcam1").GetComponent<CameraFollow>().followPlayer2();
         }
         //FindObjectOfType<AudioManager>().Play("PlayerDeath");
         Destroy(this.gameObject);

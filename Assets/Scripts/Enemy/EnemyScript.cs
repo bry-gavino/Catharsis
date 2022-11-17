@@ -101,11 +101,17 @@ public class EnemyScript : MonoBehaviour
         EnemyRB = GetComponent<Rigidbody2D>();
         Player1 = GameObject.Find("Player1");
         Player2 = GameObject.Find("Player2");
-        PlayerTarget = Player1;
+        if (Player1 != null) {
+            PlayerTarget = Player1;
+            hurtAttackTimer = Player1.GetComponent<PlayerController>().getAttackLength();
+            hurtDashTimer = Player1.GetComponent<PlayerController>().getDashLength();
+        } else {
+            PlayerTarget = Player2;
+            hurtAttackTimer = Player2.GetComponent<PlayerController>().getAttackLength();
+            hurtDashTimer = Player2.GetComponent<PlayerController>().getDashLength();
+        }
         anim = GetComponent<Animator>();
         currHealth = maxHealth;
-        hurtAttackTimer = Player1.GetComponent<PlayerController>().getAttackLength();
-        hurtDashTimer = Player1.GetComponent<PlayerController>().getDashLength();
     }
 
     private void Update(){

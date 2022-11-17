@@ -16,19 +16,36 @@ public class PlayerStats : MonoBehaviour
     {
         txtComponent = (GetComponentInChildren(typeof(TextMeshProUGUI)) as TextMeshProUGUI);
         if (PlayerID == 1) {
-            pController = GameObject.Find("Player1").GetComponent<PlayerController>(); 
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            txtComponent.text = "PLAYER 1" 
-                                + "\nPLAYER LEVEL: " + pController.currLevel
-                                + "\nMAP LEVEL: " + gameManager.level
-                                + "\nENEMIES DEFEATED: " + pController.enemiesDefeated;
+            if (GameObject.Find("Player1") == null) {
+                NumPlayers nPlayers = GameObject.Find("NumPlayers").GetComponent<NumPlayers>(); 
+                txtComponent.text = "PLAYER 1" 
+                                    + "\nPLAYER LEVEL: " + nPlayers.pLvl
+                                    + "\nMAP LEVEL: " + nPlayers.pMapLvl
+                                    + "\nENEMIES DEFEATED: " + nPlayers.pEnemies;  
+            } else {
+                pController = GameObject.Find("Player1").GetComponent<PlayerController>(); 
+                gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+                txtComponent.text = "PLAYER 1" 
+                                    + "\nPLAYER LEVEL: " + pController.currLevel
+                                    + "\nMAP LEVEL: " + gameManager.level
+                                    + "\nENEMIES DEFEATED: " + pController.enemiesDefeated;  
+            }
+
         } else {
-            pController = GameObject.Find("Player2").GetComponent<PlayerController>(); 
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            txtComponent.text = "PLAYER 2" 
-                                + "\nPLAYER LEVEL: " + pController.currLevel
-                                + "\nMAP LEVEL: " + gameManager.level
-                                + "\nENEMIES DEFEATED: " + pController.enemiesDefeated;
+           if (GameObject.Find("Player2") == null) {
+                NumPlayers nPlayers = GameObject.Find("NumPlayers").GetComponent<NumPlayers>(); 
+                txtComponent.text = "PLAYER 2" 
+                                    + "\nPLAYER LEVEL: " + nPlayers.pLvl
+                                    + "\nMAP LEVEL: " + nPlayers.pMapLvl
+                                    + "\nENEMIES DEFEATED: " + nPlayers.pEnemies;  
+            } else {
+                pController = GameObject.Find("Player2").GetComponent<PlayerController>(); 
+                gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+                txtComponent.text = "PLAYER 2" 
+                                    + "\nPLAYER LEVEL: " + pController.currLevel
+                                    + "\nMAP LEVEL: " + gameManager.level
+                                    + "\nENEMIES DEFEATED: " + pController.enemiesDefeated;  
+            }
         }
         
     }
