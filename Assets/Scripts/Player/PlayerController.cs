@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour {
     Rigidbody2D PlayerRB;
     GameObject HurtBox;
     GameObject ChargeBox;
-    GameObject Effects;
+    PlayerEffects Effects;
     #endregion
 
     #region animation
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour {
     // called once when object created
     private void Awake() {
         // HurtBox = GameObject.Find("PlayerHurtBox");
-        Effects = GameObject.Find("PlayerEffects");
+        Effects = (GetComponentInChildren(typeof(PlayerEffects)) as PlayerEffects);
         PlayerRB = GetComponent<Rigidbody2D>();
         baseMoveSpeed = moveSpeed;
 
@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
-            shrineKey = "z"; //Anthony Addition
+            // shrineKey = "z"; //Anthony Addition
 
             HPSlider = GameObject.Find("HealthP1").GetComponent<Slider>();
             XPSlider = GameObject.Find("ExpP1").GetComponent<Slider>();
@@ -182,8 +182,9 @@ public class PlayerController : MonoBehaviour {
             attackKey = "j";
             healKey = "u";
 
-            // HPSlider = {GameObject.Find("HealthP2").GetComponent<Slider>()}
-            // XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
+            HPSlider = GameObject.Find("HealthP2").GetComponent<Slider>();
+            XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
+            LevelTxt = GameObject.Find("LevelP2").GetComponent<TextMeshProUGUI>();
         }
         expThreshold = 10;
         HPSlider.value = currHealth / maxHealth;
@@ -257,36 +258,36 @@ public class PlayerController : MonoBehaviour {
                 Dash();
             }
         }
-        if (Input.GetKey(shrineKey))
-        {
-            Debug.Log("Key press detected!");
-            shrineActivate();
-        }
+        // if (Input.GetKey(shrineKey))
+        // {
+        //     Debug.Log("Key press detected!");
+        //     shrineActivate();
+        // }
     }
 
     private void HandleState() {
         if (isPushed) {
-            Effects.GetComponent<PlayerEffects>().SetState(3);
+            Effects.SetState(3);
         } else if (releasingChargeAttack) {
-            Effects.GetComponent<PlayerEffects>().SetState(12);
+            Effects.SetState(12);
         } else if (chargingAttack) {
             if (chargeOrder == 1) {
-                Effects.GetComponent<PlayerEffects>().SetState(10);
+                Effects.SetState(10);
             } else {
-                Effects.GetComponent<PlayerEffects>().SetState(11);
+                Effects.SetState(11);
             }
         } else if (isAttacking) {
             if (combo == 1) {
-                Effects.GetComponent<PlayerEffects>().SetState(2);
+                Effects.SetState(2);
             } else if (combo == 2) {
-                Effects.GetComponent<PlayerEffects>().SetState(22);
+                Effects.SetState(22);
             } else if (combo == 3) {
-                Effects.GetComponent<PlayerEffects>().SetState(23);
+                Effects.SetState(23);
             }
         } else if (isDashing) {
-            Effects.GetComponent<PlayerEffects>().SetState(1);
+            Effects.SetState(1);
         } else {
-            Effects.GetComponent<PlayerEffects>().SetState(0);
+            Effects.SetState(0);
         }
     }
     #endregion
@@ -299,7 +300,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (isPushed) {
                 PlayerRB.velocity = (fromHurt - new Vector2(transform.position.x, transform.position.y)).normalized * -pushBackStrength;
-                Effects.GetComponent<PlayerEffects>().HandleDirection(-PlayerRB.velocity);
+                Effects.HandleDirection(-PlayerRB.velocity);
             } else if (isHurt) {
                 PlayerRB.velocity = Vector2.zero;
             } else {
@@ -337,7 +338,7 @@ public class PlayerController : MonoBehaviour {
                     PlayerRB.velocity = PlayerRB.velocity/3;
                     Debug.Log(PlayerRB.velocity);
                 }
-                Effects.GetComponent<PlayerEffects>().HandleDirection(currDirection);
+                Effects.HandleDirection(currDirection);
             }
         }
         else {
@@ -457,7 +458,17 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Die() {
-        GameObject.Find("UI").GetComponent<UIManager>().loseGame();
+        if ((playerID == 1 && GameObject.Find("Player2") == null)
+            || (playerID == 2 && GameObject.Find("Player1") == null)) {
+            GameObject.Find("UI").GetComponent<UIManager>().loseGame();
+        } else {
+            GameObject.Find("NumPlayers").GetComponent<NumPlayers>().savePlayerStats(
+                playerID, currLevel, GameObject.Find("GameManager").GetComponent<GameManager>().level, enemiesDefeated
+                );
+        }
+        if (playerID == 1) {
+            GameObject.Find("CM vcam1").GetComponent<CameraFollow>().followPlayer2();
+        }
         //FindObjectOfType<AudioManager>().Play("PlayerDeath");
         Destroy(this.gameObject);
 

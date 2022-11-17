@@ -147,10 +147,14 @@ MonoBehaviour:
   HurtFX: {fileID: 8300000, guid: bc3592ff5732d42e2b002e8e80226086, type: 3}
   SetupFX: {fileID: 8300000, guid: 9e4a94dfc27f74ceea179a1d95fc1f52, type: 3}
   DieObject: {fileID: 7384550110271580274, guid: 2d60d63c9bbc042b7bb22d7591aabf2a, type: 3}
+  HitObject: {fileID: 8476305613876411380, guid: 4e7b9e0851c704011bd6e03d16086532, type: 3}
   movespeed: 1
   isAwake: 0
   recoveryTime: 10
-  Player: {fileID: 0}
+  graceLength: 0
+  Player1: {fileID: 0}
+  Player2: {fileID: 0}
+  numPlayers: 0
   attackDamage: 1
   setupLength: 2
   attackLength: 3
@@ -655,3 +659,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 019c62c4e69c9456ab13bcccac283ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1Inside: 0
+  player2Inside: 0

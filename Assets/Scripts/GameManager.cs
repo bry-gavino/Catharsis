@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     #region Variables
     public string floorType = ""; // POST-MVP: curr floor emotion
     public int level = 1;
-    // OPTIONS for screenType: "Menu", "InGame", "Cutscene"
     public string screenType = "InGame"; // POST-MVP: implement "Menu" & "Cutscene"
     public int numPlayers = 1; // POST-MVP: 2 player ability
     // POST-MVP: save profiles
@@ -45,6 +44,7 @@ public class GameManager : MonoBehaviour
 
     #region LevelVars
     private Vector3 spawnPt = Vector3.zero;
+    private Vector3 spawnPt2 = new Vector3(-2.0f, 0.0f, 0.0f);
     #endregion
 
 
@@ -110,7 +110,11 @@ public class GameManager : MonoBehaviour
     private void doSetupLevel() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject p in Players) {
-            p.transform.position = spawnPt;
+            if (p.GetComponent<PlayerController>().playerID == 1) {
+                p.transform.position = spawnPt;
+            } else {
+                p.transform.position = spawnPt2;
+            }
         }
         // MapGenerator re-generate
         GameObject MapGen = GameObject.FindWithTag("MapGenerator");

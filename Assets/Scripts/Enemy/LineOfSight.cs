@@ -6,7 +6,7 @@ public class LineOfSight : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D col) {
          if(col.gameObject.tag == "Player"){
-            GetComponentInParent<EnemyScript>().chasePlayer();
+            GetComponentInParent<EnemyScript>().chasePlayer(col.gameObject.GetComponent<PlayerController>().playerID);
         } else {
         }
     }
