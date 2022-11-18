@@ -22,6 +22,7 @@ public class EnemyScript : MonoBehaviour
     private GameObject HitObject;
 
     private MusicManager musicManager;
+    private bool canPlayMusic = true;
     #endregion
 
 
@@ -119,7 +120,9 @@ public class EnemyScript : MonoBehaviour
             graceTimer -= Time.deltaTime;
             if (graceTimer <= 0.0f) {
                 graceTimer = 0.0f;
-                if ((GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player1Inside || (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player2Inside) { // TODO
+                if (enemyType == "Zealotry") {
+                    PlayerInHurtBox();
+                } else if ((GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player1Inside || (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player2Inside) { // TODO
                     PlayerInHurtBox();
                 }
             }
@@ -139,6 +142,7 @@ public class EnemyScript : MonoBehaviour
                 } else {
                     EnemyRB.velocity = currDirection * attackSpeed;
                 }
+                Debug.Log("ATTACKING PLAYER!");
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
                 if (enemyType == "Guilt") {
                     Effects.HandleDirection(new Vector2(0, -1), true);
@@ -151,10 +155,28 @@ public class EnemyScript : MonoBehaviour
             if (enemyType == "Guilt") {
                 // if (coolDown)
                 EnemyRB.velocity = Vector2.zero;
+            } else if (enemyType == "Zealotry") {
+                if (setupTimer > 1.0f) {
+                    hurtWhenTouched = false;
+                    EnemyRB.velocity = Vector2.zero;
+                    currDirection = (PlayerTarget.transform.position - transform.position).normalized;
+                } else if (setupTimer > 0.3f) {
+                    if (canPlayMusic) {
+                        musicManager.playClip(SetupFX, 1);
+                        canPlayMusic = false;
+                    }
+                    hurtWhenTouched = true;
+                    EnemyRB.velocity = currDirection * attackSpeed;
+                } else {
+                    hurtWhenTouched = false;
+                    EnemyRB.velocity = Vector2.zero;
+                    currDirection = (PlayerTarget.transform.position - transform.position).normalized;
+                }
             }
             isSetup = true;
             setupTimer -= Time.deltaTime;
             if (setupTimer <= 0.0f) {
+                canPlayMusic = true;
                 isSetup = false;
                 setupTimer = 0.0f;
                 // trigger attack
@@ -187,6 +209,9 @@ public class EnemyScript : MonoBehaviour
             }
         }
         if (isChasing && !isImmobile && !isAttacking) {
+            if (enemyType == "Zealotry") {
+                PlayerInHurtBox();
+            }
             Move();
             isMoving = true;
         } else {
@@ -253,7 +278,9 @@ public class EnemyScript : MonoBehaviour
 
     public void PlayerInHurtBox() {
         if (graceTimer <= 0.0f) {
-            musicManager.playClip(SetupFX, 1);
+            if (enemyType != "Zealotry") {
+                musicManager.playClip(SetupFX, 1);
+            }
             setupTimer = setupLength;
             coolDown = setupLength;
             EnemyRB.velocity = Vector2.zero;

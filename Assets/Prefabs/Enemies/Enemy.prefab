@@ -148,11 +148,13 @@ MonoBehaviour:
   SetupFX: {fileID: 8300000, guid: 3dc368ef81ae3419cbd24f7b5efdcf91, type: 3}
   DieObject: {fileID: 7384550110271580274, guid: 2d60d63c9bbc042b7bb22d7591aabf2a, type: 3}
   HitObject: {fileID: 8476305613876411380, guid: 4e7b9e0851c704011bd6e03d16086532, type: 3}
-  movespeed: 2
+  movespeed: 3
   isAwake: 0
   recoveryTime: 0.4
   graceLength: 0
-  Player: {fileID: 0}
+  Player1: {fileID: 0}
+  Player2: {fileID: 0}
+  numPlayers: 0
   attackDamage: 1
   setupLength: 0.7
   attackLength: 0.3
@@ -522,7 +524,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 019c62c4e69c9456ab13bcccac283ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInside: 0
+  player1Inside: 0
+  player2Inside: 0
+  enemyType: NoEvil
 --- !u!1001 &3160554383666381142
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class EnemyBody : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D col) {
-        if(hurtWhenTouched && col.gameObject.tag == "Player") {
+        if(GetComponentInParent<EnemyScript>().getHurtWhenTouched() && col.gameObject.tag == "Player") {
             col.gameObject.GetComponent<PlayerController>().TakeDamage(attackDamage, transform.position);
         }
     } 
