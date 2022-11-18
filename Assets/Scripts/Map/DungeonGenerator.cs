@@ -67,6 +67,7 @@ public class DungeonGenerator : MonoBehaviour {
             activeRooms.Add(the_boss_room);
             // the_boss_room.GetComponent<Room>().myType = Room.RoomType.Boss;
         }
+
         PopulateRooms();
     }
 
