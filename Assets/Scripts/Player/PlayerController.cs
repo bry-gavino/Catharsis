@@ -517,12 +517,12 @@ public class PlayerController : MonoBehaviour {
             Damage = Damage + (0.01f + ((100 - currLevel) * 0.001f));
             // Debug.Log("New Damage: "+Damage);
             maxHealth = maxHealth + (0.01f + ((100 - currLevel) * 0.001f));
-            // Debug.Log("New maxHealth: "+maxHealth);
-            currHealth = currHealth + ((1/3) * maxHealth);
+            Debug.Log("New maxHealth: "+maxHealth);
+            currHealth = currHealth + (maxHealth/3.0f);
             if (currHealth > maxHealth) {
                 currHealth = maxHealth;
             }
-            // Debug.Log("New currHealth: "+currHealth);
+            Debug.Log("New currHealth: "+currHealth);
             HPSlider.value = currHealth / maxHealth;
             LevelTxt.text = currLevel.ToString();
         }

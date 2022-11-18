@@ -9,6 +9,7 @@ public class EnemyHurtBox : MonoBehaviour
     private Transform transform;
     public bool player1Inside = false;
     public bool player2Inside = false;
+    public string enemyType = "NoEvil";
 
     #endregion
 
@@ -38,7 +39,9 @@ public class EnemyHurtBox : MonoBehaviour
             } else {
                 player2Inside = true;
             }
-            GetComponentInParent<EnemyScript>().PlayerInHurtBox();
+            if (enemyType != "Zealotry") {
+                GetComponentInParent<EnemyScript>().PlayerInHurtBox();
+            }
         }
     }
 
