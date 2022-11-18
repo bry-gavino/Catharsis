@@ -102,7 +102,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public void CreateBoss(Vector3 position) {
         int enemyIndex = 0; // Random.Range(0, bossTypes.Count);
-        Vector3 enemyPosition = new Vector3(position.x, position.y, position.z);
+        Vector3 enemyPosition = new Vector3(position.x, position.y + 20, position.z);
         GameObject enemyPrefab = bossTypes[enemyIndex];
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
     }

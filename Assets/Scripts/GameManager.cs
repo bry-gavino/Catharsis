@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour {
         mapGeneratorInstance.GetComponent<DungeonGenerator>().size = new Vector2(2 + level, 3);
         if (level % levelsNeededForBoss == 0) {
             mapGeneratorInstance.GetComponent<DungeonGenerator>().createBoss = true;
+            beatBoss();
         }
         // TODO: loading screen
     }
