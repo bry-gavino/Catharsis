@@ -110,11 +110,13 @@ public class GameManager : MonoBehaviour
     private void doSetupLevel() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject p in Players) {
-            if (p.GetComponent<PlayerController>().playerID == 1) {
+            PlayerController pController = p.GetComponent<PlayerController>();
+            if (pController.playerID == 1) {
                 p.transform.position = spawnPt;
             } else {
                 p.transform.position = spawnPt2;
             }
+            pController.Reset();
         }
         // MapGenerator re-generate
         GameObject MapGen = GameObject.FindWithTag("MapGenerator");

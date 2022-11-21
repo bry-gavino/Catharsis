@@ -208,6 +208,21 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void Reset() {
+        PlayerRB.velocity = Vector2.zero;
+        Effects.SetState(0);
+        isPushed = false;
+        releasingChargeAttack = false;
+        chargingAttack = false;
+        isAttacking = false;
+        isDashing = false;
+        currDirection = new Vector2(0, -1);
+        anim.SetFloat("DirX", currDirection.x);
+        anim.SetFloat("DirY", currDirection.y);
+        anim.SetBool("Moving", false);
+        anim.SetBool("Hurt", false);
+    }
+
     private void HandleTimer() {
         attackTimer -= Time.deltaTime;
         attackCooldownTimer -= Time.deltaTime;
