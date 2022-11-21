@@ -208,6 +208,21 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void Reset() {
+        PlayerRB.velocity = Vector2.zero;
+        Effects.SetState(0);
+        isPushed = false;
+        releasingChargeAttack = false;
+        chargingAttack = false;
+        isAttacking = false;
+        isDashing = false;
+        currDirection = new Vector2(0, -1);
+        anim.SetFloat("DirX", currDirection.x);
+        anim.SetFloat("DirY", currDirection.y);
+        anim.SetBool("Moving", false);
+        anim.SetBool("Hurt", false);
+    }
+
     private void HandleTimer() {
         attackTimer -= Time.deltaTime;
         attackCooldownTimer -= Time.deltaTime;
@@ -336,7 +351,6 @@ public class PlayerController : MonoBehaviour {
                 }
                 if (chargingAttack) {
                     PlayerRB.velocity = PlayerRB.velocity/3;
-                    Debug.Log(PlayerRB.velocity);
                 }
                 Effects.HandleDirection(currDirection);
             }
@@ -380,7 +394,6 @@ public class PlayerController : MonoBehaviour {
                 musicManager.playClip(Charge1FX, 1);
             }
             chargingAttack = true;
-            Debug.Log("CHARGING");
         } else {
             musicManager.playClip(AttackFX, 1);
             if (combo == 3) {
@@ -388,7 +401,6 @@ public class PlayerController : MonoBehaviour {
             } else {
                 combo += 1;
             }
-            Debug.Log("combo: "+combo);
             dashLengthTimer = attackLunge; // propels character forward (like a lunge)
             dashCooldownTimer = attackLength;
             attackTimer = attackLength;
@@ -402,7 +414,6 @@ public class PlayerController : MonoBehaviour {
         musicManager.playClip(ReleaseFX, 1);
         chargingAttack = false;
         releasingChargeAttack = true;
-        Debug.Log("RELEASE");
         attackTimer = chargeAttackLength;
         attackCooldownTimer = chargeAttackCooldown;
         isAttacking = true;
@@ -419,7 +430,6 @@ public class PlayerController : MonoBehaviour {
     public void OnAttackTriggerEnter2D(Collider2D col) {
         if(isAttacking) {
             float damageCombo = Damage + Damage*((combo-1)/3.0f);
-            Debug.Log("damageCombo: "+damageCombo);
             if (releasingChargeAttack) {
                 damageCombo = Damage*2;
             }
@@ -447,7 +457,6 @@ public class PlayerController : MonoBehaviour {
             anim.SetBool("Hurt", true);
             hurtCooldownTimer = hurtCooldown;
             currHealth -= val;
-            Debug.Log("health is now " + currHealth.ToString());
         }
         if (currHealth <= 0) {
             Die();
@@ -489,7 +498,7 @@ public class PlayerController : MonoBehaviour {
     public void Heal(float val) {
         if (inventory.Count > 0) {
             currHealth = Mathf.Min(currHealth + val, maxHealth);
-            Debug.Log("health is now " + currHealth.ToString());
+            // Debug.Log("health is now " + currHealth.ToString());
 
             HPSlider.value = currHealth / maxHealth;
 
@@ -517,12 +526,12 @@ public class PlayerController : MonoBehaviour {
             Damage = Damage + (0.01f + ((100 - currLevel) * 0.001f));
             // Debug.Log("New Damage: "+Damage);
             maxHealth = maxHealth + (0.01f + ((100 - currLevel) * 0.001f));
-            Debug.Log("New maxHealth: "+maxHealth);
+            // Debug.Log("New maxHealth: "+maxHealth);
             currHealth = currHealth + (maxHealth/3.0f);
             if (currHealth > maxHealth) {
                 currHealth = maxHealth;
             }
-            Debug.Log("New currHealth: "+currHealth);
+            // Debug.Log("New currHealth: "+currHealth);
             HPSlider.value = currHealth / maxHealth;
             LevelTxt.text = currLevel.ToString();
         }

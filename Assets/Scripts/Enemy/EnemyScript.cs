@@ -16,6 +16,8 @@ public class EnemyScript : MonoBehaviour
     private AudioClip HurtFX;
     [SerializeField] [Tooltip("Sound when enemy setup.")]
     private AudioClip SetupFX;
+    [SerializeField] [Tooltip("Sound2 when enemy setup.")]
+    private AudioClip Setup2FX;
     [SerializeField] [Tooltip("Object to instantiate when die.")]
     private GameObject DieObject;
     [SerializeField] [Tooltip("Object to instantiate when hit.")]
@@ -74,6 +76,7 @@ public class EnemyScript : MonoBehaviour
     private float attackTimer = 0.0f;
     public float attackLength = 0.3f;
     public float attackSpeed = 10;
+    Collider2D CC;
     #endregion
 
     #region Health_variables
@@ -99,6 +102,7 @@ public class EnemyScript : MonoBehaviour
     private void Awake(){
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
         Effects = (GetComponentInChildren(typeof(EnemyEffects)) as EnemyEffects);
+        CC = GetComponent<Collider2D>();
         EnemyRB = GetComponent<Rigidbody2D>();
         Player1 = GameObject.Find("Player1");
         Player2 = GameObject.Find("Player2");
@@ -120,7 +124,7 @@ public class EnemyScript : MonoBehaviour
             graceTimer -= Time.deltaTime;
             if (graceTimer <= 0.0f) {
                 graceTimer = 0.0f;
-                if (enemyType == "Zealotry") {
+                if (enemyType == "Zealotry" || enemyType == "Loathing") {
                     PlayerInHurtBox();
                 } else if ((GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player1Inside || (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player2Inside) { // TODO
                     PlayerInHurtBox();
@@ -137,7 +141,7 @@ public class EnemyScript : MonoBehaviour
                 if (enemyType == "Ignorance") {
                     Vector2 direction = PlayerTarget.transform.position - transform.position;
                     EnemyRB.velocity = direction.normalized * attackSpeed;
-                } else if (enemyType == "Guilt") {
+                } else if (enemyType == "Guilt" || enemyType == "Loathing") {
                     EnemyRB.velocity = Vector2.zero;
                 } else {
                     EnemyRB.velocity = currDirection * attackSpeed;
@@ -171,6 +175,25 @@ public class EnemyScript : MonoBehaviour
                     hurtWhenTouched = false;
                     EnemyRB.velocity = Vector2.zero;
                     currDirection = (PlayerTarget.transform.position - transform.position).normalized;
+                }
+            } else if (enemyType == "Loathing") {
+                if (setupTimer > 1.1f) {
+                    EnemyRB.velocity = Vector2.zero;
+                    if (canPlayMusic) {
+                        musicManager.playClip(SetupFX, 1);
+                        canPlayMusic = false;
+                    }
+                } else if (setupTimer > 0.6f) {
+                    CC.isTrigger = true;
+                    canPlayMusic = true;
+                    EnemyRB.velocity = (PlayerTarget.transform.position - transform.position).normalized * movespeed;
+                } else {
+                    CC.isTrigger = false;
+                    EnemyRB.velocity = Vector2.zero;
+                    if (canPlayMusic) {
+                        musicManager.playClip(Setup2FX, 1);
+                        canPlayMusic = false;
+                    }
                 }
             }
             isSetup = true;
@@ -209,10 +232,12 @@ public class EnemyScript : MonoBehaviour
             }
         }
         if (isChasing && !isImmobile && !isAttacking) {
-            if (enemyType == "Zealotry") {
+            if (enemyType == "Zealotry" || enemyType == "Loathing") {
                 PlayerInHurtBox();
             }
-            Move();
+            if (enemyType != "Loathing") {
+                Move();
+            }
             isMoving = true;
         } else {
             isMoving = false;
@@ -277,8 +302,8 @@ public class EnemyScript : MonoBehaviour
 
 
     public void PlayerInHurtBox() {
-        if (graceTimer <= 0.0f) {
-            if (enemyType != "Zealotry") {
+        if (graceTimer <= 0.0f && setupTimer <= 0.0f) {
+            if (enemyType != "Zealotry" && enemyType != "Loathing") {
                 musicManager.playClip(SetupFX, 1);
             }
             setupTimer = setupLength;
