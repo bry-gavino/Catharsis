@@ -2282,6 +2282,7 @@ GameObject:
   - component: {fileID: 8928559957008220557}
   - component: {fileID: 8789767606773560626}
   - component: {fileID: 5494789437499430157}
+  - component: {fileID: 5213952194989143868}
   m_Layer: 0
   m_Name: Gate
   m_TagString: BossGate
@@ -2382,6 +2383,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5213952194989143868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787125461512486313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d8624509fb24e540992a458bfc0dbf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fade_out_time: 3
 --- !u!1 &3099114757123986825
 GameObject:
   m_ObjectHideFlags: 0

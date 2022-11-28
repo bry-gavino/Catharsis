@@ -299,7 +299,7 @@ public class EnemyScript : MonoBehaviour
         if (isBoss) {
             /* Disable the gate */
             Debug.Log("Disable boss gate in enemy Die().");
-            GameObject.FindGameObjectWithTag("MapGenerator").GetComponent<DungeonGenerator>().DisableBossGate();
+            GameObject.FindGameObjectWithTag("MapGenerator").GetComponent<DungeonGenerator>().DisableGates();
         }
         Instantiate(DieObject, transform.position, transform.rotation);
         Destroy(this.gameObject);

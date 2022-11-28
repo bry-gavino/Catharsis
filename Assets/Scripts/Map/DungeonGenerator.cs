@@ -50,6 +50,9 @@ public class DungeonGenerator : MonoBehaviour {
     [Tooltip("If flagged, will create a boss room.")]
     public bool createBoss = false;
 
+    [Tooltip("Which boss to spawn by index of the list.")][SerializeField]
+    public int bossIndex = 0;
+
     // Start is called before the first frame update
     void Start() {
         activeRooms = new List<GameObject>();
@@ -89,23 +92,41 @@ public class DungeonGenerator : MonoBehaviour {
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
     }
 
-    public void DisableBossGate() {
+    /**
+     * Fades out all gates in the scene.
+     */
+    public void DisableGates() {
         Debug.Log("Disable boss gate in DungeonGenerator.");
+        /*
+        // alternative approach: this disables all gates in a room, might be useful later
         var bossRoom = activeRooms[0];
         foreach (Transform child_transform in bossRoom.transform) {
             if (child_transform.CompareTag("BossGate")) {
-                Debug.Log("Found the gate.");
-                child_transform.gameObject.SetActive(false);
-                break;
+                Debug.Log("Found a gate.");
+                child_transform.gameObject.GetComponent<Gate>().FadeOut();
             }
+        }
+        */
+        var gates = GameObject.FindGameObjectsWithTag("BossGate");
+        foreach (var gate in gates) {
+            Debug.Log("Found a gate.");
+            gate.GetComponent<Gate>().FadeOut();
         }
     }
 
     public void CreateBoss(Vector3 position) {
-        int enemyIndex = 0; // Random.Range(0, bossTypes.Count);
+        if (bossTypes.Count <= 0) {
+            Debug.Log("No bosses in bossTypes list, can't spawn anything.");
+        }
+        else {
+            Debug.Log("Spawning boss at index: " + bossIndex);
+        }
         Vector3 enemyPosition = new Vector3(position.x, position.y + 20, position.z);
-        GameObject enemyPrefab = bossTypes[enemyIndex];
+        GameObject enemyPrefab = bossTypes[bossIndex];
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
+
+        // update index, rotate around the size of list
+        bossIndex = (bossIndex + 1) % bossTypes.Count;
     }
 
     public void SetupRoom(GameObject room) {
@@ -115,7 +136,7 @@ public class DungeonGenerator : MonoBehaviour {
             CreateEnemy(room.transform.position);
         }
         else if (Room.RoomType.Boss == type) {
-            /* Spawns in the center of room */
+            /* Spawns north of the center of room */
             CreateBoss(room.transform.position);
         }
         // other room type conditions here
