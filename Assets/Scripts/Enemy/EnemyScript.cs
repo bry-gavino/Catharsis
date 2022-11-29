@@ -7,6 +7,8 @@ public class EnemyScript : MonoBehaviour
     #region Enemy_Type
     public bool hurtWhenTouched = true;
     public string enemyType = "NoEvil";
+    [SerializeField][Tooltip("Set true if this enemy prefab is a boss. Will open the boss gate.")]
+    public bool isBoss = false; /* Addition for boss implementation */
     #endregion
 
     #region enemy sounds
@@ -369,6 +371,11 @@ public class EnemyScript : MonoBehaviour
         } else {
             GameObject.Find("Player2").GetComponent<PlayerController>().add_xp(xp_val); 
             GameObject.Find("Player2").GetComponent<PlayerController>().addEnemyDefeated(); 
+        }
+        if (isBoss) {
+            /* Disable the gate */
+            Debug.Log("Disable boss gate in enemy Die().");
+            GameObject.FindGameObjectWithTag("MapGenerator").GetComponent<DungeonGenerator>().DisableGates();
         }
         Instantiate(DieObject, transform.position, transform.rotation);
         Destroy(this.gameObject);

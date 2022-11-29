@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6808713095878908592}
   - component: {fileID: 6808713095878908593}
   m_Layer: 0
-  m_Name: Enemy_Guilt
+  m_Name: BigBoss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6808713095878908607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.8, y: -3.76, z: 0}
-  m_LocalScale: {x: 2.8, y: 2.8, z: 2.8}
+  m_LocalScale: {x: 5.6, y: 5.6, z: 5.6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6808713095880227491}
@@ -81,8 +81,8 @@ SpriteRenderer:
   m_SortingLayerID: 1718151579
   m_SortingLayer: 3
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: 22c319aa0fc914656bbadd2ffee22fcf, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 55e2ca779935e4664997dd626a859a7e, type: 3}
+  m_Color: {r: 1, g: 0.36320752, b: 0.70460314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,9 +105,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.09398269}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.4607127
+  m_Radius: 0.5
 --- !u!50 &6808713095878908594
 Rigidbody2D:
   serializedVersion: 4
@@ -142,27 +142,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hurtWhenTouched: 0
-  enemyType: Guilt
-  isBoss: 0
-  AttackFX: {fileID: 8300000, guid: 5529cf82890f84102bfbb8b508817501, type: 3}
+  enemyType: NoEvil
+  isBoss: 1
+  AttackFX: {fileID: 8300000, guid: 7cb87b258e70647bd86bab239de023ae, type: 3}
   HurtFX: {fileID: 8300000, guid: bc3592ff5732d42e2b002e8e80226086, type: 3}
-  SetupFX: {fileID: 8300000, guid: e7873f87e68fe46be86eea177724924a, type: 3}
+  SetupFX: {fileID: 8300000, guid: 3dc368ef81ae3419cbd24f7b5efdcf91, type: 3}
   Setup2FX: {fileID: 0}
   DieObject: {fileID: 7384550110271580274, guid: 2d60d63c9bbc042b7bb22d7591aabf2a, type: 3}
   HitObject: {fileID: 8476305613876411380, guid: 4e7b9e0851c704011bd6e03d16086532, type: 3}
-  movespeed: 3.5
+  movespeed: 4
   isAwake: 0
-  recoveryTime: 5
-  graceLength: 1.5
+  recoveryTime: 0.4
+  graceLength: 0.5
   Player1: {fileID: 0}
   Player2: {fileID: 0}
   numPlayers: 0
-  attackDamage: 1
-  setupLength: 0.933
-  attackLength: 0.5
-  attackSpeed: 0
-  maxHealth: 4
-  xp_val: 4
+  attackDamage: 2
+  setupLength: 0.7
+  attackLength: 0.3
+  attackSpeed: 10
+  maxHealth: 20
+  xp_val: 21
   healthpot: {fileID: 0}
 --- !u!95 &6808713095878908593
 Animator:
@@ -174,7 +174,7 @@ Animator:
   m_GameObject: {fileID: 6808713095878908607}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a29dfe2c33e5d47a3b3cca032fb70833, type: 2}
+  m_Controller: {fileID: 9100000, guid: ceae4a33c60d24327b3382c37e79ddda, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -212,7 +212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808713095880227490}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -297,7 +297,7 @@ Animator:
   m_GameObject: {fileID: 6808713095880227490}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: beca11693f5194178a77e69bcfefccee, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6c25d998bb16b4c88bef79263a55a6c8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -346,8 +346,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808713096093935083}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.081993, z: 1.4291283}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6808713095878908605}
@@ -394,7 +394,7 @@ SpriteRenderer:
   m_SortingLayerID: 1718151579
   m_SortingLayer: 3
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 4f4bd26c90ed0496c8bce1501dc4a0a1, type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0.08716746, b: 0.8301887, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -460,8 +460,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808713096251582464}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6808713095878908605}
@@ -574,8 +574,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808713096257316471}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6808713095878908605}

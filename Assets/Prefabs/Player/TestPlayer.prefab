@@ -188,7 +188,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1680416291
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 73889af477bfe47bf841cbf10f13a081, type: 3}
   m_Color: {r: 1, g: 0.6556604, b: 0.8634412, a: 1}
@@ -325,7 +325,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1680416291
+  m_SortingLayerID: -1262213913
   m_SortingLayer: 3
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: f62d5f42992f44c66971968168b8d5ff, type: 3}
@@ -413,7 +413,12 @@ MonoBehaviour:
   Attack2FX: {fileID: 0}
   HurtFX: {fileID: 0}
   LvlUpFX: {fileID: 8300000, guid: 721af139b7d214fed830f171a5f75cc6, type: 3}
+  Charge1FX: {fileID: 0}
+  Charge2FX: {fileID: 0}
+  ReleaseFX: {fileID: 0}
   HurtBoxPrefab: {fileID: 2608297156212933575, guid: 16f16007d42674f66815e5559a6578b7, type: 3}
+  ChargeBoxPrefab: {fileID: 0}
+  LevelUpPrefab: {fileID: 0}
   playerID: 1
   enemiesDefeated: 0
   currLevel: 1
@@ -433,3 +438,4 @@ MonoBehaviour:
   currHealth: 10
   powers: []
   curr_power: {fileID: 1593412739688300224, guid: 5a8a310bd40254a7bbc4680fa6ee59e3, type: 3}
+  shrine_obj: {fileID: 0}

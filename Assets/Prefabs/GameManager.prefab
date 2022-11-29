@@ -50,7 +50,7 @@ MonoBehaviour:
   mapGenerator: {fileID: 7325141146324972410, guid: e2bc56daa18e9da4a80a97d31b419beb, type: 3}
   shrine_Menu: {fileID: 0}
   floorType: 
-  level: 1
+  level: 5
   screenType: InGame
   numPlayers: 1
   bossesEncountered: 0
