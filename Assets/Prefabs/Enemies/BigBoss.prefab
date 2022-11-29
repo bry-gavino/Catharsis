@@ -78,11 +78,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1594897753
-  m_SortingLayer: 0
+  m_SortingLayerID: 1718151579
+  m_SortingLayer: 3
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 55e2ca779935e4664997dd626a859a7e, type: 3}
-  m_Color: {r: 0.735849, g: 0.19791093, b: 0.07358492, a: 1}
+  m_Color: {r: 1, g: 0.36320752, b: 0.70460314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -147,17 +147,21 @@ MonoBehaviour:
   AttackFX: {fileID: 8300000, guid: 7cb87b258e70647bd86bab239de023ae, type: 3}
   HurtFX: {fileID: 8300000, guid: bc3592ff5732d42e2b002e8e80226086, type: 3}
   SetupFX: {fileID: 8300000, guid: 3dc368ef81ae3419cbd24f7b5efdcf91, type: 3}
+  Setup2FX: {fileID: 0}
   DieObject: {fileID: 7384550110271580274, guid: 2d60d63c9bbc042b7bb22d7591aabf2a, type: 3}
+  HitObject: {fileID: 8476305613876411380, guid: 4e7b9e0851c704011bd6e03d16086532, type: 3}
   movespeed: 4
   isAwake: 0
   recoveryTime: 0.4
-  graceLength: 0
-  Player: {fileID: 0}
-  attackDamage: 1
+  graceLength: 0.5
+  Player1: {fileID: 0}
+  Player2: {fileID: 0}
+  numPlayers: 0
+  attackDamage: 2
   setupLength: 0.7
   attackLength: 0.3
   attackSpeed: 10
-  maxHealth: 1
+  maxHealth: 20
   xp_val: 21
   healthpot: {fileID: 0}
 --- !u!95 &6808713095878908593
@@ -253,8 +257,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1594897753
-  m_SortingLayer: 0
+  m_SortingLayerID: 1718151579
+  m_SortingLayer: 3
   m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: 73889af477bfe47bf841cbf10f13a081, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -387,8 +391,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1594897753
-  m_SortingLayer: 0
+  m_SortingLayerID: 1718151579
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0.08716746, b: 0.8301887, a: 0}
@@ -501,8 +505,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1594897753
-  m_SortingLayer: 0
+  m_SortingLayerID: 1718151579
+  m_SortingLayer: 3
   m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -615,8 +619,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1594897753
-  m_SortingLayer: 0
+  m_SortingLayerID: 1718151579
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0.52006507, b: 0, a: 0}
@@ -657,4 +661,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 019c62c4e69c9456ab13bcccac283ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInside: 0
+  player1Inside: 0
+  player2Inside: 0
+  enemyType: NoEvil

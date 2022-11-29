@@ -20,6 +20,7 @@ TagManager:
   - Walls
   - Corners
   - BossGate
+  - Spawn Point
   layers:
   - Default
   - TransparentFX
@@ -56,4 +57,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 142218923
+    locked: 0
+  - name: Environment
+    uniqueID: 1980583729
+    locked: 0
+  - name: Enemies
+    uniqueID: 1718151579
+    locked: 0
+  - name: Players
+    uniqueID: 3032753383
     locked: 0

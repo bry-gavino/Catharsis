@@ -18,10 +18,15 @@ public class EnemyScript : MonoBehaviour
     private AudioClip HurtFX;
     [SerializeField] [Tooltip("Sound when enemy setup.")]
     private AudioClip SetupFX;
+    [SerializeField] [Tooltip("Sound2 when enemy setup.")]
+    private AudioClip Setup2FX;
     [SerializeField] [Tooltip("Object to instantiate when die.")]
     private GameObject DieObject;
+    [SerializeField] [Tooltip("Object to instantiate when hit.")]
+    private GameObject HitObject;
 
     private MusicManager musicManager;
+    private bool canPlayMusic = true;
     #endregion
 
 
@@ -56,9 +61,13 @@ public class EnemyScript : MonoBehaviour
     #endregion
 
     #region Targeting_variables
-    public GameObject Player;
+    public GameObject Player1;
+    public GameObject Player2;
+    GameObject HitObj;
     private int PlayerIDHitBy;
     private int PlayersCombo;
+    private GameObject PlayerTarget;
+    public int numPlayers;
     #endregion
 
     #region Attack_variables
@@ -69,6 +78,7 @@ public class EnemyScript : MonoBehaviour
     private float attackTimer = 0.0f;
     public float attackLength = 0.3f;
     public float attackSpeed = 10;
+    Collider2D CC;
     #endregion
 
     #region Health_variables
@@ -94,21 +104,31 @@ public class EnemyScript : MonoBehaviour
     private void Awake(){
         musicManager = GameObject.Find("GameManager").GetComponent<MusicManager>();
         Effects = (GetComponentInChildren(typeof(EnemyEffects)) as EnemyEffects);
+        CC = GetComponent<Collider2D>();
         EnemyRB = GetComponent<Rigidbody2D>();
-        Player = GameObject.Find("Player1"); // ADJUST FOR 2 PLAYER
+        Player1 = GameObject.Find("Player1");
+        Player2 = GameObject.Find("Player2");
+        if (Player1 != null) {
+            PlayerTarget = Player1;
+            hurtAttackTimer = Player1.GetComponent<PlayerController>().getAttackLength();
+            hurtDashTimer = Player1.GetComponent<PlayerController>().getDashLength();
+        } else {
+            PlayerTarget = Player2;
+            hurtAttackTimer = Player2.GetComponent<PlayerController>().getAttackLength();
+            hurtDashTimer = Player2.GetComponent<PlayerController>().getDashLength();
+        }
         anim = GetComponent<Animator>();
         currHealth = maxHealth;
-        hurtAttackTimer = Player.GetComponent<PlayerController>().getAttackLength();
-        hurtDashTimer = Player.GetComponent<PlayerController>().getDashLength();
     }
 
     private void Update(){
-        // Effects.GetComponent<EnemyEffects>().HandleDirection(EnemyRB.velocity, true);
         if (graceTimer > 0.0f) {
             graceTimer -= Time.deltaTime;
             if (graceTimer <= 0.0f) {
                 graceTimer = 0.0f;
-                if ((GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).playerInside) {
+                if (enemyType == "Zealotry" || enemyType == "Loathing") {
+                    PlayerInHurtBox();
+                } else if ((GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player1Inside || (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).player2Inside) { // TODO
                     PlayerInHurtBox();
                 }
             }
@@ -121,13 +141,14 @@ public class EnemyScript : MonoBehaviour
             } else {
                 isAttacking = true;
                 if (enemyType == "Ignorance") {
-                    Vector2 direction = Player.transform.position - transform.position;
+                    Vector2 direction = PlayerTarget.transform.position - transform.position;
                     EnemyRB.velocity = direction.normalized * attackSpeed;
-                } else if (enemyType == "Guilt") {
+                } else if (enemyType == "Guilt" || enemyType == "Loathing") {
                     EnemyRB.velocity = Vector2.zero;
                 } else {
                     EnemyRB.velocity = currDirection * attackSpeed;
                 }
+                Debug.Log("ATTACKING PLAYER!");
                 (GetComponentInChildren(typeof(EnemyHurtBox)) as EnemyHurtBox).HurtPlayer(attackDamage);
                 if (enemyType == "Guilt") {
                     Effects.HandleDirection(new Vector2(0, -1), true);
@@ -140,10 +161,47 @@ public class EnemyScript : MonoBehaviour
             if (enemyType == "Guilt") {
                 // if (coolDown)
                 EnemyRB.velocity = Vector2.zero;
+            } else if (enemyType == "Zealotry") {
+                if (setupTimer > 1.0f) {
+                    hurtWhenTouched = false;
+                    EnemyRB.velocity = Vector2.zero;
+                    currDirection = (PlayerTarget.transform.position - transform.position).normalized;
+                } else if (setupTimer > 0.3f) {
+                    if (canPlayMusic) {
+                        musicManager.playClip(SetupFX, 1);
+                        canPlayMusic = false;
+                    }
+                    hurtWhenTouched = true;
+                    EnemyRB.velocity = currDirection * attackSpeed;
+                } else {
+                    hurtWhenTouched = false;
+                    EnemyRB.velocity = Vector2.zero;
+                    currDirection = (PlayerTarget.transform.position - transform.position).normalized;
+                }
+            } else if (enemyType == "Loathing") {
+                if (setupTimer > 1.1f) {
+                    EnemyRB.velocity = Vector2.zero;
+                    if (canPlayMusic) {
+                        musicManager.playClip(SetupFX, 1);
+                        canPlayMusic = false;
+                    }
+                } else if (setupTimer > 0.6f) {
+                    CC.isTrigger = true;
+                    canPlayMusic = true;
+                    EnemyRB.velocity = (PlayerTarget.transform.position - transform.position).normalized * movespeed;
+                } else {
+                    CC.isTrigger = false;
+                    EnemyRB.velocity = Vector2.zero;
+                    if (canPlayMusic) {
+                        musicManager.playClip(Setup2FX, 1);
+                        canPlayMusic = false;
+                    }
+                }
             }
             isSetup = true;
             setupTimer -= Time.deltaTime;
             if (setupTimer <= 0.0f) {
+                canPlayMusic = true;
                 isSetup = false;
                 setupTimer = 0.0f;
                 // trigger attack
@@ -176,7 +234,12 @@ public class EnemyScript : MonoBehaviour
             }
         }
         if (isChasing && !isImmobile && !isAttacking) {
-            Move();
+            if (enemyType == "Zealotry" || enemyType == "Loathing") {
+                PlayerInHurtBox();
+            }
+            if (enemyType != "Loathing") {
+                Move();
+            }
             isMoving = true;
         } else {
             isMoving = false;
@@ -189,7 +252,7 @@ public class EnemyScript : MonoBehaviour
     void HandleState() {
         if (isHurt) {
             anim.SetInteger("State", 4);
-            Effects.SetState(4);
+            // Effects.SetState(4);
         } else if (isAttacking) {
             anim.SetInteger("State", 3);
             Effects.SetState(3);
@@ -209,8 +272,8 @@ public class EnemyScript : MonoBehaviour
 
     #region Movement_functions
     private void Move() {
-        if (Player != null) {
-            Vector2 direction = Player.transform.position - transform.position;
+        if (PlayerTarget != null) {
+            Vector2 direction = PlayerTarget.transform.position - transform.position;
             EnemyRB.velocity = direction.normalized * movespeed;
             currDirection = direction.normalized;
             if (enemyType == "Ignorance" || enemyType == "Guilt") {
@@ -241,8 +304,10 @@ public class EnemyScript : MonoBehaviour
 
 
     public void PlayerInHurtBox() {
-        if (graceTimer <= 0.0f) {
-            musicManager.playClip(SetupFX, 1);
+        if (graceTimer <= 0.0f && setupTimer <= 0.0f) {
+            if (enemyType != "Zealotry" && enemyType != "Loathing") {
+                musicManager.playClip(SetupFX, 1);
+            }
             setupTimer = setupLength;
             coolDown = setupLength;
             EnemyRB.velocity = Vector2.zero;
@@ -256,12 +321,19 @@ public class EnemyScript : MonoBehaviour
     public void GetHit(float value, Transform from, bool isDashing, int playerID, int combo){
         Debug.Log("BONK ENEMY");
         if (!isHurt || combo != PlayersCombo || playerID != PlayerIDHitBy) {
+            HitObj = Instantiate(HitObject, transform.position, transform.rotation, transform);
+            HitObj.GetComponent<HitEffects>().HandleDirection(EnemyRB.velocity);
             isHurt = true;
             musicManager.playClip(HurtFX, 1);
             PlayersCombo = combo;
             PlayerIDHitBy = playerID;
             TakeDamage(value, from.position);
             GetPushedBack(from, isDashing);
+            if (PlayerIDHitBy == 1) {
+                PlayerTarget = Player1;
+            } else {
+                PlayerTarget = Player2;
+            }
         }
     }
     private void TakeDamage(float value, Vector2 from){
@@ -283,19 +355,23 @@ public class EnemyScript : MonoBehaviour
             hurtTimer = hurtAttackTimer;
         }
         EnemyRB.velocity = (-1) * (EnemyRB.transform.position - from.position).normalized;
-        if (enemyType == "Guilt") {
-            Effects.HandleDirection(new Vector2(0, -1), true);
-        } else {
-            Effects.HandleDirection(EnemyRB.velocity, true);
+        if (HitObj != null) {
+            if (enemyType == "Guilt") {
+                HitObj.GetComponent<HitEffects>().HandleDirection(new Vector2(0, -1));
+            } else {
+                HitObj.GetComponent<HitEffects>().HandleDirection(EnemyRB.velocity);
+            }
         }
     }
 
     private void Die(){
         if (PlayerIDHitBy == 1) {
-            GameObject.Find("Player1").GetComponent<PlayerController>().add_xp(xp_val); // FIX FOR PLAYER 1
-            GameObject.Find("Player1").GetComponent<PlayerController>().addEnemyDefeated(); // FIX FOR PLAYER 1
-        } else if (PlayerIDHitBy == 2) {} // FIX FOR PLAYER 2
-
+            GameObject.Find("Player1").GetComponent<PlayerController>().add_xp(xp_val); 
+            GameObject.Find("Player1").GetComponent<PlayerController>().addEnemyDefeated(); 
+        } else {
+            GameObject.Find("Player2").GetComponent<PlayerController>().add_xp(xp_val); 
+            GameObject.Find("Player2").GetComponent<PlayerController>().addEnemyDefeated(); 
+        }
         if (isBoss) {
             /* Disable the gate */
             Debug.Log("Disable boss gate in enemy Die().");
@@ -313,8 +389,11 @@ public class EnemyScript : MonoBehaviour
         isAwake = false;
     }
 
-    public void chasePlayer(){
+    public void chasePlayer(int id){
         isChasing = true;
+        if (id == 2) {
+            PlayerTarget = Player2;
+        }
     }
 
 

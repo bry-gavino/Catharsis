@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour {
 
     #region LevelVars
     private Vector3 spawnPt = Vector3.zero;
+    private Vector3 spawnPt2 = new Vector3(-2.0f, 0.0f, 0.0f);
     #endregion
 
 
@@ -129,7 +130,13 @@ public class GameManager : MonoBehaviour {
     private void doSetupLevel() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject p in Players) {
-            p.transform.position = spawnPt;
+            PlayerController pController = p.GetComponent<PlayerController>();
+            if (pController.playerID == 1) {
+                p.transform.position = spawnPt;
+            } else {
+                p.transform.position = spawnPt2;
+            }
+            pController.Reset();
         }
 
         // MapGenerator re-generate

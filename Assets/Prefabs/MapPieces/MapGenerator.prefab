@@ -56,6 +56,8 @@ MonoBehaviour:
   - {fileID: 6808713095878908607, guid: de21d9ee5976143f084b33af360fdc07, type: 3}
   - {fileID: 6808713095878908607, guid: b5e9c57ee568149ccb82203ec050b6b3, type: 3}
   - {fileID: 6808713095878908607, guid: 862a53cb204eb411eb0c7a1ccd73d8b3, type: 3}
+  - {fileID: 6808713095878908607, guid: 7d6c5a7ca22b84987983e363be920c35, type: 3}
+  - {fileID: 6808713095878908607, guid: a2ae12f0850b74699aed82738ec673da, type: 3}
   bossTypes:
   - {fileID: 6808713095878908607, guid: 3667886ac7b7c8549ba8db089b3703b5, type: 3}
   createBoss: 0

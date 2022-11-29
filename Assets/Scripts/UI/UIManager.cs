@@ -12,13 +12,13 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (GameObject.Find("NumPlayers").GetComponent<NumPlayers>().numPlayers == 1) {
+            Destroy(GameObject.Find("ExpP2"));
+            Destroy(GameObject.Find("HealthP2"));
+            Destroy(GameObject.Find("LevelP2"));
+            Destroy(GameObject.Find("LVL2"));
+            Destroy(GameObject.Find("Player2"));
+        }
     }
 
     public void makeHurtUI() {

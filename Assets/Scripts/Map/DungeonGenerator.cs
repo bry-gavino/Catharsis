@@ -65,7 +65,7 @@ public class DungeonGenerator : MonoBehaviour {
         else {
             /* Otherwise, create the single boss room */
             Debug.Log("Creating boss room.");
-            Vector3 position = Vector3.zero;
+            Vector3 position = new Vector3(0.0f, 10.5f, 0.0f);
             var the_boss_room = Instantiate(bossRoom, position, Quaternion.identity, transform);
             activeRooms.Add(the_boss_room);
             // the_boss_room.GetComponent<Room>().myType = Room.RoomType.Boss;
@@ -121,7 +121,7 @@ public class DungeonGenerator : MonoBehaviour {
         else {
             Debug.Log("Spawning boss at index: " + bossIndex);
         }
-        Vector3 enemyPosition = new Vector3(position.x, position.y + 20, position.z);
+        Vector3 enemyPosition = new Vector3(position.x, position.y + 10, position.z);
         GameObject enemyPrefab = bossTypes[bossIndex];
         spawnedEnemies.Add(Instantiate(enemyPrefab, enemyPosition, Quaternion.identity));
 
@@ -151,35 +151,36 @@ public class DungeonGenerator : MonoBehaviour {
         for (int i = 0; i < activeRooms.Count; i++) {
             GameObject currentRoom = activeRooms[i];
             GameObject currentGround = currentRoom.transform.Find("Ground").gameObject;
-            GameObject physicalShrine = currentRoom.transform.Find("Physical_Shrine").gameObject;
-            physicalShrine.SetActive(false); //disable shrine in beginning
+            GameObject currentOverlay = currentGround.transform.Find("Overlay").gameObject;
+            // GameObject physicalShrine = currentRoom.transform.Find("Physical_Shrine").gameObject;
+            // physicalShrine.SetActive(false); //disable shrine in beginning
             Room.RoomType type = Room.RoomType.Uninitialized;
-            float color_dampening_constant = 0.95f;
+            float color_dampening_constant = 0.35f;
             if (i == 0) {
                 // boss room or start room?
                 if (createBoss) {
                     Debug.Log("Moving boss room endpoint.");
                     Vector3 position = currentRoom.transform.position;
-                    Vector3 newPosition = new Vector3(position.x, position.y + 52, position.z);
+                    Vector3 newPosition = new Vector3(position.x, position.y + 20, position.z);
                     endPoint.transform.position = newPosition;
                     type = Room.RoomType.Boss;
-                    physicalShrine.SetActive(true); //disable shrine in beginning
+                    // physicalShrine.SetActive(true); //disable shrine in beginning
                 }
                 else {
-                    currentGround.GetComponent<SpriteRenderer>().color = Color.blue * color_dampening_constant;
+                    currentOverlay.GetComponent<SpriteRenderer>().color = (new Color(0.34f,0.7f,1f,0.7f));
                     type = Room.RoomType.Start;
                     //Adding shrine merge - first level gets shrine for now
-                    currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
+                    // currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(false);
                 }
             }
             else if (i == 1) {
                 // second room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.green * color_dampening_constant;
+                currentOverlay.GetComponent<SpriteRenderer>().color = (new Color(0.2f,1,0.82f,0.5f));
                 type = Room.RoomType.Shrine;
             }
             else if (i == activeRooms.Count - 1) {
                 // last room
-                currentGround.GetComponent<SpriteRenderer>().color = Color.red * color_dampening_constant;
+                currentOverlay.GetComponent<SpriteRenderer>().color = (new Color(1,0,0.6f,0.6f));
                 // puts EndPoint in last room
                 Vector3 position = currentRoom.transform.position;
                 endPoint.transform.position = position;
@@ -189,10 +190,41 @@ public class DungeonGenerator : MonoBehaviour {
                 // every other room...
                 // randomly put in enemies or treasure
                 // rainbow mode
-                var color = new Color(Random.Range(0f, 1f),
-                    Random.Range(0f, 1f),
-                    Random.Range(0f, 1f));
-                currentGround.GetComponent<SpriteRenderer>().color = color * color_dampening_constant;
+                float vRange = 0.15f;
+                float v1 = Random.Range(0f, 1f);
+                float v2 = Random.Range(0f, 1f);
+                float v3 = Random.Range(vRange, 1f);
+                float r = -1;
+                float g = -1;
+                float b = -1;
+                if (v2 < 1.0f/3.0f) {r = 1;} 
+                else if (v2 >= 2.0f/3.0f) {g = 1;} 
+                else {b = 1;}
+                if (v2 < 0.5f) {
+                    if (r == -1) {r = vRange;}
+                    else if (g == -1) {g = vRange;}
+                    else {b = vRange;}
+                } else {
+                    if (r == -1) {
+                        if (g == -1) {g = vRange;}
+                        else {b = vRange;}
+                    } else if (g == -1) {
+                        if (b == -1) {b = vRange;}
+                        else {r = vRange;}
+                    } else {
+                        if (r == -1) {r = vRange;}
+                        else {g = vRange;}
+                    }
+                }
+                if (r == -1) {r = v3;}
+                else if (g == -1) {g = v3;}
+                else {b = v3;}
+
+                var color = new Color(r,
+                    g,
+                    b,
+                    0.7f);
+                currentOverlay.GetComponent<SpriteRenderer>().color = color;
                 type = Room.RoomType.Enemy;
             }
 
