@@ -166,6 +166,7 @@ public class DungeonGenerator : MonoBehaviour {
                     Vector3 position = currentRoom.transform.position;
                     Vector3 newPosition = new Vector3(position.x, position.y + 20, position.z);
                     endPoint.transform.position = newPosition;
+                    
                     type = Room.RoomType.Boss;
                     // //currentRoom.transform.Find("Physical_Shrine").gameObject.SetActive(true);
                 }
