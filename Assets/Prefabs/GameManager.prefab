@@ -48,8 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTransitionScreen: {fileID: 8841086579571387058, guid: 501acf0f06c7d4bc081f71c95add85f2, type: 3}
   mapGenerator: {fileID: 7325141146324972410, guid: e2bc56daa18e9da4a80a97d31b419beb, type: 3}
+  shrine_Menu: {fileID: 0}
   floorType: 
-  level: 1
+  level: 5
   screenType: InGame
   numPlayers: 1
   bossesEncountered: 0
@@ -74,6 +75,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ce7b0b653596248ac88b736f4136f516, type: 3}
   - {fileID: 8300000, guid: b30553c8bd337436d8eee365e6f3ebf8, type: 3}
   - {fileID: 8300000, guid: bf93b76155e48430f8c2b2c120b3d987, type: 3}
+  - {fileID: 8300000, guid: 4432a5fc4c7d44eb8a10180db3180213, type: 3}
 --- !u!82 &2912233308531971104
 AudioSource:
   m_ObjectHideFlags: 0

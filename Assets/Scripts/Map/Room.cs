@@ -12,6 +12,7 @@ public class Room : MonoBehaviour {
         End,
         Enemy,
         Shrine,
+        Boss,
 
         // unused
         Treasure,

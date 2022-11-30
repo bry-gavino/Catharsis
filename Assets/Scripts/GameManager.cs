@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
-{
-    
+public class GameManager : MonoBehaviour {
     public static GameManager Instance = null;
     public static GameObject levelSceneInstance;
     public static GameObject mapGeneratorInstance;
@@ -16,17 +14,22 @@ public class GameManager : MonoBehaviour
     [Tooltip("Map Generator")] [SerializeField]
     public GameObject mapGenerator;
 
-    [Tooltip("Shrine")] [SerializeField]
-    public GameObject shrine_Menu;
-
+    [Tooltip("Shrine")] [SerializeField] public GameObject shrine_Menu;
 
 
     #region Variables
     public string floorType = ""; // POST-MVP: curr floor emotion
+
     public int level = 1;
+
+    [Tooltip("If set to 5, every 5 levels makes it time for a boss level.")]
+    public int levelsNeededForBoss = 5;
+
     // OPTIONS for screenType: "Menu", "InGame", "Cutscene"
     public string screenType = "InGame"; // POST-MVP: implement "Menu" & "Cutscene"
+
     public int numPlayers = 1; // POST-MVP: 2 player ability
+
     // POST-MVP: save profiles
     public int bossesEncountered = 0;
     public List<string> abilitiesList = new List<string>();
@@ -42,38 +45,50 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
-
     #region LevelVars
     private Vector3 spawnPt = Vector3.zero;
+    private Vector3 spawnPt2 = new Vector3(-2.0f, 0.0f, 0.0f);
     #endregion
 
 
-
     #region Variable_functions
-    public void advanceLevel(){level += 1;}
-    public int getLevel(){return level;}
-    public void beatBoss(){bossesEncountered += 1;}
-    public void gainAbility(string ability){abilitiesList.Add(ability);}
-    public void addPlayer()
-    {
+    public void advanceLevel() {
+        level += 1;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void beatBoss() {
+        bossesEncountered += 1;
+    }
+
+    public void gainAbility(string ability) {
+        abilitiesList.Add(ability);
+    }
+
+    public void addPlayer() {
         if (numPlayers > 1) {
             return;
-        } else {
+        }
+        else {
             numPlayers += 1;
         }
         // POST-MVP: add anything else needed
     }
-    public void subtractPlayer()
-    {
+
+    public void subtractPlayer() {
         if (numPlayers == 1) {
             return;
-        } else {
+        }
+        else {
             numPlayers -= 1;
         }
         // POST-MVP: add anything else needed
     }
-    public void restartRun()
-    {
+
+    public void restartRun() {
         Debug.Log("Restart Run from beginning.");
         mapGeneratorInstance = Instantiate(mapGenerator);
         mapGeneratorInstance.GetComponent<DungeonGenerator>().size = mapSize;
@@ -87,19 +102,23 @@ public class GameManager : MonoBehaviour
         changeScreenInGame();
         finishTransition();
     }
+
     // call this to start new level 
     public void transitionToLevelScreen() {
         sleepPlayers(); // stop players
         startTransition();
         setupLevel = true; // notifies transitionLifeTime timer to set up level
     }
+
     public void awakenPlayers() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject p in Players) {
             p.GetComponent<PlayerController>().enableUserInput();
         }
+
         sleepTime = -1.0f;
     }
+
     public void sleepPlayers() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         PlayerController pController;
@@ -107,108 +126,127 @@ public class GameManager : MonoBehaviour
             p.GetComponent<PlayerController>().disableUserInput();
         }
     }
+
     private void doSetupLevel() {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject p in Players) {
-            p.transform.position = spawnPt;
+            PlayerController pController = p.GetComponent<PlayerController>();
+            if (pController.playerID == 1) {
+                p.transform.position = spawnPt;
+            } else {
+                p.transform.position = spawnPt2;
+            }
+            pController.Reset();
         }
+
         // MapGenerator re-generate
         GameObject MapGen = GameObject.FindWithTag("MapGenerator");
         Destroy(MapGen);
         mapGeneratorInstance = Instantiate(mapGenerator);
-        mapGeneratorInstance.GetComponent<DungeonGenerator>().size = new Vector2(2+level, 3);
+        mapGeneratorInstance.GetComponent<DungeonGenerator>().size = new Vector2(2 + level, 3);
+        if (level % levelsNeededForBoss == 0) {
+            mapGeneratorInstance.GetComponent<DungeonGenerator>().createBoss = true;
+            beatBoss();
+        }
         // TODO: loading screen
     }
     #endregion
 
 
-
     #region Screen_functions
-    private void changeScreenInGame(){screenType = "InGame";}
-    private void changeScreenMenu(){screenType = "Menu";}
-    private void changeScreenCutscene(){screenType = "Cutscene";}
-    #endregion
+    private void changeScreenInGame() {
+        screenType = "InGame";
+    }
 
+    private void changeScreenMenu() {
+        screenType = "Menu";
+    }
+
+    private void changeScreenCutscene() {
+        screenType = "Cutscene";
+    }
+    #endregion
 
 
     #region Level_transition
     public void startTransition() {
-        
         if (!lvlSceneInst) {
             lvlSceneInst = true;
             levelSceneInstance = Instantiate(levelTransitionScreen);
         }
+
         advanceLevel();
         levelSceneInstance.GetComponent<LevelTransitionScreen>().isFadingIn(level);
         sleepTime = transitionLifeTimeLength;
         transitionLifeTime = transitionLifeTimeLength;
     }
+
     public void finishTransition() {
         finishingTransition = true;
         if (!lvlSceneInst) {
             lvlSceneInst = true;
             levelSceneInstance = Instantiate(levelTransitionScreen);
         }
+
         levelSceneInstance.GetComponent<LevelTransitionScreen>().isFadingOut();
     }
     #endregion
 
 
-
     #region Unity_functions
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
-        } else if (Instance != this)
-        {
+        }
+        else if (Instance != this) {
             Destroy(this.gameObject);
         }
+
         DontDestroyOnLoad(gameObject);
         //soundManagerInstance = GameObject.Find("SoundManager");
 
         lvlSceneInst = false;
-        
+
         // Instantly loads first level
         restartRun();
         // TODO!!!
         // shrine_Menu.SetActive(false);
     }
 
-    private void Update() 
-    {
-        if (sleepTime == -1.0f) {
-        } else if (sleepTime <= 0.0f) {
+    private void Update() {
+        if (sleepTime == -1.0f) { }
+        else if (sleepTime <= 0.0f) {
             awakenPlayers();
-        } else {
+        }
+        else {
             sleepTime -= Time.deltaTime;
         }
 
-        if (transitionLifeTime == -1.0f) {
-        } else if (transitionLifeTime <= 0.0f) {
+        if (transitionLifeTime == -1.0f) { }
+        else if (transitionLifeTime <= 0.0f) {
             Destroy(levelSceneInstance);
             lvlSceneInst = false;
             transitionLifeTime = -1.0f;
             finishingTransition = false;
-        } else if ((transitionLifeTime <= finTransitionTime) && !finishingTransition) {
+        }
+        else if ((transitionLifeTime <= finTransitionTime) && !finishingTransition) {
             finishTransition();
             transitionLifeTime -= Time.deltaTime;
-        } else if ((transitionLifeTime <= (transitionLifeTimeLength - finTransitionTime)) && setupLevel) {
+        }
+        else if ((transitionLifeTime <= (transitionLifeTimeLength - finTransitionTime)) && setupLevel) {
             setupLevel = false;
             transitionLifeTime -= Time.deltaTime;
             doSetupLevel();
-        } else {
+        }
+        else {
             transitionLifeTime -= Time.deltaTime;
         }
     }
     #endregion
 
 
-
     #region Scene_transitions
-    private void StartGame()
-    {
+    private void StartGame() {
         SceneManager.LoadScene(""); // TODO: PUT LANDING SCENE HERE!!!
     }
     #endregion

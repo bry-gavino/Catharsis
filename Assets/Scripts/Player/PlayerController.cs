@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour {
     Rigidbody2D PlayerRB;
     GameObject HurtBox;
     GameObject ChargeBox;
-    GameObject Effects;
+    PlayerEffects Effects;
     #endregion
 
     #region animation
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour {
     // called once when object created
     private void Awake() {
         // HurtBox = GameObject.Find("PlayerHurtBox");
-        Effects = GameObject.Find("PlayerEffects");
+        Effects = (GetComponentInChildren(typeof(PlayerEffects)) as PlayerEffects);
         PlayerRB = GetComponent<Rigidbody2D>();
         baseMoveSpeed = moveSpeed;
 
@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour {
             dashKey = "g";
             attackKey = "f";
             healKey = "r";
-            shrineKey = "z"; //Anthony Addition
+            // shrineKey = "z"; //Anthony Addition
 
             HPSlider = GameObject.Find("HealthP1").GetComponent<Slider>();
             XPSlider = GameObject.Find("ExpP1").GetComponent<Slider>();
@@ -186,8 +186,9 @@ public class PlayerController : MonoBehaviour {
             attackKey = "j";
             healKey = "u";
 
-            // HPSlider = {GameObject.Find("HealthP2").GetComponent<Slider>()}
-            // XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
+            HPSlider = GameObject.Find("HealthP2").GetComponent<Slider>();
+            XPSlider = GameObject.Find("ExpP2").GetComponent<Slider>();
+            LevelTxt = GameObject.Find("LevelP2").GetComponent<TextMeshProUGUI>();
         }
         expThreshold = 10;
         HPSlider.value = currHealth / maxHealth;
@@ -209,6 +210,21 @@ public class PlayerController : MonoBehaviour {
             HandleState();
 
         }
+    }
+
+    public void Reset() {
+        PlayerRB.velocity = Vector2.zero;
+        Effects.SetState(0);
+        isPushed = false;
+        releasingChargeAttack = false;
+        chargingAttack = false;
+        isAttacking = false;
+        isDashing = false;
+        currDirection = new Vector2(0, -1);
+        anim.SetFloat("DirX", currDirection.x);
+        anim.SetFloat("DirY", currDirection.y);
+        anim.SetBool("Moving", false);
+        anim.SetBool("Hurt", false);
     }
 
     private void HandleTimer() {
@@ -270,27 +286,27 @@ public class PlayerController : MonoBehaviour {
 
     private void HandleState() {
         if (isPushed) {
-            Effects.GetComponent<PlayerEffects>().SetState(3);
+            Effects.SetState(3);
         } else if (releasingChargeAttack) {
-            Effects.GetComponent<PlayerEffects>().SetState(12);
+            Effects.SetState(12);
         } else if (chargingAttack) {
             if (chargeOrder == 1) {
-                Effects.GetComponent<PlayerEffects>().SetState(10);
+                Effects.SetState(10);
             } else {
-                Effects.GetComponent<PlayerEffects>().SetState(11);
+                Effects.SetState(11);
             }
         } else if (isAttacking) {
             if (combo == 1) {
-                Effects.GetComponent<PlayerEffects>().SetState(2);
+                Effects.SetState(2);
             } else if (combo == 2) {
-                Effects.GetComponent<PlayerEffects>().SetState(22);
+                Effects.SetState(22);
             } else if (combo == 3) {
-                Effects.GetComponent<PlayerEffects>().SetState(23);
+                Effects.SetState(23);
             }
         } else if (isDashing) {
-            Effects.GetComponent<PlayerEffects>().SetState(1);
+            Effects.SetState(1);
         } else {
-            Effects.GetComponent<PlayerEffects>().SetState(0);
+            Effects.SetState(0);
         }
     }
     #endregion
@@ -303,7 +319,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (isPushed) {
                 PlayerRB.velocity = (fromHurt - new Vector2(transform.position.x, transform.position.y)).normalized * -pushBackStrength;
-                Effects.GetComponent<PlayerEffects>().HandleDirection(-PlayerRB.velocity);
+                Effects.HandleDirection(-PlayerRB.velocity);
             } else if (isHurt) {
                 PlayerRB.velocity = Vector2.zero;
             } else {
@@ -339,9 +355,8 @@ public class PlayerController : MonoBehaviour {
                 }
                 if (chargingAttack) {
                     PlayerRB.velocity = PlayerRB.velocity/3;
-                    Debug.Log(PlayerRB.velocity);
                 }
-                Effects.GetComponent<PlayerEffects>().HandleDirection(currDirection);
+                Effects.HandleDirection(currDirection);
             }
         }
         else {
@@ -383,7 +398,6 @@ public class PlayerController : MonoBehaviour {
                 musicManager.playClip(Charge1FX, 1);
             }
             chargingAttack = true;
-            Debug.Log("CHARGING");
         } else {
             musicManager.playClip(AttackFX, 1);
             if (combo == 3) {
@@ -391,7 +405,6 @@ public class PlayerController : MonoBehaviour {
             } else {
                 combo += 1;
             }
-            Debug.Log("combo: "+combo);
             dashLengthTimer = attackLunge; // propels character forward (like a lunge)
             dashCooldownTimer = attackLength;
             attackTimer = attackLength;
@@ -405,7 +418,6 @@ public class PlayerController : MonoBehaviour {
         musicManager.playClip(ReleaseFX, 1);
         chargingAttack = false;
         releasingChargeAttack = true;
-        Debug.Log("RELEASE");
         attackTimer = chargeAttackLength;
         attackCooldownTimer = chargeAttackCooldown;
         isAttacking = true;
@@ -422,7 +434,6 @@ public class PlayerController : MonoBehaviour {
     public void OnAttackTriggerEnter2D(Collider2D col) {
         if(isAttacking) {
             float damageCombo = Damage + Damage*((combo-1)/3.0f);
-            Debug.Log("damageCombo: "+damageCombo);
             if (releasingChargeAttack) {
                 damageCombo = Damage*2;
             }
@@ -450,7 +461,6 @@ public class PlayerController : MonoBehaviour {
             anim.SetBool("Hurt", true);
             hurtCooldownTimer = hurtCooldown;
             currHealth -= val;
-            Debug.Log("health is now " + currHealth.ToString());
         }
         if (currHealth <= 0) {
             Die();
@@ -461,7 +471,17 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Die() {
-        GameObject.Find("UI").GetComponent<UIManager>().loseGame();
+        if ((playerID == 1 && GameObject.Find("Player2") == null)
+            || (playerID == 2 && GameObject.Find("Player1") == null)) {
+            GameObject.Find("UI").GetComponent<UIManager>().loseGame();
+        } else {
+            GameObject.Find("NumPlayers").GetComponent<NumPlayers>().savePlayerStats(
+                playerID, currLevel, GameObject.Find("GameManager").GetComponent<GameManager>().level, enemiesDefeated
+                );
+        }
+        if (playerID == 1) {
+            GameObject.Find("CM vcam1").GetComponent<CameraFollow>().followPlayer2();
+        }
         //FindObjectOfType<AudioManager>().Play("PlayerDeath");
         Destroy(this.gameObject);
 
@@ -482,7 +502,7 @@ public class PlayerController : MonoBehaviour {
     public void Heal(float val) {
         if (inventory.Count > 0) {
             currHealth = Mathf.Min(currHealth + val, maxHealth);
-            Debug.Log("health is now " + currHealth.ToString());
+            // Debug.Log("health is now " + currHealth.ToString());
 
             HPSlider.value = currHealth / maxHealth;
 
@@ -511,7 +531,7 @@ public class PlayerController : MonoBehaviour {
             // Debug.Log("New Damage: "+Damage);
             maxHealth = maxHealth + (0.01f + ((100 - currLevel) * 0.001f));
             // Debug.Log("New maxHealth: "+maxHealth);
-            currHealth = currHealth + ((1/3) * maxHealth);
+            currHealth = currHealth + (maxHealth/3.0f);
             if (currHealth > maxHealth) {
                 currHealth = maxHealth;
             }
