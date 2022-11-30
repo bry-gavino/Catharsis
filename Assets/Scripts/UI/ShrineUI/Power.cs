@@ -12,6 +12,7 @@ public class Power
 
     public Sprite unselectedSprite;
     public Sprite selectedSprite;
+    public Color col;
 
     public int maxLevel;
     public bool selected;

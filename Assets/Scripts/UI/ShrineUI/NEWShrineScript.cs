@@ -19,6 +19,8 @@ public class NEWShrineScript : MonoBehaviour
 
     private GameObject player; // cur player object
 
+	private bool initialized = false;
+
 	// Use this for initialization
 	void Start () {
 		powerShrine = this;
@@ -37,6 +39,7 @@ public class NEWShrineScript : MonoBehaviour
 
             holderScript.GetName.GetComponent<TextMeshProUGUI>().text = powerList[i].powerName;
             holderScript.GetDesc.GetComponent<TextMeshProUGUI>().text = powerList[i].powerDesc;
+			holderScript.GetPowerColor = powerList[i].col;
             // Could use for power level decrement: holderScript.GetDesc.GetComponent<TextMeshProUGUI>().text = "$" + powerList[i].powerDesc.ToString("N2");
 			holderScript.powerID = powerList[i].powerID;
 
@@ -98,8 +101,12 @@ public class NEWShrineScript : MonoBehaviour
 
     public void enterShrine(GameObject player)
     {
+		if (!initialized)
+		{
+			this.player = player;
+			//this.player.GetComponent<PlayerController>().
+		}
         Debug.Log("Opening Shrine");
-        this.player = player;
         player.GetComponent<PlayerController>().disableUserInput();
         this.gameObject.SetActive(true);
 

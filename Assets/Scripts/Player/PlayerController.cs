@@ -156,6 +156,8 @@ public class PlayerController : MonoBehaviour {
         //Anthony Addition - cur player gameobject for shrine
         cur_player = this.gameObject;
         shrine_obj = GameObject.Find("ShrineShop");
+        shrineActivate();
+        shrine_obj.GetComponent<NEWShrineScript>().exitShrine();
         shrine_obj.SetActive(false);
 
         currHealth = maxHealth;
@@ -259,7 +261,7 @@ public class PlayerController : MonoBehaviour {
                 Dash();
             }
         }
-        if (Input.GetKey(shrineKey))
+        if (Input.GetKey(shrineKey)) //only activate when shrine is near !! 11/15 BUG
         {
             Debug.Log("Key press detected!");
             shrineActivate();
