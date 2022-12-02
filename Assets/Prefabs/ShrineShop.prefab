@@ -94,24 +94,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerList:
   - powerName: Emotionless
-    powerDesc: You are emotionless lol
+    powerDesc: You feel nothing... No special effects...
     powerID: 1
     unselectedSprite: {fileID: 21300000, guid: 375a80ad2b49949c89cf1da9b81794ec, type: 3}
     selectedSprite: {fileID: 21300000, guid: 5dce29955f6eb4cfbbc4167f2d5b5024, type: 3}
+    col: {r: 0, g: 0, b: 0, a: 0}
     maxLevel: 20
     selected: 1
   - powerName: Fury
-    powerDesc: You are angry! Argh!
+    powerDesc: Let the anger take over. Damage Boost!
     powerID: 2
     unselectedSprite: {fileID: 21300000, guid: c28eaa68dfc8d4eca9473963414cc61a, type: 3}
     selectedSprite: {fileID: 21300000, guid: 5dce29955f6eb4cfbbc4167f2d5b5024, type: 3}
+    col: {r: 0, g: 0, b: 0, a: 0}
     maxLevel: 20
     selected: 0
   - powerName: Wistfulness
-    powerDesc: You are sad! Boo!
+    powerDesc: Allowing yourself to be sad is good, boost your health!
     powerID: 3
     unselectedSprite: {fileID: 21300000, guid: edca7da0609b541f8b4c9ad67b9cf85e, type: 3}
     selectedSprite: {fileID: 21300000, guid: 5dce29955f6eb4cfbbc4167f2d5b5024, type: 3}
+    col: {r: 0, g: 0, b: 0, a: 0}
     maxLevel: 20
     selected: 0
   powerPrefab: {fileID: 5747016241138856331, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
@@ -909,7 +912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchorMin.x
@@ -917,7 +920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5747016241138856328, guid: bb3f3d4e52787446b8e4338e8dc322af, type: 3}
       propertyPath: m_SizeDelta.x

@@ -428,11 +428,11 @@ PrefabInstance:
       objectReference: {fileID: 645840819}
     - target: {fileID: 2821157622142424571, guid: 6b1366471f7fb4360a15d5d11462b295, type: 3}
       propertyPath: m_RenderMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2821157622142424571, guid: 6b1366471f7fb4360a15d5d11462b295, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2821157622142424571, guid: 6b1366471f7fb4360a15d5d11462b295, type: 3}
       propertyPath: m_SortingLayerID
@@ -811,58 +811,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 700460487}
     m_Modifications:
-    - target: {fileID: 2636062745508263283, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: m_fontSize
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2636062745508263283, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[0].powerID
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[1].powerID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[0].selected
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[1].selected
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[0].powerDesc
-      value: You feel nothing... No special effects...
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[0].powerName
-      value: Emotionless
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[1].powerDesc
-      value: Let the anger take over. Damage Boost!
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[1].powerName
-      value: Fury
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[2].powerDesc
-      value: Allowing yourself to be sad is good, boost your health!
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[0].unselectedSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 375a80ad2b49949c89cf1da9b81794ec, type: 3}
-    - target: {fileID: 8945681173445497169, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: powerList.Array.data[1].unselectedSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: c28eaa68dfc8d4eca9473963414cc61a, type: 3}
     - target: {fileID: 8945681173445497180, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -950,22 +898,6 @@ PrefabInstance:
     - target: {fileID: 8945681173445497181, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
       propertyPath: m_Name
       value: ShrineShop
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681174888605524, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681174888605527, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681174888605527, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945681175019506734, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfe79c6ce9827407ca331d23aea5d100, type: 3}
